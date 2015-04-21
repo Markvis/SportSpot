@@ -31,4 +31,3 @@ class ScatterTrace extends Blank2DTrace {
     }
   }
 }
-

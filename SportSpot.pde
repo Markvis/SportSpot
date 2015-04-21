@@ -16,7 +16,7 @@ String MLBkey = "4nfwbpjthrsfsaeeh73szu8j";
 
 void setup() {
   orientation(PORTRAIT);
-  //size(800, 600, P2D);
+  size(800, 600, P2D);
   frameRate(30);
   println("setup");
   int mode = 0;
@@ -30,33 +30,33 @@ void setup() {
   //    println(id + ", " + market + ", " + name);
   //  }
 
-  //  sTrace  = new ScatterTrace();
-  //
-  //  g = new Graph2D(this, 400, 400, true);
-  //  g.setAxisColour(220, 220, 220);
-  //  g.setFontColour(255, 255, 255);
-  //
-  //  g.position.y = 50;
-  //  g.position.x = 100;
-  //
-  //  g.setYAxisTickSpacing(1f);
-  //  g.setXAxisTickSpacing(1f);
-  //
-  //  g.setXAxisMinorTicks(1);
-  //  g.setYAxisMinorTicks(1);
-  //
-  //  g.setYAxisMin(0f);
-  //  g.setYAxisMax(10f);
-  //
-  //  g.setXAxisMin(0f);
-  //  g.setXAxisMax(10f);
-  //  g.setXAxisLabelAccuracy(0);
-  //
-  //  g.addTrace(sTrace);
-  //
-  //  for (int i=0; i<100; i++) {
-  //    sTrace.addPoint(random(0, 10), random(0, 10));
-  //  }
+  sTrace  = new ScatterTrace();
+
+  g = new Graph2D(this, 400, 400, true);
+  g.setAxisColour(220, 220, 220);
+  g.setFontColour(255, 255, 255);
+
+  g.position.y = 50;
+  g.position.x = 100;
+
+  g.setYAxisTickSpacing(1f);
+  g.setXAxisTickSpacing(1f);
+
+  g.setXAxisMinorTicks(1);
+  g.setYAxisMinorTicks(1);
+
+  g.setYAxisMin(0f);
+  g.setYAxisMax(10f);
+
+  g.setXAxisMin(0f);
+  g.setXAxisMax(10f);
+  g.setXAxisLabelAccuracy(0);
+
+  g.addTrace(sTrace);
+
+  for (int i=0; i<100; i++) {
+    sTrace.addPoint(random(0, 10), random(0, 10));
+  }
 
   dayScreduleRetrieve("2015", "04", "20");
 
@@ -65,9 +65,7 @@ void setup() {
 
 void draw() {
   background(0);
-  //  if(mode == 1){
-  //    g.draw();
-  //  }
+  g.draw();
 }
 
 void dayScreduleRetrieve(String year, String month, String day) {
@@ -86,12 +84,12 @@ void dayScreduleRetrieve(String year, String month, String day) {
     saveXML(xml, fileDir.getAbsolutePath() + "/daySchedule" + year + month + day + ".xml");
   }
 
-//  println(xml.listChildren("daily-schedule"));
+  //  println(xml.listChildren("daily-schedule"));
 
-XML dailySchedule = xml.getChild("daily-schedule");
-XML games = dailySchedule.getChild("games");
-XML [] game = games.getChildren("game");
-  
+  XML dailySchedule = xml.getChild("daily-schedule");
+  XML games = dailySchedule.getChild("games");
+  XML [] game = games.getChildren("game");
+
   for (int i = 0; i < game.length; i++) {
     String id = game[i].getString("id");
     String title = game[i].getString("title");
@@ -99,4 +97,3 @@ XML [] game = games.getChildren("game");
     println(id + ", " + title + ", " + status);
   }
 }
-
