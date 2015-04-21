@@ -52,10 +52,14 @@ void setup() {
     sTrace.addPoint(random(0, 10), random(0, 10));
   }
 
-  //dayScreduleRetrieve("2015", "04", "20");
-  //goldenStateProfile();
-  //leagueHierarchy();
+  dayScreduleRetrieve("2015", "04", "21");
+  goldenStateProfile();
+  leagueHierarchy();
+
+  // stephen curry
   playerProfile("8ec91366-faea-4196-bbfd-b8fab7434795");
+  // lebron james 0afbe608-940a-4d5d-a1f7-468718c67d91
+  playerProfile("0afbe608-940a-4d5d-a1f7-468718c67d91");
 
   println("END SETUP");
 } // END SETUP
@@ -66,6 +70,7 @@ void draw() {
 }
 
 void dayScreduleRetrieve(String year, String month, String day) {
+  println("********** DAILY SCHEDULE **********");
   File fileDir = getFilesDir();
   String dayScheduleURI = "http://api.sportradar.us/nba-t3/games/" + year + "/" + month + "/" + day + "/schedule.xml?api_key=" + NBAkey;
   println("URI is: " + dayScheduleURI);
@@ -84,25 +89,36 @@ void dayScreduleRetrieve(String year, String month, String day) {
   //  println(xml.listChildren("daily-schedule"));
 
   XML dailySchedule = xml.getChild("daily-schedule");
+  
+  println("Date: " + dailySchedule.getString("date"));
+  
   XML games = dailySchedule.getChild("games");
   XML [] game = games.getChildren("game");
 
   for (int i = 0; i < game.length; i++) {
-    String id = game[i].getString("id");
+    //String id = game[i].getString("id");
     String title = game[i].getString("title");
     String status = game[i].getString("status");
-    println(id + ", " + title + ", " + status);
+    println(title + ", " + status);
+    
+    XML homeTeam = game[i].getChild("home");
+    XML awayTeam = game[i].getChild("away");
+    
+    println(homeTeam.getString("name") + " vs. " + awayTeam.getString("name"));
   }
 }
 
 void leagueHierarchy() {
+  println("********** LEAGUE HIERARCHY **********");
   xml = loadXML("cache/LeagueHierarchy.xml");
   XML [] conference = xml.getChildren("conference");
 
   for (int i = 0; i < conference.length; i++) {
+    println(conference[i].getString("name"));
     XML [] division = conference[i].getChildren("division");
     for (int j = 0; j < division.length; j++) {
-      XML [] team = division[i].getChildren("team");
+      println(division[j].getString("name"));
+      XML [] team = division[j].getChildren("team");
       for (int k = 0; k < team.length; k++) {
         String name = team[k].getString("name");
         String id = team[k].getString("id");
@@ -114,6 +130,7 @@ void leagueHierarchy() {
 }
 
 void goldenStateProfile() {
+  println("********** GOLDEN STATE PROFILE **********");
   File fileDir = getFilesDir();
   String gwURI = "http://api.sportradar.us/nba-t3/teams/583ec825-fb46-11e1-82cb-f4ce4684ea4c/profile.xml?api_key=k4mqkpzfmq24f7yatqyvztxk";
 
@@ -141,8 +158,10 @@ void goldenStateProfile() {
 }
 
 void playerProfile(String playerID) {
+  println("********** PLAYER PROFILE **********");
   File fileDir = getFilesDir();
   //String curry = "http://api.sportradar.us/nba-t3/players/8ec91366-faea-4196-bbfd-b8fab7434795/profile.xml?api_key=k4mqkpzfmq24f7yatqyvztxk";
+  //String lebron = "";
   String playerXML = "http://api.sportradar.us/nba-t3/players/" + playerID + "/profile.xml?api_key=" + NBAkey;
   println("URI: " + playerXML);
 
