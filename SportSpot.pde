@@ -1,6 +1,4 @@
 // imports
-import org.gwoptics.graphics.graph2D.Graph2D;
-import org.gwoptics.graphics.graph2D.traces.Blank2DTrace;
 import apwidgets.*;
 import java.io.*;
 
@@ -18,55 +16,42 @@ String MLBkey = "4nfwbpjthrsfsaeeh73szu8j";
 
 void setup() {
   orientation(PORTRAIT);
-  size(800, 600, P2D);
   //frameRate(30);
   noLoop();
   println("setup");
   int mode = 0;
 
-  sTrace  = new ScatterTrace();
-
-  g = new Graph2D(this, 400, 400, true);
-  g.setAxisColour(220, 220, 220);
-  g.setFontColour(255, 255, 255);
-
-  g.position.y = 50;
-  g.position.x = 100;
-
-  g.setYAxisTickSpacing(1f);
-  g.setXAxisTickSpacing(1f);
-
-  g.setXAxisMinorTicks(1);
-  g.setYAxisMinorTicks(1);
-
-  g.setYAxisMin(0f);
-  g.setYAxisMax(10f);
-
-  g.setXAxisMin(0f);
-  g.setXAxisMax(10f);
-  g.setXAxisLabelAccuracy(0);
-
-  g.addTrace(sTrace);
-
-  for (int i=0; i<100; i++) {
-    sTrace.addPoint(random(0, 10), random(0, 10));
-  }
-
-  dayScreduleRetrieve("2015", "04", "21");
-  goldenStateProfile();
-  leagueHierarchy();
+  //dayScreduleRetrieve("2015", "04", "21");
+  //goldenStateProfile();
+  //leagueHierarchy();
 
   // stephen curry
-  playerProfile("8ec91366-faea-4196-bbfd-b8fab7434795");
+  //playerProfile("8ec91366-faea-4196-bbfd-b8fab7434795");
   // lebron james 0afbe608-940a-4d5d-a1f7-468718c67d91
-  playerProfile("0afbe608-940a-4d5d-a1f7-468718c67d91");
+  //playerProfile("0afbe608-940a-4d5d-a1f7-468718c67d91");
 
   println("END SETUP");
 } // END SETUP
 
 void draw() {
   background(0);
-  //g.draw();
+}
+
+Team getNBATeamSeasonStats(String teamID, String year) {
+  println("********** getNBATeamSeasonStats **********");
+  String URI = "http://api.sportradar.us/nba-t3/seasontd/" + year + "/REG/teams/" + TeamID + "/statistics.xml?api_key=" + NBAkey;
+  
+}
+
+boolean checkIfFileExists(String path) {
+  File fileDir = getFilesDir();
+  // check if file exists
+  File f = new File(fileDir.getAbsolutePath() + path);
+  if (f.exists() && !f.isDirectory()) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 void dayScreduleRetrieve(String year, String month, String day) {
@@ -89,9 +74,9 @@ void dayScreduleRetrieve(String year, String month, String day) {
   //  println(xml.listChildren("daily-schedule"));
 
   XML dailySchedule = xml.getChild("daily-schedule");
-  
+
   println("Date: " + dailySchedule.getString("date"));
-  
+
   XML games = dailySchedule.getChild("games");
   XML [] game = games.getChildren("game");
 
@@ -100,10 +85,10 @@ void dayScreduleRetrieve(String year, String month, String day) {
     String title = game[i].getString("title");
     String status = game[i].getString("status");
     println(title + ", " + status);
-    
+
     XML homeTeam = game[i].getChild("home");
     XML awayTeam = game[i].getChild("away");
-    
+
     println(homeTeam.getString("name") + " vs. " + awayTeam.getString("name"));
   }
 }

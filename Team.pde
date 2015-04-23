@@ -1,0 +1,33 @@
+class Team(){
+  int gamesPlayed;
+  int minutes;
+  int fieldGoalsMade;
+  int fieldGoalsAtt;
+  int threePointsMade;
+  int threePointsAtt;
+  int blockedAtt;
+  int freeThrowsMade;
+  int freeThrowsAtt;
+  int offensiveRebounds;
+  int defensiveRebounds;
+  int assists;
+  int turnovers;
+  int steals;
+  int blocks;
+  int personalFouls;
+  int techFouls;
+  int points;
+  int fastBreakPoints;
+  int paintPts;
+  int flagrantFouls;
+  int pointsOffTurnovers;
+  int secondChancePoints;
+  int freeThrowsPct;
+  int twoPointsPct;
+  int threePointsPct;
+  int fieldGoalsPct;
+  int Rebounds;
+  int assistsTurnoverRatio;
+  int twoPointsMade;
+  int twoPointsAtt;
+}
