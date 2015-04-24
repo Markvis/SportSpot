@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generation started @ 2015-04-19 22:20:17 +0000 -->
+<team xmlns="http://feed.elasticstats.com/schema/basketball/team-v2.0.xsd" id="583ec773-fb46-11e1-82cb-f4ce4684ea4c" name="Cavaliers" alias="CLE" market="Cleveland" founded="1970">
+  <venue id="42cddf7a-0e1f-5f91-ae6f-c620582fdb01" name="Quicken Loans Arena" capacity="20562" address="One Center Court" city="Cleveland" state="OH" zip="44115" country="USA"/>
+  <hierarchy>
+    <league id="4353138d-4c22-4396-95d8-5f587d2df25c" name="NBA" alias="NBA"/>
+    <conference id="3960cfac-7361-4b30-bc25-8d393de6f62f" name="EASTERN CONFERENCE" alias="EASTERN"/>
+    <division id="f3aaf23a-1ceb-46ef-8fef-9403692e801b" name="Central" alias="CENTRAL"/>
+  </hierarchy>
+  <coaches>
+    <coach id="1c954361-a0d1-43f9-9d58-b3bc4df74bd8" full_name="David Blatt" first_name="David" last_name="Blatt" position="Head Coach" experience="0"/>
+  </coaches>
+  <players>
+    <player id="09d25155-c3be-4246-a986-55921a1b5e61" status="ACT" full_name="James Jones" first_name="James" last_name="Jones" abbr_name="J.Jones" height="80" weight="215" position="F-G" primary_position="SF" jersey_number="1" experience="11" college="Miami" birth_place="Miami, FL, USA" birthdate="1980-10-04" updated="2014-12-08T03:48:40+00:00">
+      <draft team_id="583ec7cd-fb46-11e1-82cb-f4ce4684ea4c" year="2003" round="2" pick="49"/>
+    </player>
+    <player id="0afbe608-940a-4d5d-a1f7-468718c67d91" status="ACT" full_name="LeBron James" first_name="LeBron" last_name="James" abbr_name="L.James" height="80" weight="250" position="F" primary_position="SF" jersey_number="23" experience="11" college="St. Vincent-St. Mary HS (OH)" birth_place="Akron, OH, USA" birthdate="1984-12-30" updated="2014-12-08T03:51:23+00:00">
+      <draft team_id="583ec773-fb46-11e1-82cb-f4ce4684ea4c" year="2003" round="1" pick="1"/>
+    </player>
+    <player id="1f9ac202-95e8-4974-9a94-ff3609ca7441" status="ACT" full_name="Iman Shumpert" first_name="Iman" last_name="Shumpert" abbr_name="I.Shumpert" height="77" weight="220" position="G-F" primary_position="SG" jersey_number="4" experience="3" college="Georgia Tech" birth_place="Oak Park, IL, USA" birthdate="1990-06-26" updated="2015-01-07T23:25:16+00:00">
+      <draft team_id="583ec70e-fb46-11e1-82cb-f4ce4684ea4c" year="2011" round="1" pick="17"/>
+    </player>
+    <player id="2c861696-d71b-4419-8a13-2f9e294ad0b5" status="ACT" full_name="Anderson Varejao" first_name="Anderson" last_name="Varejao" abbr_name="A.Varejao" height="83" weight="267" position="C" primary_position="C" jersey_number="17" experience="10" birth_place="Colatina, Espirito Santo, BRA" birthdate="1982-09-28" updated="2014-12-08T03:50:47+00:00">
+      <draft team_id="583ed157-fb46-11e1-82cb-f4ce4684ea4c" year="2004" round="2" pick="30"/>
+      <injuries>
+        <injury id="20da280b-4abf-414a-9593-72fd9392c775" comment="Varejao's rehab is going well and he hopes to be ready for the start of next season." desc="Achilles" status="Out For Season" start_date="2014-12-24" update_date="2015-03-21"/>
+      </injuries>
+    </player>
+    <player id="335097c3-7919-49d5-80b0-8062d5d3e89c" status="ACT" full_name="Tristan Thompson" first_name="Tristan" last_name="Thompson" abbr_name="T.Thompson" height="81" weight="238" position="F" primary_position="PF" jersey_number="13" experience="3" college="Texas" birth_place="Toronto, ON, CAN" birthdate="1991-03-13" updated="2014-12-08T03:50:29+00:00">
+      <draft team_id="583ec773-fb46-11e1-82cb-f4ce4684ea4c" year="2011" round="1" pick="4"/>
+    </player>
+    <player id="440251c0-601a-471a-9bdf-a8c7cd7efda8" status="ACT" full_name="Mike Miller" first_name="Mike" last_name="Miller" abbr_name="M.Miller" height="80" weight="218" position="F" primary_position="SF" jersey_number="18" experience="14" college="Florida" birth_place="Mitchell, SD, USA" birthdate="1980-02-19" updated="2014-12-08T03:51:05+00:00">
+      <draft team_id="583ed157-fb46-11e1-82cb-f4ce4684ea4c" year="2000" round="1" pick="5"/>
+    </player>
+    <player id="5934134d-0d27-42ea-a554-4b0e3e85ce56" status="ACT" full_name="J.R. Smith" first_name="J.R." last_name="Smith" abbr_name="J.Smith" height="78" weight="224" position="G" primary_position="SG" jersey_number="5" experience="10" college="St. Benedict's Prep HS (NJ)" birth_place="Freehold Borough, NJ, USA" birthdate="1985-09-09" updated="2015-01-07T23:25:07+00:00">
+      <draft team_id="583ecc9a-fb46-11e1-82cb-f4ce4684ea4c" year="2004" round="1" pick="18"/>
+    </player>
+    <player id="60aa236a-d9ea-46c2-ae65-fabc54f1bed6" status="ACT" full_name="Timofey Mozgov" first_name="Timofey" last_name="Mozgov" abbr_name="T.Mozgov" height="85" weight="250" position="C" primary_position="C" jersey_number="20" experience="4" birth_place="St. Petersburg,, RUS" birthdate="1986-07-16" updated="2015-01-10T03:47:30+00:00">
+      <draft year="2008"/>
+    </player>
+    <player id="766d6b8b-4211-46a3-ae57-2c1c915e538b" status="ACT" full_name="Joe Harris" first_name="Joe" last_name="Harris" abbr_name="J.Harris" height="78" weight="225" position="G" primary_position="SG" jersey_number="12" experience="0" college="Virginia" birth_place="Chelan, VA, USA" birthdate="1991-09-07" updated="2015-04-01T16:41:45+00:00">
+      <draft team_id="583ec773-fb46-11e1-82cb-f4ce4684ea4c" year="2014" round="2" pick="33"/>
+    </player>
+    <player id="7a303bc0-f105-4bcb-afe0-61d49dfe43a9" status="ACT" full_name="Brendan Haywood" first_name="Brendan" last_name="Haywood" abbr_name="B.Haywood" height="84" weight="263" position="C" primary_position="C" jersey_number="33" experience="12" college="North Carolina" birth_place="New York City, NY, USA" birthdate="1979-11-27" updated="2014-10-06T19:47:15+00:00">
+      <draft team_id="583ec773-fb46-11e1-82cb-f4ce4684ea4c" year="2001" round="1" pick="20"/>
+    </player>
+    <player id="7d615ccd-db96-42a3-9a6c-7f18ea25634e" status="ACT" full_name="Kevin Love" first_name="Kevin" last_name="Love" abbr_name="K.Love" height="82" weight="243" position="F-C" primary_position="PF" jersey_number="0" experience="6" college="UCLA" birth_place="Santa Monica, CA, USA" birthdate="1988-09-07" updated="2014-12-08T03:48:04+00:00">
+      <draft team_id="583eca88-fb46-11e1-82cb-f4ce4684ea4c" year="2008" round="1" pick="5"/>
+    </player>
+    <player id="7ed5587d-89af-46c9-8bdc-c9ae8ed788a1" status="ACT" full_name="Kendrick Perkins" first_name="Kendrick" last_name="Perkins" abbr_name="K.Perkins" height="82" weight="270" position="C" primary_position="C" jersey_number="3" experience="11" college="Clifton J. Ozen HS" birth_place="Nederland, TX, USA" birthdate="1984-11-10" updated="2015-02-27T02:06:58+00:00">
+      <draft team_id="583eca88-fb46-11e1-82cb-f4ce4684ea4c" year="2003" round="1" pick="27"/>
+    </player>
+    <player id="dd146010-902b-4ad7-b98c-650d0363a2f0" status="ACT" full_name="Kyrie Irving" first_name="Kyrie" last_name="Irving" abbr_name="K.Irving" height="75" weight="193" position="G" primary_position="PG" jersey_number="2" experience="3" college="Duke" birth_place="Melbourne, VIC, AUS" birthdate="1992-03-23" updated="2014-12-08T03:49:05+00:00">
+      <draft team_id="583ec773-fb46-11e1-82cb-f4ce4684ea4c" year="2011" round="1" pick="1"/>
+    </player>
+    <player id="ef58422e-c7df-4432-8497-0cbb31e90c32" status="ACT" full_name="Matthew Dellavedova" first_name="Matthew" last_name="Dellavedova" abbr_name="M.Dellavedova" height="76" weight="200" position="G" primary_position="SG" jersey_number="8" experience="1" college="St. Mary's (CA)" birth_place="Maryborough, VIC, AUS" birthdate="1990-09-08" updated="2014-12-08T03:49:48+00:00">
+      <draft year="2013"/>
+    </player>
+    <player id="f1e1acac-609c-4106-94b2-5c56d168fb93" status="ACT" full_name="Shawn Marion" first_name="Shawn" last_name="Marion" abbr_name="S.Marion" height="79" weight="228" position="F" primary_position="SF" jersey_number="31" experience="15" college="UNLV" birth_place="Waukegan, IL, USA" birthdate="1978-05-07" updated="2014-12-08T03:51:36+00:00">
+      <draft team_id="583ecfa8-fb46-11e1-82cb-f4ce4684ea4c" year="1999" round="1" pick="9"/>
+    </player>
+  </players>
+</team>
