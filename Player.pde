@@ -1,6 +1,7 @@
-public class Team {
+public class Player {
 
   private int gamesPlayed;
+  private int gamesStarted;
   private int minutes;
   private int fieldGoalsMade;
   private int fieldGoalsAtt;
@@ -18,22 +19,19 @@ public class Team {
   private int personalFouls;
   private int techFouls;
   private int points;
-  private int fastBreakPoints;
-  private int paintPts;
   private int flagrantFouls;
-  private int pointsOffTurnovers;
-  private int secondChancePoints;
   private float freeThrowsPct;
   private float twoPointsPct;
   private float threePointsPct;
   private float fieldGoalsPct;
-  private int Rebounds;
+  private int rebounds;
   private float assistsTurnoverRatio;
   private int twoPointsMade;
   private int twoPointsAtt;
 
-  public Team() {
+  public Player() {
     gamesPlayed = 0;
+    gamesStarted = 0;
     minutes = 0;
     fieldGoalsMade = 0;
     fieldGoalsAtt = 0;
@@ -51,19 +49,46 @@ public class Team {
     personalFouls = 0;
     techFouls = 0;
     points = 0;
-    fastBreakPoints = 0;
-    paintPts = 0;
     flagrantFouls = 0;
-    pointsOffTurnovers = 0;
-    secondChancePoints = 0;
     freeThrowsPct = 0;
     twoPointsPct = 0;
     threePointsPct = 0;
     fieldGoalsPct = 0;
-    Rebounds = 0;
+    rebounds = 0;
     assistsTurnoverRatio = 0;
     twoPointsMade = 0;
     twoPointsAtt = 0;
+  }
+
+  public Player(int gamesPlayed, int gamesStarted, int minutes, int fieldGoalsMade, int fieldGoalsAtt, int threePointsMade, int threePointsAtt, int blockedAtt, int freeThrowsMade, int freeThrowsAtt, int offensiveRebounds, int defensiveRebounds, int assists, int turnovers, int steals, int blocks, int personalFouls, int techFouls, int points, int flagrantFouls, float freeThrowsPct, float twoPointsPct, float threePointsPct, float fieldGoalsPct, int rebounds, float assistsTurnoverRatio, int twoPointsMade, int twoPointsAtt) {
+    this.gamesPlayed = gamesPlayed;
+    this.gamesStarted = gamesStarted;
+    this.minutes = minutes;
+    this.fieldGoalsMade = fieldGoalsMade;
+    this.fieldGoalsAtt = fieldGoalsAtt;
+    this.threePointsMade = threePointsMade;
+    this.threePointsAtt = threePointsAtt;
+    this.blockedAtt = blockedAtt;
+    this.freeThrowsMade = freeThrowsMade;
+    this.freeThrowsAtt = freeThrowsAtt;
+    this.offensiveRebounds = offensiveRebounds;
+    this.defensiveRebounds = defensiveRebounds;
+    this.assists = assists;
+    this.turnovers = turnovers;
+    this.steals = steals;
+    this.blocks = blocks;
+    this.personalFouls = personalFouls;
+    this.techFouls = techFouls;
+    this.points = points;
+    this.flagrantFouls = flagrantFouls;
+    this.freeThrowsPct = freeThrowsPct;
+    this.twoPointsPct = twoPointsPct;
+    this.threePointsPct = threePointsPct;
+    this.fieldGoalsPct = fieldGoalsPct;
+    this.rebounds = rebounds;
+    this.assistsTurnoverRatio = assistsTurnoverRatio;
+    this.twoPointsMade = twoPointsMade;
+    this.twoPointsAtt = twoPointsAtt;
   }
 
   /**
@@ -78,6 +103,20 @@ public class Team {
    */
   public void setGamesPlayed(int gamesPlayed) {
     this.gamesPlayed = gamesPlayed;
+  }
+
+  /**
+   * @return the gamesStarted
+   */
+  public int getGamesStarted() {
+    return gamesStarted;
+  }
+
+  /**
+   * @param gamesStarted the gamesStarted to set
+   */
+  public void setGamesStarted(int gamesStarted) {
+    this.gamesStarted = gamesStarted;
   }
 
   /**
@@ -319,34 +358,6 @@ public class Team {
   }
 
   /**
-   * @return the fastBreakPoints
-   */
-  public int getFastBreakPoints() {
-    return fastBreakPoints;
-  }
-
-  /**
-   * @param fastBreakPoints the fastBreakPoints to set
-   */
-  public void setFastBreakPoints(int fastBreakPoints) {
-    this.fastBreakPoints = fastBreakPoints;
-  }
-
-  /**
-   * @return the paintPts
-   */
-  public int getPaintPts() {
-    return paintPts;
-  }
-
-  /**
-   * @param paintPts the paintPts to set
-   */
-  public void setPaintPts(int paintPts) {
-    this.paintPts = paintPts;
-  }
-
-  /**
    * @return the flagrantFouls
    */
   public int getFlagrantFouls() {
@@ -358,34 +369,6 @@ public class Team {
    */
   public void setFlagrantFouls(int flagrantFouls) {
     this.flagrantFouls = flagrantFouls;
-  }
-
-  /**
-   * @return the pointsOffTurnovers
-   */
-  public int getPointsOffTurnovers() {
-    return pointsOffTurnovers;
-  }
-
-  /**
-   * @param pointsOffTurnovers the pointsOffTurnovers to set
-   */
-  public void setPointsOffTurnovers(int pointsOffTurnovers) {
-    this.pointsOffTurnovers = pointsOffTurnovers;
-  }
-
-  /**
-   * @return the secondChancePoints
-   */
-  public int getSecondChancePoints() {
-    return secondChancePoints;
-  }
-
-  /**
-   * @param secondChancePoints the secondChancePoints to set
-   */
-  public void setSecondChancePoints(int secondChancePoints) {
-    this.secondChancePoints = secondChancePoints;
   }
 
   /**
@@ -445,17 +428,17 @@ public class Team {
   }
 
   /**
-   * @return the Rebounds
+   * @return the rebounds
    */
   public int getRebounds() {
-    return Rebounds;
+    return rebounds;
   }
 
   /**
-   * @param Rebounds the Rebounds to set
+   * @param rebounds the rebounds to set
    */
-  public void setRebounds(int Rebounds) {
-    this.Rebounds = Rebounds;
+  public void setRebounds(int rebounds) {
+    this.rebounds = rebounds;
   }
 
   /**
@@ -500,3 +483,4 @@ public class Team {
     this.twoPointsAtt = twoPointsAtt;
   }
 }
+

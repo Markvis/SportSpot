@@ -20,6 +20,9 @@ void setup() {
   noLoop();
   println("setup");
   int mode = 0;
+  
+  // TESTS
+  Team Warriors = new Team();
 
   //dayScreduleRetrieve("2015", "04", "21");
   //goldenStateProfile();
@@ -38,9 +41,18 @@ void draw() {
 }
 
 Team getNBATeamSeasonStats(String teamID, String year) {
-  println("********** getNBATeamSeasonStats **********");
-  String URI = "http://api.sportradar.us/nba-t3/seasontd/" + year + "/REG/teams/" + TeamID + "/statistics.xml?api_key=" + NBAkey;
+  Team team = new Team();
   
+  println("********** getNBATeamSeasonStats **********");
+  String URI = "http://api.sportradar.us/nba-t3/seasontd/" + year + "/REG/teams/" + teamID + "/statistics.xml?api_key=" + NBAkey;
+  
+  return team;
+}
+
+Player getNBAPlayerStats(String playerID, String year){
+  Player player = new Player();
+  
+  return player;
 }
 
 boolean checkIfFileExists(String path) {
