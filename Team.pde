@@ -1,7 +1,9 @@
 public class Team {
 
+  private String teamName;
+
   private int gamesPlayed;
-  private int minutes;
+  private float minutes;
   private int fieldGoalsMade;
   private int fieldGoalsAtt;
   private int threePointsMade;
@@ -33,6 +35,7 @@ public class Team {
   private int twoPointsAtt;
 
   public Team() {
+    teamName = "";
     gamesPlayed = 0;
     minutes = 0;
     fieldGoalsMade = 0;
@@ -66,6 +69,61 @@ public class Team {
     twoPointsAtt = 0;
   }
 
+  public Team(String teamName, int gamesPlayed, float minutes, int fieldGoalsMade, int fieldGoalsAtt, int threePointsMade, 
+  int threePointsAtt, int blockedAtt, int freeThrowsMade, int freeThrowsAtt, int offensiveRebounds, 
+  int defensiveRebounds, int assists, int turnovers, int steals, int blocks, int personalFouls, 
+  int techFouls, int points, int fastBreakPoints, int paintPts, int flagrantFouls, int pointsOffTurnovers, 
+  int secondChancePoints, float freeThrowsPct, float twoPointsPct, float threePointsPct, float fieldGoalsPct, 
+  int rebounds, float assistsTurnoverRatio, int twoPointsMade, int twoPointsAtt) {
+
+    this.teamName = teamName;
+    this.gamesPlayed = gamesPlayed;
+    this.minutes = minutes;
+    this.fieldGoalsMade = fieldGoalsMade;
+    this.fieldGoalsAtt = fieldGoalsAtt;
+    this.threePointsMade = threePointsMade;
+    this.threePointsAtt = threePointsAtt;
+    this.blockedAtt = blockedAtt;
+    this.freeThrowsMade = freeThrowsMade;
+    this.freeThrowsAtt = freeThrowsAtt;
+    this.offensiveRebounds = offensiveRebounds;
+    this.defensiveRebounds = defensiveRebounds;
+    this.assists = assists;
+    this.turnovers = turnovers;
+    this.steals = steals;
+    this.blocks = blocks;
+    this.personalFouls = personalFouls;
+    this.techFouls = techFouls;
+    this.points = points;
+    this.fastBreakPoints = fastBreakPoints;
+    this.paintPts = paintPts;
+    this.flagrantFouls = flagrantFouls;
+    this.pointsOffTurnovers = pointsOffTurnovers;
+    this.secondChancePoints = secondChancePoints;
+    this.freeThrowsPct = freeThrowsPct;
+    this.twoPointsPct = twoPointsPct;
+    this.threePointsPct = threePointsPct;
+    this.fieldGoalsPct = fieldGoalsPct;
+    this.rebounds = rebounds;
+    this.assistsTurnoverRatio = assistsTurnoverRatio;
+    this.twoPointsMade = twoPointsMade;
+    this.twoPointsAtt = twoPointsAtt;
+  }
+
+  /**
+   * @return the teamName
+   */
+  public String getTeamName() {
+    return teamName;
+  }
+
+  /**
+   * @param teamName the teamName to set
+   */
+  public void setTeamName(String teamName) {
+    this.teamName = teamName;
+  }
+
   /**
    * @return the gamesPlayed
    */
@@ -83,14 +141,14 @@ public class Team {
   /**
    * @return the minutes
    */
-  public int getMinutes() {
+  public float getMinutes() {
     return minutes;
   }
 
   /**
    * @param minutes the minutes to set
    */
-  public void setMinutes(int minutes) {
+  public void setMinutes(float minutes) {
     this.minutes = minutes;
   }
 
@@ -499,4 +557,44 @@ public class Team {
   public void setTwoPointsAtt(int twoPointsAtt) {
     this.twoPointsAtt = twoPointsAtt;
   }
+
+  @Override 
+  public String toString() {
+
+    String result = "***" + teamName + "***\n";
+    result += "Games Played: " + Integer.toString(gamesPlayed) + "\n";
+    result += "Minutes: " + Float.toString(minutes) + "\n";
+    result += "Field Goals Made: " + Integer.toString(fieldGoalsMade) + "\n";
+    result += "fieldGoals Attempted: " + Integer.toString(fieldGoalsAtt) + "\n";
+    result += "Three Points Made: " + Integer.toString(threePointsMade) + "\n";
+    result += "Three Points Attempted: " + Integer.toString(threePointsAtt) + "\n";
+    result += "Blocked Attempted: " + Integer.toString(blockedAtt) + "\n";
+    result += "Free Throws Made: " + Integer.toString(freeThrowsMade) + "\n";
+    result += "Free Throws Attempted: " + Integer.toString(freeThrowsAtt) + "\n";
+    result += "Offensive Rebounds: " + Integer.toString(offensiveRebounds) + "\n";
+    result += "Defensive Rebounds: " + Integer.toString(defensiveRebounds) + "\n";
+    result += "Assists: " + Integer.toString(assists) + "\n";
+    result += "Turnovers: " + Integer.toString(turnovers) + "\n";
+    result += "Steals: " + Integer.toString(steals) + "\n";
+    result += "Blocks: " + Integer.toString(blocks) + "\n";
+    result += "Personal Fouls: " + Integer.toString(personalFouls) + "\n";
+    result += "Technical Fouls: " + Integer.toString(techFouls) + "\n";
+    result += "Points: " + Integer.toString(points) + "\n";
+    result += "Fast Break Points: " + Integer.toString(fastBreakPoints) + "\n";
+    result += "Paint Points: " + Integer.toString(paintPts) + "\n";
+    result += "Flagrant Fouls: " + Integer.toString(flagrantFouls) + "\n";
+    result += "Points Off Turnovers: " + Integer.toString(pointsOffTurnovers) + "\n";
+    result += "Second Chance Points: " + Integer.toString(secondChancePoints) + "\n";
+    result += "Free Throw Percentage: " + Float.toString(freeThrowsPct) + "\n";
+    result += "Two Points Percentage: " + Float.toString(twoPointsPct) + "\n";
+    result += "Three Points Percentage: " + Float.toString(threePointsPct) + "\n";
+    result += "Field Goals Percentage: " + Float.toString(fieldGoalsPct) + "\n";
+    result += "Rebounds: " + Integer.toString(rebounds) + "\n";
+    result += "Assists Turnover Ratio: " + Float.toString(assistsTurnoverRatio) + "\n";
+    result += "Two Points Made: " + Integer.toString(twoPointsMade) + "\n";
+    result += "Two Points Attempted: " + Integer.toString(twoPointsAtt) + "\n";
+
+    return result;
+  }
 }
+

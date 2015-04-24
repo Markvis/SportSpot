@@ -7,8 +7,6 @@ int mode;
 XML xml;
 ScatterTrace sTrace;
 Graph2D g;
-//APWidgetContainer widgetContainer;
-//APButton refresh;
 
 // keys
 String NBAkey = "k4mqkpzfmq24f7yatqyvztxk";
@@ -20,7 +18,7 @@ void setup() {
   noLoop();
   println("setup");
   int mode = 0;
-  
+
   // TESTS
   Team Warriors = new Team();
 
@@ -32,6 +30,9 @@ void setup() {
   //playerProfile("8ec91366-faea-4196-bbfd-b8fab7434795");
   // lebron james 0afbe608-940a-4d5d-a1f7-468718c67d91
   //playerProfile("0afbe608-940a-4d5d-a1f7-468718c67d91");
+  
+  // getNBATeamSeasonTotalStats EXAMPLE
+   getNBATeamSeasonTotalStats("583ec825-fb46-11e1-82cb-f4ce4684ea4c", "2014");
 
   println("END SETUP");
 } // END SETUP
@@ -40,18 +41,68 @@ void draw() {
   background(0);
 }
 
-Team getNBATeamSeasonStats(String teamID, String year) {
-  Team team = new Team();
-  
+Team getNBATeamSeasonTotalStats(String teamID, String year) {
   println("********** getNBATeamSeasonStats **********");
   String URI = "http://api.sportradar.us/nba-t3/seasontd/" + year + "/REG/teams/" + teamID + "/statistics.xml?api_key=" + NBAkey;
-  
+
+  println("URI is: " + URI);
+
+  xml = loadXML(URI);
+
+  // get season total stats
+  XML teamXML = xml.getChild("team");
+  XML teamRecordsXML = teamXML.getChild("team_records");
+  XML overallXML = teamRecordsXML.getChild("overall");
+  XML totalXML = overallXML.getChild("total");
+
+  // parse data to the Team object
+  String teamName = teamXML.getString("market") + " " + teamXML.getString("name");
+  int gamesPlayed = Integer.parseInt(totalXML.getString("games_played"));
+  float minutes = Float.parseFloat(totalXML.getString("minutes"));
+  int fieldGoalsMade = Integer.parseInt(totalXML.getString("field_goals_made"));
+  int fieldGoalsAtt = Integer.parseInt(totalXML.getString("field_goals_att"));
+  int threePointsMade = Integer.parseInt(totalXML.getString("three_points_made"));
+  int threePointsAtt = Integer.parseInt(totalXML.getString("three_points_att"));
+  int blockedAtt = Integer.parseInt(totalXML.getString("blocked_att"));
+  int freeThrowsMade = Integer.parseInt(totalXML.getString("free_throws_made"));
+  int freeThrowsAtt = Integer.parseInt(totalXML.getString("free_throws_att"));
+  int offensiveRebounds = Integer.parseInt(totalXML.getString("offensive_rebounds"));
+  int defensiveRebounds = Integer.parseInt(totalXML.getString("defensive_rebounds"));
+  int assists = Integer.parseInt(totalXML.getString("assists"));
+  int turnovers = Integer.parseInt(totalXML.getString("turnovers"));
+  int steals = Integer.parseInt(totalXML.getString("steals"));
+  int blocks = Integer.parseInt(totalXML.getString("blocks"));
+  int personalFouls = Integer.parseInt(totalXML.getString("personal_fouls"));
+  int techFouls = Integer.parseInt(totalXML.getString("tech_fouls"));
+  int points = Integer.parseInt(totalXML.getString("points"));
+  int fastBreakPoints = Integer.parseInt(totalXML.getString("fast_break_pts"));
+  int paintPts = Integer.parseInt(totalXML.getString("paint_pts"));
+  int flagrantFouls = Integer.parseInt(totalXML.getString("flagrant_fouls"));
+  int pointsOffTurnovers = Integer.parseInt(totalXML.getString("points_off_turnovers"));
+  int secondChancePoints = Integer.parseInt(totalXML.getString("second_chance_pts"));
+  float freeThrowsPct = Float.parseFloat(totalXML.getString("free_throws_pct"));
+  float twoPointsPct = Float.parseFloat(totalXML.getString("two_points_pct"));
+  float threePointsPct = Float.parseFloat(totalXML.getString("three_points_pct"));
+  float fieldGoalsPct = Float.parseFloat(totalXML.getString("field_goals_pct"));
+  int rebounds = Integer.parseInt(totalXML.getString("rebounds"));
+  float assistsTurnoverRatio = Float.parseFloat(totalXML.getString("assists_turnover_ratio"));
+  int twoPointsMade = Integer.parseInt(totalXML.getString("two_points_made"));
+  int twoPointsAtt = Integer.parseInt(totalXML.getString("two_points_att"));
+
+  Team team = new Team(teamName, gamesPlayed, minutes, fieldGoalsMade, fieldGoalsAtt, threePointsMade, threePointsAtt, 
+  blockedAtt, freeThrowsMade, freeThrowsAtt, offensiveRebounds, defensiveRebounds, assists, 
+  turnovers, steals, blocks, personalFouls, techFouls, points, fastBreakPoints, paintPts, flagrantFouls, 
+  pointsOffTurnovers, secondChancePoints, freeThrowsPct, twoPointsPct, threePointsPct, fieldGoalsPct, 
+  rebounds, assistsTurnoverRatio, twoPointsMade, twoPointsAtt);
+
+  println(team.toString());
+
   return team;
 }
 
-Player getNBAPlayerStats(String playerID, String year){
+Player getNBAPlayerStats(String playerID, String year) {
   Player player = new Player();
-  
+
   return player;
 }
 
