@@ -1,4 +1,4 @@
-public class Player {
+public class NBAPlayer {
 
   private int gamesPlayed;
   private int gamesStarted;
@@ -29,7 +29,7 @@ public class Player {
   private int twoPointsMade;
   private int twoPointsAtt;
 
-  public Player() {
+  public NBAPlayer() {
     gamesPlayed = 0;
     gamesStarted = 0;
     minutes = 0;
@@ -60,7 +60,7 @@ public class Player {
     twoPointsAtt = 0;
   }
 
-  public Player(int gamesPlayed, int gamesStarted, int minutes, int fieldGoalsMade, int fieldGoalsAtt, int threePointsMade, int threePointsAtt, int blockedAtt, int freeThrowsMade, int freeThrowsAtt, int offensiveRebounds, int defensiveRebounds, int assists, int turnovers, int steals, int blocks, int personalFouls, int techFouls, int points, int flagrantFouls, float freeThrowsPct, float twoPointsPct, float threePointsPct, float fieldGoalsPct, int rebounds, float assistsTurnoverRatio, int twoPointsMade, int twoPointsAtt) {
+  public NBAPlayer(int gamesPlayed, int gamesStarted, int minutes, int fieldGoalsMade, int fieldGoalsAtt, int threePointsMade, int threePointsAtt, int blockedAtt, int freeThrowsMade, int freeThrowsAtt, int offensiveRebounds, int defensiveRebounds, int assists, int turnovers, int steals, int blocks, int personalFouls, int techFouls, int points, int flagrantFouls, float freeThrowsPct, float twoPointsPct, float threePointsPct, float fieldGoalsPct, int rebounds, float assistsTurnoverRatio, int twoPointsMade, int twoPointsAtt) {
     this.gamesPlayed = gamesPlayed;
     this.gamesStarted = gamesStarted;
     this.minutes = minutes;

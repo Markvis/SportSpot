@@ -5,7 +5,6 @@ import java.io.*;
 // globals
 int mode;
 XML xml;
-TeamNameAndIDHash teamNameAndIDHash;
 
 // keys
 String NBAkey = "k4mqkpzfmq24f7yatqyvztxk";
@@ -15,25 +14,16 @@ void setup() {
   orientation(PORTRAIT);
   //frameRate(30);
   noLoop();
-  println("setup");
+  println("START SETUP");
   int mode = 0;
 
   // TESTS
-  Team Warriors = new Team();
-  teamNameAndIDHash = new TeamNameAndIDHash();
-  println(teamNameAndIDHash.toString());
-
-  //dayScreduleRetrieve("2015", "04", "21");
-  //goldenStateProfile();
-  //leagueHierarchy();
-
-  // stephen curry
-  //playerProfile("8ec91366-faea-4196-bbfd-b8fab7434795");
-  // lebron james 0afbe608-940a-4d5d-a1f7-468718c67d91
-  //playerProfile("0afbe608-940a-4d5d-a1f7-468718c67d91");
-
-  // getNBATeamSeasonTotalStats EXAMPLE
-  //getNBATeamSeasonTotalStats("583ec825-fb46-11e1-82cb-f4ce4684ea4c", "2014");
+  NBATeam Warriors = new NBATeam();
+  NBAGame today = new NBAGame();
+  //println(today.toString());
+  // year month day
+  ArrayList <NBAGame> allGames = getAllGamesOnDate("2015", "04", "26");
+  println("Warriors game id: " + Database.teamNameAndIDHash.get("Warriors"));
 
   println("END SETUP");
 } // END SETUP
@@ -42,7 +32,7 @@ void draw() {
   background(0);
 }
 
-Team getNBATeamSeasonTotalStats(String teamID, String year) {
+NBATeam getNBATeamSeasonTotalStats(String teamID, String year) {
   println("********** getNBATeamSeasonStats **********");
   String URI = "http://api.sportradar.us/nba-t3/seasontd/" + year + "/REG/teams/" + teamID + "/statistics.xml?api_key=" + NBAkey;
 
@@ -90,7 +80,7 @@ Team getNBATeamSeasonTotalStats(String teamID, String year) {
   int twoPointsMade = Integer.parseInt(totalXML.getString("two_points_made"));
   int twoPointsAtt = Integer.parseInt(totalXML.getString("two_points_att"));
 
-  Team team = new Team(teamName, gamesPlayed, minutes, fieldGoalsMade, fieldGoalsAtt, threePointsMade, threePointsAtt, 
+  NBATeam team = new NBATeam(teamName, gamesPlayed, minutes, fieldGoalsMade, fieldGoalsAtt, threePointsMade, threePointsAtt, 
   blockedAtt, freeThrowsMade, freeThrowsAtt, offensiveRebounds, defensiveRebounds, assists, 
   turnovers, steals, blocks, personalFouls, techFouls, points, fastBreakPoints, paintPts, flagrantFouls, 
   pointsOffTurnovers, secondChancePoints, freeThrowsPct, twoPointsPct, threePointsPct, fieldGoalsPct, 
@@ -101,8 +91,8 @@ Team getNBATeamSeasonTotalStats(String teamID, String year) {
   return team;
 }
 
-Player getNBAPlayerStats(String playerID, String year) {
-  Player player = new Player();
+NBAPlayer getNBAPlayerStats(String playerID, String year) {
+  NBAPlayer player = new NBAPlayer();
 
   return player;
 }
@@ -118,43 +108,41 @@ boolean checkIfFileExists(String path) {
   }
 }
 
-void dayScreduleRetrieve(String year, String month, String day) {
-  println("********** DAILY SCHEDULE **********");
-  File fileDir = getFilesDir();
-  String dayScheduleURI = "http://api.sportradar.us/nba-t3/games/" + year + "/" + month + "/" + day + "/schedule.xml?api_key=" + NBAkey;
-  println("URI is: " + dayScheduleURI);
+ArrayList <NBAGame> getAllGamesOnDate(String year, String month, String day) {
+  println("********** Getting all games for " + year + "/" + month + "/" + day + " **********");
+  ArrayList <NBAGame> allGames = new ArrayList<NBAGame>();
+  String URI = "http://api.sportradar.us/nba-t3/games/" + year + "/" + month + "/" + day + "/schedule.xml?api_key=" + NBAkey;
+  println("URI is: " + URI);
 
-  // check if file exists
-  File f = new File(fileDir.getAbsolutePath() + "/daySchedule" + year + month + day + ".xml");
-  if (f.exists() && !f.isDirectory()) {
-    println("loading XML from local cache");
-    xml = loadXML(fileDir.getAbsolutePath() + "/daySchedule" + year + month + day + ".xml");
-  } else {
-    println("loading XML from online");
-    xml = loadXML(dayScheduleURI);
-    saveXML(xml, fileDir.getAbsolutePath() + "/daySchedule" + year + month + day + ".xml");
+  //xml = loadXML(URI);
+  
+  // TODO DELETE THIS NEXT LINE AND UNCOMMENT LINE BEFORE THIS
+  // ONLY FOR TESTING
+  xml = loadXML("cache/DailyScheduleExample.xml");
+
+  XML dailyScheduleXML = xml.getChild("daily-schedule");
+  XML gamesXML = dailyScheduleXML.getChild("games");
+  XML [] gameXML = gamesXML.getChildren("game");
+
+  for (int i = 0; i < gameXML.length; i++) {
+    XML home = gameXML[i].getChild("home");
+    XML away = gameXML[i].getChild("away");
+
+    // place holders for data to be pushed into Game objects
+    String id = gameXML[i].getString("id");
+    String title = gameXML[i].getString("title");
+    String status = gameXML[i].getString("status");
+    String coverage = gameXML[i].getString("coverage");
+    String homeTeamID = gameXML[i].getString("home_team");
+    String awayTeamID = gameXML[i].getString("away_team");
+    String homeTeamName = home.getString("name");
+    String awayTeamName = away.getString("name");
+
+    NBAGame newGame = new NBAGame(id, title, status, coverage, homeTeamID, awayTeamID, homeTeamName, awayTeamName);
+    allGames.add(newGame);
   }
 
-  //  println(xml.listChildren("daily-schedule"));
-
-  XML dailySchedule = xml.getChild("daily-schedule");
-
-  println("Date: " + dailySchedule.getString("date"));
-
-  XML games = dailySchedule.getChild("games");
-  XML [] game = games.getChildren("game");
-
-  for (int i = 0; i < game.length; i++) {
-    //String id = game[i].getString("id");
-    String title = game[i].getString("title");
-    String status = game[i].getString("status");
-    println(title + ", " + status);
-
-    XML homeTeam = game[i].getChild("home");
-    XML awayTeam = game[i].getChild("away");
-
-    println(homeTeam.getString("name") + " vs. " + awayTeam.getString("name"));
-  }
+  return allGames;
 }
 
 void leagueHierarchy() {
@@ -177,87 +165,3 @@ void leagueHierarchy() {
     }
   }
 }
-
-void goldenStateProfile() {
-  println("********** GOLDEN STATE PROFILE **********");
-  File fileDir = getFilesDir();
-  String gwURI = "http://api.sportradar.us/nba-t3/teams/583ec825-fb46-11e1-82cb-f4ce4684ea4c/profile.xml?api_key=k4mqkpzfmq24f7yatqyvztxk";
-
-  // check if file exists
-  File f = new File(fileDir.getAbsolutePath() + "/goldenStateProfile.xml");
-  if (f.exists() && !f.isDirectory()) {
-    println("loading XML from local cache");
-    xml = loadXML(fileDir.getAbsolutePath() + "/goldenStateProfile.xml");
-  } else {
-    println("loading XML from online database");
-    xml = loadXML(gwURI);
-    saveXML(xml, fileDir.getAbsolutePath() + "/goldenStateProfile.xml");
-  }
-
-  XML players = xml.getChild("players");
-  XML [] player = players.getChildren("player");
-
-  for (int i = 0; i < player.length; i++) {
-    String playerName = player[i].getString("full_name");
-    String college = player[i].getString("college");
-    String jerseyNumber = player[i].getString("jersey_number");
-    String primaryPos = player[i].getString("primary_position");
-    println(playerName + ", " + college + ", " + jerseyNumber + ", " + primaryPos);
-  }
-}
-
-void playerProfile(String playerID) {
-  println("********** PLAYER PROFILE **********");
-  File fileDir = getFilesDir();
-  //String curry = "http://api.sportradar.us/nba-t3/players/8ec91366-faea-4196-bbfd-b8fab7434795/profile.xml?api_key=k4mqkpzfmq24f7yatqyvztxk";
-  //String lebron = "";
-  String playerXML = "http://api.sportradar.us/nba-t3/players/" + playerID + "/profile.xml?api_key=" + NBAkey;
-  println("URI: " + playerXML);
-
-  // check if file exists
-  File f = new File(fileDir.getAbsolutePath() + "/player/" + playerID + ".xml");
-  if (f.exists() && !f.isDirectory()) {
-    println("loading XML from local cache");
-    xml = loadXML(fileDir.getAbsolutePath() + "/player/" + playerID + ".xml");
-  } else {
-    println("loading XML from online database");
-    xml = loadXML(playerXML);
-    saveXML(xml, fileDir.getAbsolutePath() + "/player/" + playerID + ".xml");
-  }
-
-  //XML player = xml.getParent();
-  String playerFullName = xml.getString("full_name");
-  String jerseyNumber = xml.getString("jersey_number");
-  println("Player: " + playerFullName + ", #" + jerseyNumber);
-
-  XML seasons = xml.getChild("seasons");
-  XML[] season = seasons.getChildren("season");
-  for (int i = 0; i < season.length; i++) {
-    String year = season[i].getString("year");
-    println("Year: " + year);
-
-    // show team
-    XML team = season[i].getChild("team");
-    String teamName = team.getString("name");
-    String teamMarket = team.getString("market");
-    XML stat = team.getChild("statistics");
-
-    // display totals
-    XML total = stat.getChild("total");
-    String totalThreePointsMade = total.getString("three_points_made");
-    String totalThreePointsAttempted = total.getString("three_points_att");
-
-    // number of games
-    String total_games_played = total.getString("games_played");
-    String total_games_started = total.getString("games_started");
-
-    // field goals
-    String total_field_goals_made = total.getString("field_goals_made");
-    String total_field_goals_att = total.getString("field_goals_att");
-
-    println("Games played: " + total_games_played + ", Games started: " + total_games_started);
-    println("Field goals made: " + total_field_goals_made + ", Field goals attempted: " + total_field_goals_att);
-    println("Three points made: " + totalThreePointsMade + ", Three points attempted: " + totalThreePointsAttempted);
-  }
-}
-

@@ -1,4 +1,4 @@
-public class Team {
+public class NBATeam {
 
   private String teamName;
 
@@ -34,7 +34,7 @@ public class Team {
   private int twoPointsMade;
   private int twoPointsAtt;
 
-  public Team() {
+  public NBATeam() {
     teamName = "";
     gamesPlayed = 0;
     minutes = 0;
@@ -69,7 +69,7 @@ public class Team {
     twoPointsAtt = 0;
   }
 
-  public Team(String teamName, int gamesPlayed, float minutes, int fieldGoalsMade, int fieldGoalsAtt, int threePointsMade, 
+  public NBATeam(String teamName, int gamesPlayed, float minutes, int fieldGoalsMade, int fieldGoalsAtt, int threePointsMade, 
   int threePointsAtt, int blockedAtt, int freeThrowsMade, int freeThrowsAtt, int offensiveRebounds, 
   int defensiveRebounds, int assists, int turnovers, int steals, int blocks, int personalFouls, 
   int techFouls, int points, int fastBreakPoints, int paintPts, int flagrantFouls, int pointsOffTurnovers, 
