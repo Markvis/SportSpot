@@ -19,17 +19,35 @@ void setup() {
 
   // TESTS
   NBATeam Warriors = new NBATeam();
-  NBAGame today = new NBAGame();
   //println(today.toString());
-  // year month day
-  ArrayList <NBAGame> allGames = getAllGamesOnDate("2015", "04", "26");
-  println("Warriors game id: " + Database.teamNameAndIDHash.get("Warriors"));
+  
+  // get list of games in a specific year month day
+  //ArrayList <NBAGame> allGames = getAllGamesOnDate("2015", "04", "26");
+  //println("Warriors game id: " + Database.teamNameAndIDHash.get("Warriors"));
+  
+  // GET Player Stat and test
+//  NBAPlayer Curry = getNBAPlayerStats("8ec91366-faea-4196-bbfd-b8fab7434795", "2014");
+//  if (Curry != null) {
+//    println(Curry.getFullName());
+//  }
 
   println("END SETUP");
 } // END SETUP
 
 void draw() {
   background(0);
+}
+
+void getNBAGameBoxScore(String gameID){
+  println("********** getNBAGameBoxScore **********");
+  String URI = "http://api.sportradar.us/nba-t3/games/" + gameID + "/boxscore.xml?api_key=" + NBAkey;
+  
+  // load test file DELETE TODO
+  xml = loadXML("cache/BoxScoreExample.xml");
+  
+  // xml = loadXML(URI);
+  
+  
 }
 
 NBATeam getNBATeamSeasonTotalStats(String teamID, String year) {
@@ -92,20 +110,73 @@ NBATeam getNBATeamSeasonTotalStats(String teamID, String year) {
 }
 
 NBAPlayer getNBAPlayerStats(String playerID, String year) {
-  NBAPlayer player = new NBAPlayer();
+  println("********** getNBAPlayerStats **********");
+  String URI = "http://api.sportradar.us/nba-t3/players/" + playerID + "/profile.xml?api_key=" + NBAkey;
+  println("URI is: " + URI);
+  xml = loadXML(URI);
+  NBAPlayer player;
+  boolean NBAPlayerInit = false;
 
-  return player;
-}
+  String id = xml.getString("id");
+  String fullName = xml.getString("full_name");
+  String jerseyNumber = xml.getString("jersey_number");
+  String primaryPosition = xml.getString("primary_position");
+  String college = xml.getString("college");
 
-boolean checkIfFileExists(String path) {
-  File fileDir = getFilesDir();
-  // check if file exists
-  File f = new File(fileDir.getAbsolutePath() + path);
-  if (f.exists() && !f.isDirectory()) {
-    return true;
-  } else {
-    return false;
+  XML seasons = xml.getChild("seasons");
+  XML [] season = seasons.getChildren("season");
+
+  for (int i = 0; i < season.length; i++) {
+    if (season[i].getString("year").equals(year)) {
+      XML team = season[i].getChild("team");
+      XML statistics = team.getChild("statistics");
+      XML total = statistics.getChild("total");
+
+      int gamesPlayed = Integer.parseInt(total.getString("games_played"));
+      int gamesStarted = Integer.parseInt(total.getString("games_started"));
+      float minutes = Float.parseFloat(total.getString("minutes"));
+      int fieldGoalsMade = Integer.parseInt(total.getString("field_goals_made"));
+      int fieldGoalsAtt = Integer.parseInt(total.getString("field_goals_att"));
+      int threePointsMade = Integer.parseInt(total.getString("three_points_made"));
+      int threePointsAtt = Integer.parseInt(total.getString("three_points_att"));
+      int blockedAtt = Integer.parseInt(total.getString("blocked_att"));
+      int freeThrowsMade = Integer.parseInt(total.getString("free_throws_made"));
+      int freeThrowsAtt = Integer.parseInt(total.getString("free_throws_att"));
+      int offensiveRebounds = Integer.parseInt(total.getString("offensive_rebounds"));
+      int defensiveRebounds = Integer.parseInt(total.getString("defensive_rebounds"));
+      int assists = Integer.parseInt(total.getString("assists"));
+      int turnovers = Integer.parseInt(total.getString("turnovers"));
+      int steals = Integer.parseInt(total.getString("steals"));
+      int blocks = Integer.parseInt(total.getString("blocks"));
+      int personalFouls = Integer.parseInt(total.getString("personal_fouls"));
+      int techFouls = Integer.parseInt(total.getString("tech_fouls"));
+      int points = Integer.parseInt(total.getString("points"));
+      int flagrantFouls = Integer.parseInt(total.getString("flagrant_fouls"));
+      float freeThrowsPct = Float.parseFloat(total.getString("free_throws_pct"));
+      float twoPointsPct = Float.parseFloat(total.getString("two_points_pct"));
+      float threePointsPct = Float.parseFloat(total.getString("three_points_pct"));
+      float fieldGoalsPct = Float.parseFloat(total.getString("field_goals_pct"));
+      int rebounds = Integer.parseInt(total.getString("rebounds"));
+      float assistsTurnoverRatio = Float.parseFloat(total.getString("assists_turnover_ratio"));
+      int twoPointsMade = Integer.parseInt(total.getString("two_points_made"));
+      int twoPointsAtt = Integer.parseInt(total.getString("two_points_att"));
+
+      // initialize the player
+      player = new NBAPlayer(id, fullName, jerseyNumber, primaryPosition, college, 
+      gamesPlayed, gamesStarted, minutes, fieldGoalsMade, fieldGoalsAtt, 
+      threePointsMade, threePointsAtt, blockedAtt, freeThrowsMade, freeThrowsAtt, 
+      offensiveRebounds, defensiveRebounds, assists, turnovers, steals, blocks, 
+      personalFouls, techFouls, points, flagrantFouls, freeThrowsPct, twoPointsPct, 
+      threePointsPct, fieldGoalsPct, rebounds, assistsTurnoverRatio, twoPointsMade, 
+      twoPointsAtt);
+
+      // exit loop since data is already found
+      NBAPlayerInit = true;
+      return player;
+    }
   }
+
+  return null;
 }
 
 ArrayList <NBAGame> getAllGamesOnDate(String year, String month, String day) {
@@ -113,12 +184,7 @@ ArrayList <NBAGame> getAllGamesOnDate(String year, String month, String day) {
   ArrayList <NBAGame> allGames = new ArrayList<NBAGame>();
   String URI = "http://api.sportradar.us/nba-t3/games/" + year + "/" + month + "/" + day + "/schedule.xml?api_key=" + NBAkey;
   println("URI is: " + URI);
-
-  //xml = loadXML(URI);
-  
-  // TODO DELETE THIS NEXT LINE AND UNCOMMENT LINE BEFORE THIS
-  // ONLY FOR TESTING
-  xml = loadXML("cache/DailyScheduleExample.xml");
+  xml = loadXML(URI);
 
   XML dailyScheduleXML = xml.getChild("daily-schedule");
   XML gamesXML = dailyScheduleXML.getChild("games");
@@ -165,3 +231,16 @@ void leagueHierarchy() {
     }
   }
 }
+
+
+boolean checkIfFileExists(String path) {
+  File fileDir = getFilesDir();
+  // check if file exists
+  File f = new File(fileDir.getAbsolutePath() + path);
+  if (f.exists() && !f.isDirectory()) {
+    return true;
+  } else {
+    return false;
+  }
+}
+

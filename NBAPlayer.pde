@@ -1,8 +1,14 @@
 public class NBAPlayer {
+  // Personal Info
+  private String id;
+  private String fullName;
+  private String jerseyNumber;
+  private String primaryPosition;
+  private String college;
 
   private int gamesPlayed;
   private int gamesStarted;
-  private int minutes;
+  private float minutes;
   private int fieldGoalsMade;
   private int fieldGoalsAtt;
   private int threePointsMade;
@@ -30,6 +36,12 @@ public class NBAPlayer {
   private int twoPointsAtt;
 
   public NBAPlayer() {
+    id = "";
+    fullName = "";
+    jerseyNumber = "";
+    primaryPosition = "";
+    college = "";
+
     gamesPlayed = 0;
     gamesStarted = 0;
     minutes = 0;
@@ -60,7 +72,19 @@ public class NBAPlayer {
     twoPointsAtt = 0;
   }
 
-  public NBAPlayer(int gamesPlayed, int gamesStarted, int minutes, int fieldGoalsMade, int fieldGoalsAtt, int threePointsMade, int threePointsAtt, int blockedAtt, int freeThrowsMade, int freeThrowsAtt, int offensiveRebounds, int defensiveRebounds, int assists, int turnovers, int steals, int blocks, int personalFouls, int techFouls, int points, int flagrantFouls, float freeThrowsPct, float twoPointsPct, float threePointsPct, float fieldGoalsPct, int rebounds, float assistsTurnoverRatio, int twoPointsMade, int twoPointsAtt) {
+  public NBAPlayer(String id, String fullName, String jerseyNumber, String primaryPosition, String college, 
+  int gamesPlayed, int gamesStarted, float minutes, int fieldGoalsMade, int fieldGoalsAtt, 
+  int threePointsMade, int threePointsAtt, int blockedAtt, int freeThrowsMade, int freeThrowsAtt, 
+  int offensiveRebounds, int defensiveRebounds, int assists, int turnovers, int steals, int blocks, 
+  int personalFouls, int techFouls, int points, int flagrantFouls, float freeThrowsPct, float twoPointsPct, 
+  float threePointsPct, float fieldGoalsPct, int rebounds, float assistsTurnoverRatio, int twoPointsMade, 
+  int twoPointsAtt) {
+    this.id = id;
+    this.fullName = fullName;
+    this.jerseyNumber = jerseyNumber;
+    this.primaryPosition = primaryPosition;
+    this.college = college;
+
     this.gamesPlayed = gamesPlayed;
     this.gamesStarted = gamesStarted;
     this.minutes = minutes;
@@ -90,6 +114,48 @@ public class NBAPlayer {
     this.twoPointsMade = twoPointsMade;
     this.twoPointsAtt = twoPointsAtt;
   }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public String getFullName() {
+    return fullName;
+  }
+
+  public void setFullName(String fullName) {
+    this.fullName = fullName;
+  }
+
+  public String getJerseyNumber() {
+    return jerseyNumber;
+  }
+
+  public void setJerseyNumber(String jerseyNumber) {
+    this.jerseyNumber = jerseyNumber;
+  }
+
+  public String getPrimaryPosition() {
+    return primaryPosition;
+  }
+
+  public void setPrimaryPosition(String primaryPosition) {
+    this.primaryPosition = primaryPosition;
+  }
+
+  public String getCollege() {
+    return college;
+  }
+
+  public void setCollege(String college) {
+    this.college = college;
+  }
+
+
 
   /**
    * @return the gamesPlayed
@@ -122,14 +188,14 @@ public class NBAPlayer {
   /**
    * @return the minutes
    */
-  public int getMinutes() {
+  public float getMinutes() {
     return minutes;
   }
 
   /**
    * @param minutes the minutes to set
    */
-  public void setMinutes(int minutes) {
+  public void setMinutes(float minutes) {
     this.minutes = minutes;
   }
 
