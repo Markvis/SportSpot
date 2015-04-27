@@ -5,8 +5,7 @@ import java.io.*;
 // globals
 int mode;
 XML xml;
-ScatterTrace sTrace;
-Graph2D g;
+TeamNameAndIDHash teamNameAndIDHash;
 
 // keys
 String NBAkey = "k4mqkpzfmq24f7yatqyvztxk";
@@ -21,6 +20,8 @@ void setup() {
 
   // TESTS
   Team Warriors = new Team();
+  teamNameAndIDHash = new TeamNameAndIDHash();
+  println(teamNameAndIDHash.toString());
 
   //dayScreduleRetrieve("2015", "04", "21");
   //goldenStateProfile();
@@ -30,9 +31,9 @@ void setup() {
   //playerProfile("8ec91366-faea-4196-bbfd-b8fab7434795");
   // lebron james 0afbe608-940a-4d5d-a1f7-468718c67d91
   //playerProfile("0afbe608-940a-4d5d-a1f7-468718c67d91");
-  
+
   // getNBATeamSeasonTotalStats EXAMPLE
-   getNBATeamSeasonTotalStats("583ec825-fb46-11e1-82cb-f4ce4684ea4c", "2014");
+  //getNBATeamSeasonTotalStats("583ec825-fb46-11e1-82cb-f4ce4684ea4c", "2014");
 
   println("END SETUP");
 } // END SETUP
