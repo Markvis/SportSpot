@@ -24,19 +24,32 @@ APButton button_submit, button_team1, button_team2;
 APWidgetContainer widgetContainer_Graphs;
 APButton button_3Pointers, button_FieldGoalPerc, button_FreeThrowPerc;
 
-//GRAPHS INCLUDED:
-//3 Pointers %
-//Field Goals %
-//Free Throws %
+/*
+  GRAPHS INCLUDED:
+ - 3 Pointers %
+ - Field Goals %
+ - Free Throws %
+ */
 
 String team1 = "Team 1";
 String team2 = "Team 2";
 String season = "2014";
+NBATeam team1_obj;
+NBATeam team2_obj;
+
 
 //variables for mode0
 String selection = "Team ";
 boolean team1_pressed = false;
 boolean team2_pressed = false;
+
+int ThreePointPerc;
+int FieldGoalsPerc;
+int FreeThrowsPerc;
+int bar_w, bar_h;
+
+float score = 65;
+float score2 = 38;
 
 /*
   COMPLETE WORKING METHODS SO FAR
@@ -96,17 +109,17 @@ void setup() {
   widgetContainer_SubmitTeams.addWidget(button_submit);
   widgetContainer_SubmitTeams.addWidget(button_team1);
   widgetContainer_SubmitTeams.addWidget(button_team2);
-  
+
   //widget container for buttons in mode1
   widgetContainer_Graphs = new APWidgetContainer(this);
   //creating & adding buttons for mode1
-  button_3Pointers  = new APButton(width/4, height - height/6, "3 Pointers %");
-  button_FieldGoalPerc = new APButton(width/2, height - height/6, "Field Goal %");
-  button_FreeThrowPerc = new APButton((2*width)/3, height - height/6, "Free Throw %");
+  button_3Pointers  = new APButton(width/2 - width/4 - width/12, height - height/6, "3 Pointers %");
+  button_FieldGoalPerc = new APButton(width/2 - width/12, height - height/6, "Field Goal %");
+  button_FreeThrowPerc = new APButton(width/2 + width/4 - width/12, height - height/6, "Free Throw %");
   widgetContainer_Graphs.addWidget(button_3Pointers);
   widgetContainer_Graphs.addWidget(button_FieldGoalPerc);
   widgetContainer_Graphs.addWidget(button_FreeThrowPerc);
-  
+
   widgetContainer_SubmitTeams.show();
   widgetContainer_Graphs.hide();
 
@@ -127,7 +140,7 @@ void setup() {
    NBATeam celtics = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get("Celtics"), season);
    celtics.getTeamName();
    
-   NBATEAM team1 = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team1), season);
+   NBATeam team1 = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team1), season);
    }
    
    NBAGameSummary gameSum = getNBAGameSummary("c786959b-97bd-45e2-ba4f-77377633e87e");
@@ -141,6 +154,7 @@ void setup() {
 
 void draw() {
 
+  //mode 0 - TEAM SELECTIONS & SUBMISSIONS
   if (mode == 0) {
     background(0, 0, 80);
     textAlign(CENTER);
@@ -162,11 +176,42 @@ void draw() {
     width/2 - 150, height/9 + 90, 
     width/2 - 200, height/9 + 65);
   }
-  else if (mode == 1){
+  //mode1 - GRAPH COMPARISONS
+  else if (mode == 1) {
+    
     background(0, 0, 80);
     
+    float lineBase_h = height-height/3;
+    float lineBase_w = width/6;
+    float lineTop_h = height - 100;
+    float lineWidth = 2*(width/3);
+    float lineHeight = height-(height/3)-100;
     
-  
+    //creating x- and y-axis for the bar graphs
+    stroke(255);
+    strokeWeight(10);
+    line(width/6, height-height/3, width-(width/6), height-height/3);
+    line(width/6, height-height/3, width/6, 100);
+    //creating short lines to divide the y-axis to 10 parts
+    strokeWeight(5);
+    line(width/6 - 20, (height-height/3) - ((height-height/3 - 100)/10), width/6 + 20, (height-height/3) - ((height-height/3 - 100)/10));
+    line(width/6 - 20, (height-height/3) - (2*(height-height/3 - 100)/10), width/6 + 20, (height-height/3) - (2*(height-height/3 - 100)/10));
+    line(width/6 - 20, (height-height/3) - (3*(height-height/3 - 100)/10), width/6 + 20, (height-height/3) - (3*(height-height/3 - 100)/10));
+    line(width/6 - 20, (height-height/3) - (4*(height-height/3 - 100)/10), width/6 + 20, (height-height/3) - (4*(height-height/3 - 100)/10));
+    line(width/6 - 20, (height-height/3) - (5*(height-height/3 - 100)/10), width/6 + 20, (height-height/3) - (5*(height-height/3 - 100)/10));
+    line(width/6 - 20, (height-height/3) - (6*(height-height/3 - 100)/10), width/6 + 20, (height-height/3) - (6*(height-height/3 - 100)/10));
+    line(width/6 - 20, (height-height/3) - (7*(height-height/3 - 100)/10), width/6 + 20, (height-height/3) - (7*(height-height/3 - 100)/10));
+    line(width/6 - 20, (height-height/3) - (8*(height-height/3 - 100)/10), width/6 + 20, (height-height/3) - (8*(height-height/3 - 100)/10));
+    line(width/6 - 20, (height-height/3) - (9*(height-height/3 - 100)/10), width/6 + 20, (height-height/3) - (9*(height-height/3 - 100)/10));
+
+    //first bar graphs
+    fill(255,51,51);
+    rect(lineBase_w + (lineWidth/9), lineBase_h, width/12, -(score/100)*lineHeight);
+    fill(255,153,51);
+    rect(lineBase_w + (lineWidth/9 + width/12), lineBase_h, width/12, -(score2/100)*lineHeight);
+      
+    //second bar graphs
+    
   }
 }
 
@@ -183,7 +228,7 @@ void mousePressed() {
   //if left triangle is pressed, change season
   else if ((mouseX <= width/2 - 120)&&(mouseX >= width/2 - 230)
     &&(mouseY <= height/9 + 130)&&(mouseY >= height/9 + 10 )) {
-      
+
     if (season == "2014") {
       season = "2013";
     } else season = "2014";
@@ -209,6 +254,7 @@ void onKetaiListSelection(KetaiList klist) {
 
 void onClickWidget(APWidget widget) {
 
+  //BUTTONS OF MODE0
   if (widget == button_team1) {    
     selectionlist = new KetaiList(this, teams);
     team1_pressed = true;
@@ -220,14 +266,20 @@ void onClickWidget(APWidget widget) {
   } else if (widget == button_submit) {
     if (team1 == team2) {
       KetaiAlertDialog.popup(this, "Nice try...", "Please choose two different teams.");
-    } else if ((team1 == "Team 1") || (team2 == "Team 2")){
+    } else if ((team1 == "Team 1") || (team2 == "Team 2")) {
       KetaiAlertDialog.popup(this, "Not ready yet!", "Make sure you pick 2 teams.");
-    }
-    else {
+    } else {
+      //team1_obj = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team1), season);
+      //team2_obj = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team2), season);
       mode = 1;
       widgetContainer_Graphs.show();
       widgetContainer_SubmitTeams.hide();
     }
+  }
+  //BUTTONS OF MODE1
+  else if (widget == button_3Pointers) {
+  } else if (widget == button_FieldGoalPerc) {
+  } else if (widget == button_FreeThrowPerc) {
   }
 }
 
