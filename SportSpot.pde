@@ -22,7 +22,7 @@ APButton button_submit, button_team1, button_team2;
 
 //widget containers and buttons for graphs in mode1
 APWidgetContainer widgetContainer_Graphs;
-APButton button_3Pointers, button_FieldGoalPerc, button_FreeThrowPerc;
+APButton button_BarGraphs, button_LineGraphs, button_Statistics, button_BackM1;
 
 /*
   GRAPHS INCLUDED:
@@ -34,6 +34,7 @@ APButton button_3Pointers, button_FieldGoalPerc, button_FreeThrowPerc;
 String team1 = "Team 1";
 String team2 = "Team 2";
 String season = "2014";
+
 NBATeam team1_obj;
 NBATeam team2_obj;
 
@@ -47,8 +48,11 @@ int FieldGoalsPerc;
 int FreeThrowsPerc;
 int bar_w, bar_h;
 
-float score = 65;
-float score2 = 38;
+float score65 = 65;
+float score38 = 38;
+float score14 = 14;
+float score81 = 81;
+float score55 = 55;
 
 /*
   COMPLETE WORKING METHODS SO FAR
@@ -112,12 +116,14 @@ void setup() {
   //widget container for buttons in mode1
   widgetContainer_Graphs = new APWidgetContainer(this);
   //creating & adding buttons for mode1
-  button_3Pointers  = new APButton(width/2 - width/4 - width/12, height - height/6, "3 Pointers %");
-  button_FieldGoalPerc = new APButton(width/2 - width/12, height - height/6, "Field Goal %");
-  button_FreeThrowPerc = new APButton(width/2 + width/4 - width/12, height - height/6, "Free Throw %");
-  widgetContainer_Graphs.addWidget(button_3Pointers);
-  widgetContainer_Graphs.addWidget(button_FieldGoalPerc);
-  widgetContainer_Graphs.addWidget(button_FreeThrowPerc);
+  button_BarGraphs  = new APButton(width/2 - width/4 - width/12, height - height/6, "Bar Graphs");
+  button_LineGraphs = new APButton(width/2 - width/12, height - height/6, "Line Graphs");
+  button_Statistics = new APButton(width/2 + width/4 - width/12, height - height/6, "    ?    ");
+  button_BackM1 = new APButton(width - width/8, height/18, "  Back  ");
+  widgetContainer_Graphs.addWidget(button_BarGraphs);
+  widgetContainer_Graphs.addWidget(button_LineGraphs);
+  widgetContainer_Graphs.addWidget(button_Statistics);
+  widgetContainer_Graphs.addWidget(button_BackM1);
   widgetContainer_SubmitTeams.show();
   widgetContainer_Graphs.hide();
 
@@ -157,6 +163,8 @@ void draw() {
     background(0, 0, 80);
     textAlign(CENTER);
 
+    fill(255);
+    
     textSize(65);
     text(team1, width/2, height/2 - height/8);
     text(team2, width/2, height/2 + height/8);
@@ -194,7 +202,6 @@ void draw() {
     //creating short lines to divide the y-axis to 10 parts
     strokeWeight(5);
     line(width/6 - 20, (height-height/3) - ((height-height/3 - 100)/10), width/6 + 20, (height-height/3) - ((height-height/3 - 100)/10));
-    text("0", width/6 - 60 ,height-height/3 + 20);
     line(width/6 - 20, (height-height/3) - (2*(height-height/3 - 100)/10), width/6 + 20, (height-height/3) - (2*(height-height/3 - 100)/10));
     line(width/6 - 20, (height-height/3) - (3*(height-height/3 - 100)/10), width/6 + 20, (height-height/3) - (3*(height-height/3 - 100)/10));
     line(width/6 - 20, (height-height/3) - (4*(height-height/3 - 100)/10), width/6 + 20, (height-height/3) - (4*(height-height/3 - 100)/10));
@@ -203,47 +210,53 @@ void draw() {
     line(width/6 - 20, (height-height/3) - (7*(height-height/3 - 100)/10), width/6 + 20, (height-height/3) - (7*(height-height/3 - 100)/10));
     line(width/6 - 20, (height-height/3) - (8*(height-height/3 - 100)/10), width/6 + 20, (height-height/3) - (8*(height-height/3 - 100)/10));
     line(width/6 - 20, (height-height/3) - (9*(height-height/3 - 100)/10), width/6 + 20, (height-height/3) - (9*(height-height/3 - 100)/10));
-    text("100", width/6 - 60 , (height-height/3) - (10*(height-height/3 - 100)/10) + 30);
-    
+
+    text("0", width/6 - 60, height-height/3 + 18);
+    text("50", width/6 - 70, (height-height/3) - (5*(height-height/3 - 100)/10) + 18);
+    text("100", width/6 - 70, (height-height/3) - (10*(height-height/3 - 100)/10) + 18);
+
     float velocity1 = 0;
     float velocity2 = 0;
+    
+    fill(255);
+    textSize(60);
+    text("TEAM STATISTICS", width/2, height/14);
 
     //first bar graphs
-    fill(255);
     textSize(50);
     text("3 Pointers %", lineBase_w + lineWidth/11 + width/14, lineBase_h+70);
     fill(255, 51, 51);
-    rect(lineBase_w + (lineWidth/11), lineBase_h, width/14, -(score/100)*lineHeight);
+    rect(lineBase_w + (lineWidth/11), lineBase_h, width/14, -(score65/100)*lineHeight);
     fill(255, 153, 51);
-    rect(lineBase_w + (lineWidth/11 + width/14), lineBase_h, width/14, -(score2/100)*lineHeight);
-    
+    rect(lineBase_w + (lineWidth/11 + width/14), lineBase_h, width/14, -(score38/100)*lineHeight);
+
     fill(255);
     textSize(50);
     text("Field Goals %", lineBase_w + 2*(lineWidth/11) + 3*(width/14), lineBase_h+70);
     fill(255, 51, 51);
-    rect(lineBase_w + 2*(lineWidth/11) + 2*(width/14), lineBase_h, width/14, -(score/100)*lineHeight);
+    rect(lineBase_w + 2*(lineWidth/11) + 2*(width/14), lineBase_h, width/14, -(score38/100)*lineHeight);
     fill(255, 153, 51);
-    rect(lineBase_w + 2*(lineWidth/11) + 3*(width/14), lineBase_h, width/14, -(score2/100)*lineHeight);
-    
+    rect(lineBase_w + 2*(lineWidth/11) + 3*(width/14), lineBase_h, width/14, -(score81/100)*lineHeight);
+
     fill(255);
     textSize(50);
     text("Free Throws %", lineBase_w + 3*(lineWidth/11) + 5*(width/14), lineBase_h+70);
     fill(255, 51, 51);
-    rect(lineBase_w + 3*(lineWidth/11) + 4*(width/14), lineBase_h, width/14, -(score/100)*lineHeight);
+    rect(lineBase_w + 3*(lineWidth/11) + 4*(width/14), lineBase_h, width/14, -(score14/100)*lineHeight);
     fill(255, 153, 51);
-    rect(lineBase_w + 3*(lineWidth/11) + 5*(width/14), lineBase_h, width/14, -(score2/100)*lineHeight);
-    
-//        if (velocity1 < -(score/100)*lineHeight) {
-//          fill(255, 51, 51);
-//          rect(lineBase_w + (lineWidth/9), lineBase_h, width/12, velocity1);
-//        }
-//        if (velocity2 < -(score2/100)*lineHeight) {
-//          fill(255, 153, 51);
-//          rect(lineBase_w + (lineWidth/9 + width/12), lineBase_h, width/12, velocity2);
-//        }  
-//        
-//        velocity1 -= 0.1;
-//        velocity2 -= 0.1;
+    rect(lineBase_w + 3*(lineWidth/11) + 5*(width/14), lineBase_h, width/14, -(score55/100)*lineHeight);
+
+    //        if (velocity1 < -(score/100)*lineHeight) {
+    //          fill(255, 51, 51);
+    //          rect(lineBase_w + (lineWidth/9), lineBase_h, width/12, velocity1);
+    //        }
+    //        if (velocity2 < -(score2/100)*lineHeight) {
+    //          fill(255, 153, 51);
+    //          rect(lineBase_w + (lineWidth/9 + width/12), lineBase_h, width/12, velocity2);
+    //        }  
+    //        
+    //        velocity1 -= 0.1;
+    //        velocity2 -= 0.1;
     //second bar graphs
   }
 }
@@ -301,17 +314,22 @@ void onClickWidget(APWidget widget) {
     } else if ((team1 == "Team 1") || (team2 == "Team 2")) {
       KetaiAlertDialog.popup(this, "Not ready yet!", "Make sure you pick 2 teams.");
     } else {
-      //team1_obj = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team1), season);
-      //team2_obj = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team2), season);
+      //   team1_obj = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team1), season);
+      //   team2_obj = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team2), season);
       mode = 1;
       widgetContainer_Graphs.show();
       widgetContainer_SubmitTeams.hide();
     }
   }
   //BUTTONS OF MODE1
-  else if (widget == button_3Pointers) {
-  } else if (widget == button_FieldGoalPerc) {
-  } else if (widget == button_FreeThrowPerc) {
+  else if (widget == button_BarGraphs) {
+  } else if (widget == button_LineGraphs) {
+  } else if (widget == button_Statistics) {
+  } else if (widget == button_BackM1) {
+    mode = 0;
+    widgetContainer_Graphs.hide();
+    widgetContainer_SubmitTeams.show();
+    fill(255);
   }
 }
 
