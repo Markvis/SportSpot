@@ -187,12 +187,14 @@ void draw() {
 
     //creating x- and y-axis for the bar graphs
     stroke(255);
+    fill(255);
     strokeWeight(10);
     line(width/6, height-height/3, width-(width/6), height-height/3);
     line(width/6, height-height/3, width/6, 100);
     //creating short lines to divide the y-axis to 10 parts
     strokeWeight(5);
     line(width/6 - 20, (height-height/3) - ((height-height/3 - 100)/10), width/6 + 20, (height-height/3) - ((height-height/3 - 100)/10));
+    text("0", width/6 - 60 ,height-height/3 + 20);
     line(width/6 - 20, (height-height/3) - (2*(height-height/3 - 100)/10), width/6 + 20, (height-height/3) - (2*(height-height/3 - 100)/10));
     line(width/6 - 20, (height-height/3) - (3*(height-height/3 - 100)/10), width/6 + 20, (height-height/3) - (3*(height-height/3 - 100)/10));
     line(width/6 - 20, (height-height/3) - (4*(height-height/3 - 100)/10), width/6 + 20, (height-height/3) - (4*(height-height/3 - 100)/10));
@@ -201,25 +203,47 @@ void draw() {
     line(width/6 - 20, (height-height/3) - (7*(height-height/3 - 100)/10), width/6 + 20, (height-height/3) - (7*(height-height/3 - 100)/10));
     line(width/6 - 20, (height-height/3) - (8*(height-height/3 - 100)/10), width/6 + 20, (height-height/3) - (8*(height-height/3 - 100)/10));
     line(width/6 - 20, (height-height/3) - (9*(height-height/3 - 100)/10), width/6 + 20, (height-height/3) - (9*(height-height/3 - 100)/10));
-
-    float counter1 = height-height/3;
-    float counter2 = height-height/3;
+    text("100", width/6 - 60 , (height-height/3) - (10*(height-height/3 - 100)/10) + 30);
+    
+    float velocity1 = 0;
+    float velocity2 = 0;
 
     //first bar graphs
+    fill(255);
+    textSize(50);
+    text("3 Pointers %", lineBase_w + lineWidth/11 + width/14, lineBase_h+70);
     fill(255, 51, 51);
-    rect(lineBase_w + (lineWidth/9), lineBase_h, width/12, -(score/100)*lineHeight);
+    rect(lineBase_w + (lineWidth/11), lineBase_h, width/14, -(score/100)*lineHeight);
     fill(255, 153, 51);
-    rect(lineBase_w + (lineWidth/9 + width/12), lineBase_h, width/12, -(score2/100)*lineHeight);
-    //    counter1--;
-    //    counter2--;
-    //    if (counter1 > -(score/100)*lineHeight) {
-    //      fill(255, 51, 51);
-    //      rect(lineBase_w + (lineWidth/9), lineBase_h, width/12, counter1);
-    //    }
-    //    if (counter2 > -(score2/100)*lineHeight) {
-    //      fill(255, 153, 51);
-    //      rect(lineBase_w + (lineWidth/9 + width/12), lineBase_h, width/12, counter2);
-    //    }  
+    rect(lineBase_w + (lineWidth/11 + width/14), lineBase_h, width/14, -(score2/100)*lineHeight);
+    
+    fill(255);
+    textSize(50);
+    text("Field Goals %", lineBase_w + 2*(lineWidth/11) + 3*(width/14), lineBase_h+70);
+    fill(255, 51, 51);
+    rect(lineBase_w + 2*(lineWidth/11) + 2*(width/14), lineBase_h, width/14, -(score/100)*lineHeight);
+    fill(255, 153, 51);
+    rect(lineBase_w + 2*(lineWidth/11) + 3*(width/14), lineBase_h, width/14, -(score2/100)*lineHeight);
+    
+    fill(255);
+    textSize(50);
+    text("Free Throws %", lineBase_w + 3*(lineWidth/11) + 5*(width/14), lineBase_h+70);
+    fill(255, 51, 51);
+    rect(lineBase_w + 3*(lineWidth/11) + 4*(width/14), lineBase_h, width/14, -(score/100)*lineHeight);
+    fill(255, 153, 51);
+    rect(lineBase_w + 3*(lineWidth/11) + 5*(width/14), lineBase_h, width/14, -(score2/100)*lineHeight);
+    
+//        if (velocity1 < -(score/100)*lineHeight) {
+//          fill(255, 51, 51);
+//          rect(lineBase_w + (lineWidth/9), lineBase_h, width/12, velocity1);
+//        }
+//        if (velocity2 < -(score2/100)*lineHeight) {
+//          fill(255, 153, 51);
+//          rect(lineBase_w + (lineWidth/9 + width/12), lineBase_h, width/12, velocity2);
+//        }  
+//        
+//        velocity1 -= 0.1;
+//        velocity2 -= 0.1;
     //second bar graphs
   }
 }
