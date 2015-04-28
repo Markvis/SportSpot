@@ -139,7 +139,6 @@ void setup() {
    celtics.getTeamName();
    
    NBATeam team1 = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team1), season);
-
    }
    
    NBAGameSummary gameSum = getNBAGameSummary("c786959b-97bd-45e2-ba4f-77377633e87e");
@@ -175,7 +174,6 @@ void draw() {
     width/2 - 150, height/9 + 90, 
     width/2 - 200, height/9 + 65);
   }
-
   //mode1 - GRAPH COMPARISONS
   else if (mode == 1) {
     
@@ -186,7 +184,7 @@ void draw() {
     float lineTop_h = height - 100;
     float lineWidth = 2*(width/3);
     float lineHeight = height-(height/3)-100;
-    
+
     //creating x- and y-axis for the bar graphs
     stroke(255);
     strokeWeight(10);
@@ -211,7 +209,6 @@ void draw() {
     rect(lineBase_w + (lineWidth/9 + width/12), lineBase_h, width/12, -(score2/100)*lineHeight);
       
     //second bar graphs
-
   }
 }
 
