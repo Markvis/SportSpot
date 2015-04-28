@@ -176,9 +176,9 @@ void draw() {
   }
   //mode1 - GRAPH COMPARISONS
   else if (mode == 1) {
-    
+
     background(0, 0, 80);
-    
+
     float lineBase_h = height-height/3;
     float lineBase_w = width/6;
     float lineTop_h = height - 100;
@@ -202,12 +202,24 @@ void draw() {
     line(width/6 - 20, (height-height/3) - (8*(height-height/3 - 100)/10), width/6 + 20, (height-height/3) - (8*(height-height/3 - 100)/10));
     line(width/6 - 20, (height-height/3) - (9*(height-height/3 - 100)/10), width/6 + 20, (height-height/3) - (9*(height-height/3 - 100)/10));
 
+    float counter1 = height-height/3;
+    float counter2 = height-height/3;
+
     //first bar graphs
-    fill(255,51,51);
+    fill(255, 51, 51);
     rect(lineBase_w + (lineWidth/9), lineBase_h, width/12, -(score/100)*lineHeight);
-    fill(255,153,51);
+    fill(255, 153, 51);
     rect(lineBase_w + (lineWidth/9 + width/12), lineBase_h, width/12, -(score2/100)*lineHeight);
-      
+    //    counter1--;
+    //    counter2--;
+    //    if (counter1 > -(score/100)*lineHeight) {
+    //      fill(255, 51, 51);
+    //      rect(lineBase_w + (lineWidth/9), lineBase_h, width/12, counter1);
+    //    }
+    //    if (counter2 > -(score2/100)*lineHeight) {
+    //      fill(255, 153, 51);
+    //      rect(lineBase_w + (lineWidth/9 + width/12), lineBase_h, width/12, counter2);
+    //    }  
     //second bar graphs
   }
 }
