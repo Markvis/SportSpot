@@ -12,7 +12,7 @@ String MLBkey = "4nfwbpjthrsfsaeeh73szu8j";
 
 /*
   COMPLETE WORKING METHODS SO FAR
-  AND METHODS YOU SHOULD USE
+ AND METHODS YOU SHOULD USE
  - getNBATeamSeasonTotalStats
  - getNBAPlayerStats
  - getAllGamesOnDate
