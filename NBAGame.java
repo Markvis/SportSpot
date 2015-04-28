@@ -5,7 +5,7 @@ public class NBAGame {
   String coverage;
   String homeTeamID;
   String awayTeamID;
-  String scheduled
+  String scheduled;
   String homeTeamName;
   String awayTeamName;
 

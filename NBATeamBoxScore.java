@@ -1,4 +1,4 @@
-public class NBATeamBoxScore(){
+public class NBATeamBoxScore{
   String teamName;
   String teamID;
   
@@ -8,5 +8,5 @@ public class NBATeamBoxScore(){
   int quarterFourPoints;
   
   String pointsLeaderName;
-  int pointsLeader
+  int pointsLeader;
 }

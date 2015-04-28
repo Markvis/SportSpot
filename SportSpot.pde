@@ -52,6 +52,8 @@ void draw() {
 ArrayList <NBAGame> getNBAGameBoxScore(String gameID) {
   println("********** getNBAGameBoxScore **********");
   String URI = "http://api.sportradar.us/nba-t3/games/" + gameID + "/boxscore.xml?api_key=" + NBAkey;
+  ArrayList <NBAGame> liveGameTeamsStats = new ArrayList<NBAGame>();
+
 
   // load test file DELETE TODO
   xml = loadXML("cache/BoxScoreExample.xml");
@@ -59,6 +61,8 @@ ArrayList <NBAGame> getNBAGameBoxScore(String gameID) {
   // xml = loadXML(URI);
 
   XML [] team = xml.getChildren("team");
+  
+  return liveGameTeamsStats;
 }
 
 /*
@@ -227,10 +231,11 @@ ArrayList <NBAGame> getAllGamesOnDate(String year, String month, String day) {
     String coverage = gameXML[i].getString("coverage");
     String homeTeamID = gameXML[i].getString("home_team");
     String awayTeamID = gameXML[i].getString("away_team");
+    String scheduled = gameXML[i].getString("scheduled");
     String homeTeamName = home.getString("name");
     String awayTeamName = away.getString("name");
 
-    NBAGame newGame = new NBAGame(id, title, status, coverage, homeTeamID, awayTeamID, homeTeamName, awayTeamName);
+    NBAGame newGame = new NBAGame(id, title, status, coverage, homeTeamID, awayTeamID, scheduled, homeTeamName, awayTeamName);
     allGames.add(newGame);
   }
 
