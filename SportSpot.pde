@@ -53,10 +53,36 @@ void setup() {
   println("START SETUP");
 
   //adding teams to teams ArrayList
+  teams.add("76ers");
+  teams.add("Bucks");
+  teams.add("Bulls");
+  teams.add("Cavaliers");
+  teams.add("Celtics");
   teams.add("Clippers");
-  teams.add("Golden State Warriors");
+  teams.add("Grizzlies");
+  teams.add("Hawks");
+  teams.add("Heat");
+  teams.add("Hornets");
+  teams.add("Jazz");
+  teams.add("Kings");
+  teams.add("Knicks");
+  teams.add("Lakers");
+  teams.add("Magic");
+  teams.add("Mavericks");
+  teams.add("Nets");
+  teams.add("Nuggets");
+  teams.add("Pacers");
   teams.add("Pelicans");
+  teams.add("Pistons");
+  teams.add("Raptors");
+  teams.add("Rockets");
   teams.add("Spurs");
+  teams.add("Suns");
+  teams.add("Thunder");
+  teams.add("Timberwolves");
+  teams.add("Trail Blazers");
+  teams.add("Warriors");
+  teams.add("Wizards");
 
   //widget container for buttons in mode0
   widgetContainer_SubmitTeams = new APWidgetContainer(this); 
