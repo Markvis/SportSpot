@@ -5,6 +5,7 @@ public class NBAGame {
   String coverage;
   String homeTeamID;
   String awayTeamID;
+  String scheduled
   String homeTeamName;
   String awayTeamName;
 
@@ -15,18 +16,20 @@ public class NBAGame {
     coverage = "";
     homeTeamID = "";
     awayTeamID = "";
+    scheduled = "";
     homeTeamName = "";
     awayTeamName = "";
   }
 
   public NBAGame(String id, String title, String status, String coverage, String homeTeamID, 
-  String awayTeamID, String homeTeamName, String awayTeamName) {
+  String awayTeamID, String scheduled, String homeTeamName, String awayTeamName) {
     this.id = id;
     this.title = title;
     this.status = status;
     this.coverage = coverage;
     this.homeTeamID = homeTeamID;
     this.awayTeamID = awayTeamID;
+    this.scheduled = scheduled;
     this.homeTeamName = homeTeamName;
     this.awayTeamName = awayTeamName;
   }
@@ -78,6 +81,14 @@ public class NBAGame {
   public void setAwayTeamID(String awayTeamID) {
     this.awayTeamID = awayTeamID;
   }
+  
+  public String getScheduled() {
+    return scheduled;
+  }
+
+  public void setScheduled(String scheduled) {
+    this.scheduled = scheduled;
+  }
 
   public String getHomeTeamName() {
     return homeTeamName;
@@ -104,6 +115,7 @@ public class NBAGame {
     result += "Game Coverage: " + this.coverage + "\n";
     result += "Game Home Team ID: " + this.homeTeamID + "\n";
     result += "Game Away Team ID: " + this.awayTeamID + "\n";
+    result += "Scheduled: " + this.scheduled + "\n";
     result += "Game Home Team Name: " + this.homeTeamName + "\n";
     result += "Game Away Team Name: " + this.awayTeamName + "\n";
     

@@ -10,6 +10,14 @@ XML xml;
 String NBAkey = "k4mqkpzfmq24f7yatqyvztxk";
 String MLBkey = "4nfwbpjthrsfsaeeh73szu8j";
 
+/*
+  COMPLETE WORKING METHODS SO FAR
+  AND METHODS YOU SHOULD USE
+ - getNBATeamSeasonTotalStats
+ - getNBAPlayerStats
+ - getAllGamesOnDate
+ */
+
 void setup() {
   orientation(PORTRAIT);
   //frameRate(30);
@@ -17,19 +25,22 @@ void setup() {
   println("START SETUP");
   int mode = 0;
 
-  // TESTS
-  NBATeam Warriors = new NBATeam();
-  //println(today.toString());
-  
-  // get list of games in a specific year month day
-  //ArrayList <NBAGame> allGames = getAllGamesOnDate("2015", "04", "26");
-  //println("Warriors game id: " + Database.teamNameAndIDHash.get("Warriors"));
-  
-  // GET Player Stat and test
-//  NBAPlayer Curry = getNBAPlayerStats("8ec91366-faea-4196-bbfd-b8fab7434795", "2014");
-//  if (Curry != null) {
-//    println(Curry.getFullName());
-//  }
+  /*
+  // ****** START OF TESTS / EXAMPLES ******
+   NBATeam Warriors = new NBATeam();
+   println(today.toString());
+   
+   // get list of games in a specific year month day
+   ArrayList <NBAGame> allGames = getAllGamesOnDate("2015", "04", "26");
+   println("Warriors game id: " + Database.teamNameAndIDHash.get("Warriors"));
+   
+   // GET Player Stat and test
+   NBAPlayer Curry = getNBAPlayerStats("8ec91366-faea-4196-bbfd-b8fab7434795", "2014");
+   if (Curry != null) {
+   println(Curry.getFullName());
+   }
+   // ****** END OF TESTS / EXAMPLES ******
+   */
 
   println("END SETUP");
 } // END SETUP
@@ -38,18 +49,23 @@ void draw() {
   background(0);
 }
 
-void getNBAGameBoxScore(String gameID){
+ArrayList <NBAGame> getNBAGameBoxScore(String gameID) {
   println("********** getNBAGameBoxScore **********");
   String URI = "http://api.sportradar.us/nba-t3/games/" + gameID + "/boxscore.xml?api_key=" + NBAkey;
-  
+
   // load test file DELETE TODO
   xml = loadXML("cache/BoxScoreExample.xml");
-  
+
   // xml = loadXML(URI);
-  
-  
+
+  XML [] team = xml.getChildren("team");
 }
 
+/*
+  This method will return an Object of class NBATEAM
+ based on the team id and the season year (2014 or 2013)
+ which will contain all the total statistical data 
+ */
 NBATeam getNBATeamSeasonTotalStats(String teamID, String year) {
   println("********** getNBATeamSeasonStats **********");
   String URI = "http://api.sportradar.us/nba-t3/seasontd/" + year + "/REG/teams/" + teamID + "/statistics.xml?api_key=" + NBAkey;
@@ -109,6 +125,12 @@ NBATeam getNBATeamSeasonTotalStats(String teamID, String year) {
   return team;
 }
 
+/*
+  This method will return an object of class NBAPlayer based on the 
+ playerID and the season year(2014 or 2013)
+ This method will return null if the input is invalid
+ Refer to NBAPlayer in what types of data will be returned
+ */
 NBAPlayer getNBAPlayerStats(String playerID, String year) {
   println("********** getNBAPlayerStats **********");
   String URI = "http://api.sportradar.us/nba-t3/players/" + playerID + "/profile.xml?api_key=" + NBAkey;
@@ -179,6 +201,10 @@ NBAPlayer getNBAPlayerStats(String playerID, String year) {
   return null;
 }
 
+/*
+  This method will return the list of all NBA games based on the 
+ year, month and day
+ */
 ArrayList <NBAGame> getAllGamesOnDate(String year, String month, String day) {
   println("********** Getting all games for " + year + "/" + month + "/" + day + " **********");
   ArrayList <NBAGame> allGames = new ArrayList<NBAGame>();
@@ -211,6 +237,10 @@ ArrayList <NBAGame> getAllGamesOnDate(String year, String month, String day) {
   return allGames;
 }
 
+/*
+  This method will print out all the nba teams
+ ONLY FOR DEBUGGING AND TESTING
+ */
 void leagueHierarchy() {
   println("********** LEAGUE HIERARCHY **********");
   xml = loadXML("cache/LeagueHierarchy.xml");
@@ -232,7 +262,10 @@ void leagueHierarchy() {
   }
 }
 
-
+/*
+  This method will check if a file exists based on the path
+ This method will return true if the file exists or false otherwise
+ */
 boolean checkIfFileExists(String path) {
   File fileDir = getFilesDir();
   // check if file exists

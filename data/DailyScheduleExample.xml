@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" charset="UTF-8" href="/xslt/basketball/schedule-v2.0.xsl"?>
+<!-- Generation started @ 2015-04-26 20:13:41 +0000 -->
+<league xmlns="http://feed.elasticstats.com/schema/basketball/schedule-v2.0.xsd" id="4353138d-4c22-4396-95d8-5f587d2df25c" name="NBA" alias="NBA">
+  <daily-schedule date="2015-04-26">
+    <games>
+      <game id="ce0ca324-6f1d-44d4-af6d-0a5732c6100b" title="Game 4" status="closed" coverage="full" home_team="583eccfa-fb46-11e1-82cb-f4ce4684ea4c" away_team="583ec773-fb46-11e1-82cb-f4ce4684ea4c" scheduled="2015-04-26T17:00:00+00:00">
+        <venue id="7d69b080-91ca-53c9-9302-45c1a72c5549" name="TD Garden" capacity="17565" address="100 Legends Way" city="Boston" state="MA" zip="02114" country="USA"/>
+        <home name="Boston Celtics" alias="BOS" seed="7" id="583eccfa-fb46-11e1-82cb-f4ce4684ea4c">
+        </home>
+        <away name="Cleveland Cavaliers" alias="CLE" seed="2" id="583ec773-fb46-11e1-82cb-f4ce4684ea4c">
+        </away>
+        <broadcast network="ABC"/>
+      </game>
+      <game id="7fef8f66-14d1-4556-99ba-a887fc80d1c3" title="Game 4" status="inprogress" coverage="full" home_team="583ecd4f-fb46-11e1-82cb-f4ce4684ea4c" away_team="583ecdfb-fb46-11e1-82cb-f4ce4684ea4c" scheduled="2015-04-26T19:30:00+00:00">
+        <venue id="8a7580c0-4052-54d5-85cd-85aab6200acf" name="AT&amp;T Center" capacity="18581" address="One AT&amp;T Center Parkway" city="San Antonio" state="TX" zip="78219" country="USA"/>
+        <home name="San Antonio Spurs" alias="SAS" seed="6" id="583ecd4f-fb46-11e1-82cb-f4ce4684ea4c">
+        </home>
+        <away name="Los Angeles Clippers" alias="LAC" seed="3" id="583ecdfb-fb46-11e1-82cb-f4ce4684ea4c">
+        </away>
+        <broadcast network="ABC"/>
+      </game>
+      <game id="9dcc5fdb-6dfa-47c3-a5a4-cf2b09f9b988" title="Game 4" status="scheduled" coverage="full" home_team="583ec8d4-fb46-11e1-82cb-f4ce4684ea4c" away_team="583ecda6-fb46-11e1-82cb-f4ce4684ea4c" scheduled="2015-04-26T22:30:00+00:00">
+        <venue id="f62d5b49-d646-56e9-ba60-a875a00830f8" name="Verizon Center" capacity="20290" address="601 F St. N.W." city="Washington" state="DC" zip="20004" country="USA"/>
+        <home name="Washington Wizards" alias="WAS" seed="5" id="583ec8d4-fb46-11e1-82cb-f4ce4684ea4c">
+        </home>
+        <away name="Toronto Raptors" alias="TOR" seed="4" id="583ecda6-fb46-11e1-82cb-f4ce4684ea4c">
+        </away>
+        <broadcast network="TNT" satellite="245"/>
+      </game>
+      <game id="69d431f3-dc95-46d6-a35a-c782976323dc" title="Game 4" status="scheduled" coverage="full" home_team="583ecf50-fb46-11e1-82cb-f4ce4684ea4c" away_team="583ecb3a-fb46-11e1-82cb-f4ce4684ea4c" scheduled="2015-04-27T01:00:00+00:00">
+        <venue id="401ba62f-19b5-5bfc-84d6-021772943311" name="American Airlines Center" capacity="19200" address="2500 Victory Ave." city="Dallas" state="TX" zip="75219" country="USA"/>
+        <home name="Dallas Mavericks" alias="DAL" seed="7" id="583ecf50-fb46-11e1-82cb-f4ce4684ea4c">
+        </home>
+        <away name="Houston Rockets" alias="HOU" seed="2" id="583ecb3a-fb46-11e1-82cb-f4ce4684ea4c">
+        </away>
+        <broadcast network="TNT" satellite="245"/>
+      </game>
+    </games>
+  </daily-schedule>
+</league>
