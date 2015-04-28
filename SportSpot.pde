@@ -37,7 +37,6 @@ String season = "2014";
 NBATeam team1_obj;
 NBATeam team2_obj;
 
-
 //variables for mode0
 String selection = "Team ";
 boolean team1_pressed = false;
@@ -119,7 +118,6 @@ void setup() {
   widgetContainer_Graphs.addWidget(button_3Pointers);
   widgetContainer_Graphs.addWidget(button_FieldGoalPerc);
   widgetContainer_Graphs.addWidget(button_FreeThrowPerc);
-
   widgetContainer_SubmitTeams.show();
   widgetContainer_Graphs.hide();
 
@@ -141,6 +139,7 @@ void setup() {
    celtics.getTeamName();
    
    NBATeam team1 = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team1), season);
+
    }
    
    NBAGameSummary gameSum = getNBAGameSummary("c786959b-97bd-45e2-ba4f-77377633e87e");
@@ -176,6 +175,7 @@ void draw() {
     width/2 - 150, height/9 + 90, 
     width/2 - 200, height/9 + 65);
   }
+
   //mode1 - GRAPH COMPARISONS
   else if (mode == 1) {
     
@@ -211,7 +211,7 @@ void draw() {
     rect(lineBase_w + (lineWidth/9 + width/12), lineBase_h, width/12, -(score2/100)*lineHeight);
       
     //second bar graphs
-    
+
   }
 }
 
@@ -228,7 +228,6 @@ void mousePressed() {
   //if left triangle is pressed, change season
   else if ((mouseX <= width/2 - 120)&&(mouseX >= width/2 - 230)
     &&(mouseY <= height/9 + 130)&&(mouseY >= height/9 + 10 )) {
-
     if (season == "2014") {
       season = "2013";
     } else season = "2014";
@@ -283,7 +282,6 @@ void onClickWidget(APWidget widget) {
   }
 }
 
-<<<<<<< HEAD
 NBAGameSummary getNBAGameSummary(String gameID) {
   println("********** getNBALiveGameData **********");
   String URI = "http://api.sportradar.us/nba-t3/games/" + gameID +"/summary.xml?api_key=" + NBAkey;
