@@ -42,17 +42,12 @@ void setup() {
    
    NBAGameSummary gameSum = getNBAGameSummary("583eca88-fb46-11e1-82cb-f4ce4684ea4c");
    println(gameSum.getHomeTeamName() + " vs. " + gameSum.getAwayTeamName());
+
    // ****** END OF TESTS / EXAMPLES ******
    */
 
-  NBAGameSummary gameSum = getNBAGameSummary("c786959b-97bd-45e2-ba4f-77377633e87e");
-  println(gameSum.getHomeTeamName() + " vs. " + gameSum.getAwayTeamName());
-  println("Game Title: " + gameSum.getGameTitle());
-  println("Game status: " + gameSum.getGameStatus());
-  println("Game scheduled: " + gameSum.getGameScheduled());
-  println("Game attendance: " + gameSum.getGameAttendance());
-  println("Game clock: " + gameSum.getGameClock());
-  println("Game quarter: " + gameSum.getGameQuarter());
+
+
 
   println("END SETUP");
 } // END SETUP
