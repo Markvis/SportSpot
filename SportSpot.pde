@@ -220,6 +220,77 @@ void mousePressed() {
   //if right triangle is pressed, change season
   if ((mouseX <= width/2 + 230)&&(mouseX >= width/2 + 100)
     &&(mouseY <= height/9 + 130 )&&(mouseY >= height/9 + 10)) {
+<<<<<<< HEAD
+=======
+
+    if (season == "2014") {
+      season = "2013";
+    } else season = "2014";
+  }
+  //if left triangle is pressed, change season
+  else if ((mouseX <= width/2 - 120)&&(mouseX >= width/2 - 230)
+    &&(mouseY <= height/9 + 130)&&(mouseY >= height/9 + 10 )) {
+
+    if (season == "2014") {
+      season = "2013";
+    } else season = "2014";
+  }
+}
+
+void onKetaiListSelection(KetaiList klist) {
+
+  selection = klist.getSelection(); 
+
+  //change the team name to selection variable from
+  //selectionlist in mode0
+  if (selection != "") { 
+    if (team1_pressed) {
+      team1 = selection;
+    } else if (team2_pressed) {
+      team2 = selection;
+    }
+  }
+  team1_pressed = false;
+  team2_pressed = false;
+}
+
+void onClickWidget(APWidget widget) {
+
+  //BUTTONS OF MODE0
+  if (widget == button_team1) {    
+    selectionlist = new KetaiList(this, teams);
+    team1_pressed = true;
+    // team1 = selection;
+  } else if (widget == button_team2) {
+    selectionlist2 = new KetaiList(this, teams);
+    team2_pressed = true;
+    // team2 = selection;
+  } else if (widget == button_submit) {
+    if (team1 == team2) {
+      KetaiAlertDialog.popup(this, "Nice try...", "Please choose two different teams.");
+    } else if ((team1 == "Team 1") || (team2 == "Team 2")) {
+      KetaiAlertDialog.popup(this, "Not ready yet!", "Make sure you pick 2 teams.");
+    } else {
+      //team1_obj = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team1), season);
+      //team2_obj = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team2), season);
+      mode = 1;
+      widgetContainer_Graphs.show();
+      widgetContainer_SubmitTeams.hide();
+    }
+  }
+  //BUTTONS OF MODE1
+  else if (widget == button_3Pointers) {
+  } else if (widget == button_FieldGoalPerc) {
+  } else if (widget == button_FreeThrowPerc) {
+  }
+}
+
+
+ArrayList <NBAGame> getNBAGameBoxScore(String gameID) {
+  println("********** getNBAGameBoxScore **********");
+  String URI = "http://api.sportradar.us/nba-t3/games/" + gameID + "/boxscore.xml?api_key=" + NBAkey;
+  ArrayList <NBAGame> liveGameTeamsStats = new ArrayList<NBAGame>();
+>>>>>>> a6bd38e405fe9d750afb9ba0ad7026642c741f6a
 
     if (season == "2014") {
       season = "2013";
@@ -292,6 +363,7 @@ NBAGameSummary getNBAGameSummary(String gameID) {
 
   // get xml lines
   XML [] team = xml.getChildren("team");
+<<<<<<< HEAD
   XML homeTeamScoring = team[0].getChild("scoring");
   XML awayTeamScoring = team[1].getChild("scoring");
   XML [] homeTeamQuarter = homeTeamScoring.getChildren("quarter");
@@ -413,6 +485,10 @@ NBAGameSummary getNBAGameSummary(String gameID) {
   awayCoachTechFouls);
 
   return nbaGameSummary;
+=======
+
+  return liveGameTeamsStats;
+>>>>>>> a6bd38e405fe9d750afb9ba0ad7026642c741f6a
 }
 
 /*
