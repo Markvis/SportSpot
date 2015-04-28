@@ -1,14 +1,42 @@
 // imports
 import apwidgets.*;
 import java.io.*;
+import ketai.ui.*;
 
 // globals
-int mode;
+int mode = 0;
 XML xml;
 
 // keys
 String NBAkey = "k4mqkpzfmq24f7yatqyvztxk";
 String MLBkey = "4nfwbpjthrsfsaeeh73szu8j";
+
+//selectionlists for team1 & team2 in mode0
+KetaiList selectionlist;
+KetaiList selectionlist2;
+ArrayList<String> teams = new ArrayList<String>();
+
+//widget containers and buttons for team selection in mode0
+APWidgetContainer widgetContainer_SubmitTeams;
+APButton button_submit, button_team1, button_team2;
+
+//widget containers and buttons for graphs in mode1
+APWidgetContainer widgetContainer_Graphs;
+APButton button_3Pointers, button_FieldGoalPerc, button_FreeThrowPerc;
+
+//GRAPHS INCLUDED:
+//3 Pointers %
+//Field Goals %
+//Free Throws %
+
+String team1 = "Team 1";
+String team2 = "Team 2";
+String season = "2014";
+
+//variables for mode0
+String selection = "Team ";
+boolean team1_pressed = false;
+boolean team2_pressed = false;
 
 /*
   COMPLETE WORKING METHODS SO FAR
@@ -19,11 +47,42 @@ String MLBkey = "4nfwbpjthrsfsaeeh73szu8j";
  */
 
 void setup() {
-  orientation(PORTRAIT);
-  //frameRate(30);
-  noLoop();
+  orientation(LANDSCAPE);
+  frameRate(60);  
+  //noLoop();
   println("START SETUP");
-  int mode = 0;
+
+  //adding teams to teams ArrayList
+  teams.add("Clippers");
+  teams.add("Golden State Warriors");
+  teams.add("Pelicans");
+  teams.add("Spurs");
+
+  //widget container for buttons in mode0
+  widgetContainer_SubmitTeams = new APWidgetContainer(this); 
+  //creating & adding buttons for mode0
+  button_submit = new APButton(width/2 - width/12, height - height/4, width/6, height/6, "Submit"); //create new button from x- and y-pos and label. size determined by text content
+  button_team1 = new APButton(width/12, height/9, width/4, height/7, "Select Team 1"); 
+  button_team2 = new APButton(width - width/12 - width/4, height/9, width/4, height/7, "Select Team 2"); 
+  button_submit.setTextSize(20);
+  button_team1.setTextSize(18);
+  button_team2.setTextSize(18);
+  widgetContainer_SubmitTeams.addWidget(button_submit);
+  widgetContainer_SubmitTeams.addWidget(button_team1);
+  widgetContainer_SubmitTeams.addWidget(button_team2);
+  
+  //widget container for buttons in mode1
+  widgetContainer_Graphs = new APWidgetContainer(this);
+  //creating & adding buttons for mode1
+  button_3Pointers  = new APButton(width/4, height - height/6, "3 Pointers %");
+  button_FieldGoalPerc = new APButton(width/2, height - height/6, "Field Goal %");
+  button_FreeThrowPerc = new APButton((2*width)/3, height - height/6, "Free Throw %");
+  widgetContainer_Graphs.addWidget(button_3Pointers);
+  widgetContainer_Graphs.addWidget(button_FieldGoalPerc);
+  widgetContainer_Graphs.addWidget(button_FreeThrowPerc);
+  
+  widgetContainer_SubmitTeams.show();
+  widgetContainer_Graphs.hide();
 
   /*
   // ****** START OF TESTS / EXAMPLES ******
@@ -38,7 +97,14 @@ void setup() {
    NBAPlayer Curry = getNBAPlayerStats("8ec91366-faea-4196-bbfd-b8fab7434795", "2014");
    if (Curry != null) {
    println(Curry.getFullName());
+   
+   NBATeam celtics = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get("Celtics"), season);
+   celtics.getTeamName();
+   
+   NBATEAM team1 = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team1), season);
    }
+   
+   
    // ****** END OF TESTS / EXAMPLES ******
    */
 
@@ -46,7 +112,95 @@ void setup() {
 } // END SETUP
 
 void draw() {
-  background(0);
+
+  if (mode == 0) {
+    background(0, 0, 80);
+    textAlign(CENTER);
+
+    textSize(65);
+    text(team1, width/2, height/2 - height/8);
+    text(team2, width/2, height/2 + height/8);
+    textSize(50);
+    text("vs.", width/2, height/2);
+    textSize(70);
+    text("SEASON", width/2, height/9 - 20);
+    text(season, width/2, height/9 + 90);
+
+    //selections triangles for SEASON
+    triangle(width/2 + 150, height/9 + 40, 
+    width/2 + 150, height/9 + 90, 
+    width/2 + 200, height/9 + 65);
+    triangle(width/2 - 150, height/9 + 40, 
+    width/2 - 150, height/9 + 90, 
+    width/2 - 200, height/9 + 65);
+  }
+  else if (mode == 1){
+    background(0, 0, 80);
+    
+    
+  
+  }
+}
+
+void mousePressed() {
+
+  //if right triangle is pressed, change season
+  if ((mouseX <= width/2 + 230)&&(mouseX >= width/2 + 100)
+    &&(mouseY <= height/9 + 130 )&&(mouseY >= height/9 + 10)) {
+
+    if (season == "2014") {
+      season = "2013";
+    } else season = "2014";
+  }
+  //if left triangle is pressed, change season
+  else if ((mouseX <= width/2 - 120)&&(mouseX >= width/2 - 230)
+    &&(mouseY <= height/9 + 130)&&(mouseY >= height/9 + 10 )) {
+      
+    if (season == "2014") {
+      season = "2013";
+    } else season = "2014";
+  }
+}
+
+void onKetaiListSelection(KetaiList klist) {
+
+  selection = klist.getSelection(); 
+
+  //change the team name to selection variable from
+  //selectionlist in mode0
+  if (selection != "") { 
+    if (team1_pressed) {
+      team1 = selection;
+    } else if (team2_pressed) {
+      team2 = selection;
+    }
+  }
+  team1_pressed = false;
+  team2_pressed = false;
+}
+
+void onClickWidget(APWidget widget) {
+
+  if (widget == button_team1) {    
+    selectionlist = new KetaiList(this, teams);
+    team1_pressed = true;
+    // team1 = selection;
+  } else if (widget == button_team2) {
+    selectionlist2 = new KetaiList(this, teams);
+    team2_pressed = true;
+    // team2 = selection;
+  } else if (widget == button_submit) {
+    if (team1 == team2) {
+      KetaiAlertDialog.popup(this, "Nice try...", "Please choose two different teams.");
+    } else if ((team1 == "Team 1") || (team2 == "Team 2")){
+      KetaiAlertDialog.popup(this, "Not ready yet!", "Make sure you pick 2 teams.");
+    }
+    else {
+      mode = 1;
+      widgetContainer_Graphs.show();
+      widgetContainer_SubmitTeams.hide();
+    }
+  }
 }
 
 ArrayList <NBAGame> getNBAGameBoxScore(String gameID) {
@@ -61,7 +215,7 @@ ArrayList <NBAGame> getNBAGameBoxScore(String gameID) {
   // xml = loadXML(URI);
 
   XML [] team = xml.getChildren("team");
-  
+
   return liveGameTeamsStats;
 }
 
