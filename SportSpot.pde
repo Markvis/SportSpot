@@ -40,14 +40,11 @@ void setup() {
    println(Curry.getFullName());
    }
    
-   NBAGameSummary gameSum = getNBAGameSummary("583eca88-fb46-11e1-82cb-f4ce4684ea4c");
+   NBAGameSummary gameSum = getNBAGameSummary("c786959b-97bd-45e2-ba4f-77377633e87e");
    println(gameSum.getHomeTeamName() + " vs. " + gameSum.getAwayTeamName());
-
+   
    // ****** END OF TESTS / EXAMPLES ******
    */
-
-
-
 
   println("END SETUP");
 } // END SETUP
