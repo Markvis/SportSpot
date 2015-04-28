@@ -15,6 +15,7 @@ public class Database {
     teamNameAndIDHash.put("Magic", "583ed157-fb46-11e1-82cb-f4ce4684ea4c");
 
     // Atlantic
+    teamNameAndIDHash.put("Knicks", "583ec70e-fb46-11e1-82cb-f4ce4684ea4c");
     teamNameAndIDHash.put("76ers", "583ec87d-fb46-11e1-82cb-f4ce4684ea4c");
     teamNameAndIDHash.put("Nets", "583ec9d6-fb46-11e1-82cb-f4ce4684ea4c");
     teamNameAndIDHash.put("Celtics", "583eccfa-fb46-11e1-82cb-f4ce4684ea4c");

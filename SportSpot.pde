@@ -39,8 +39,15 @@ void setup() {
    if (Curry != null) {
    println(Curry.getFullName());
    }
+   
+   NBAGameSummary gameSum = getNBAGameSummary("583eca88-fb46-11e1-82cb-f4ce4684ea4c");
+   println(gameSum.getHomeTeamName() + " vs. " + gameSum.getAwayTeamName());
+
    // ****** END OF TESTS / EXAMPLES ******
    */
+
+
+
 
   println("END SETUP");
 } // END SETUP
@@ -49,20 +56,136 @@ void draw() {
   background(0);
 }
 
-ArrayList <NBAGame> getNBAGameBoxScore(String gameID) {
-  println("********** getNBAGameBoxScore **********");
-  String URI = "http://api.sportradar.us/nba-t3/games/" + gameID + "/boxscore.xml?api_key=" + NBAkey;
-  ArrayList <NBAGame> liveGameTeamsStats = new ArrayList<NBAGame>();
+NBAGameSummary getNBAGameSummary(String gameID) {
+  println("********** getNBALiveGameData **********");
+  String URI = "http://api.sportradar.us/nba-t3/games/" + gameID +"/summary.xml?api_key=" + NBAkey;
+  NBAGameSummary nbaGameSummary;
+  xml = loadXML(URI);
+  //xml = loadXML("cache/LiveGameExample.xml");
 
-
-  // load test file DELETE TODO
-  xml = loadXML("cache/BoxScoreExample.xml");
-
-  // xml = loadXML(URI);
-
+  // get xml lines
   XML [] team = xml.getChildren("team");
-  
-  return liveGameTeamsStats;
+  XML homeTeamScoring = team[0].getChild("scoring");
+  XML awayTeamScoring = team[1].getChild("scoring");
+  XML [] homeTeamQuarter = homeTeamScoring.getChildren("quarter");
+  XML [] awayTeamQuarter = awayTeamScoring.getChildren("quarter");
+  XML homeTeamStats = team[0].getChild("statistics");
+  XML awayTeamStats = team[1].getChild("statistics");
+
+  // ***** GAME INFO *****
+  String gametitle = xml.getString("title");
+  String gameStatus = xml.getString("status");
+  String gameScheduled = xml.getString("scheduled");
+  String gameAttendance = xml.getString("attendance");
+  String gameClock = xml.getString("clock");
+  String gameQuarter = xml.getString("quarter");
+
+  // ***** START HOME ****
+  // Home Team Data
+  String homeTeamName = team[0].getString("name");
+  String homeTeamID = team[0].getString("id");
+
+  // Quarterly Points
+  int homeQuarterOnePoints = Integer.parseInt(homeTeamQuarter[0].getString("points"));
+  int homeQuarterTwoPoints = Integer.parseInt(homeTeamQuarter[1].getString("points"));
+  int homeQuarterThreePoints = Integer.parseInt(homeTeamQuarter[2].getString("points"));
+  int homeQuarterFourPoints = Integer.parseInt(homeTeamQuarter[3].getString("points"));
+
+  // Team Statistics
+  String homeMinutes = homeTeamStats.getString("minutes");
+  int homeFieldGoalsMade = Integer.parseInt(homeTeamStats.getString("field_goals_made"));
+  int homeFieldGoalsAtt = Integer.parseInt(homeTeamStats.getString("field_goals_att"));
+  float homeFieldGoalsPct = Float.parseFloat(homeTeamStats.getString("field_goals_pct"));
+  int homeThreePointsMade = Integer.parseInt(homeTeamStats.getString("three_points_made"));
+  int homeThreePointsAtt = Integer.parseInt(homeTeamStats.getString("three_points_att"));
+  float homeThreePointsPct = Float.parseFloat(homeTeamStats.getString("three_points_pct"));
+  int homeTwoPointsMade = Integer.parseInt(homeTeamStats.getString("two_points_made"));
+  int homeTwoPointsAtt = Integer.parseInt(homeTeamStats.getString("two_points_att"));
+  float homeTwoPointsPct = Float.parseFloat(homeTeamStats.getString("two_points_pct"));
+  int homeBlockedAtt = Integer.parseInt(homeTeamStats.getString("blocked_att"));
+  int homeFreeThrowsMade = Integer.parseInt(homeTeamStats.getString("free_throws_made"));
+  int homeFreeThrowsAtt = Integer.parseInt(homeTeamStats.getString("free_throws_att"));
+  float homeFreeThrowsPct = Float.parseFloat(homeTeamStats.getString("free_throws_pct"));
+  int homeOffensiveRebounds = Integer.parseInt(homeTeamStats.getString("offensive_rebounds"));
+  int homeDefensiveRebounds = Integer.parseInt(homeTeamStats.getString("defensive_rebounds"));
+  int homeRebounds = Integer.parseInt(homeTeamStats.getString("rebounds"));
+  int homeAssists = Integer.parseInt(homeTeamStats.getString("assists"));
+  int homeTurnovers = Integer.parseInt(homeTeamStats.getString("turnovers"));
+  int homeSteals = Integer.parseInt(homeTeamStats.getString("steals"));
+  int homeBlocks = Integer.parseInt(homeTeamStats.getString("blocks"));
+  float homeAssistsTurnoverRatio = Float.parseFloat(homeTeamStats.getString("assists_turnover_ratio"));
+  int homePersonalFouls = Integer.parseInt(homeTeamStats.getString("personal_fouls"));
+  int homePoints = Integer.parseInt(homeTeamStats.getString("points"));
+  int homeTeamTurnovers = Integer.parseInt(homeTeamStats.getString("team_turnovers"));
+  int homeTeamRebounds = Integer.parseInt(homeTeamStats.getString("team_rebounds"));
+  int homeFlagrantFouls = Integer.parseInt(homeTeamStats.getString("flagrant_fouls"));
+  int homePlayerTechFouls = Integer.parseInt(homeTeamStats.getString("player_tech_fouls"));
+  int homeTeamTechFouls = Integer.parseInt(homeTeamStats.getString("team_tech_fouls"));
+  int homeCoachTechFouls = Integer.parseInt(homeTeamStats.getString("coach_tech_fouls"));
+  // ***** END HOME ****
+
+  // ***** START AWAY ****
+  // Away Team Data
+  String awayTeamName = team[1].getString("name");
+  String awayTeamID = team[1].getString("id");
+
+  // Quarterly Points
+  int awayQuarterOnePoints = Integer.parseInt(awayTeamQuarter[0].getString("points"));
+  int awayQuarterTwoPoints = Integer.parseInt(awayTeamQuarter[1].getString("points"));
+  int awayQuarterThreePoints = Integer.parseInt(awayTeamQuarter[2].getString("points"));
+  int awayQuarterFourPoints = Integer.parseInt(awayTeamQuarter[3].getString("points"));
+
+  // Team Statistics
+  String awayMinutes = awayTeamStats.getString("minutes");
+  int awayFieldGoalsMade = Integer.parseInt(awayTeamStats.getString("field_goals_made"));
+  int awayFieldGoalsAtt = Integer.parseInt(awayTeamStats.getString("field_goals_att"));
+  float awayFieldGoalsPct = Float.parseFloat(awayTeamStats.getString("field_goals_pct"));
+  int awayThreePointsMade = Integer.parseInt(awayTeamStats.getString("three_points_made"));
+  int awayThreePointsAtt = Integer.parseInt(awayTeamStats.getString("three_points_att"));
+  float awayThreePointsPct = Float.parseFloat(awayTeamStats.getString("three_points_pct"));
+  int awayTwoPointsMade = Integer.parseInt(awayTeamStats.getString("two_points_made"));
+  int awayTwoPointsAtt = Integer.parseInt(awayTeamStats.getString("two_points_att"));
+  float awayTwoPointsPct = Float.parseFloat(awayTeamStats.getString("two_points_pct"));
+  int awayBlockedAtt = Integer.parseInt(awayTeamStats.getString("blocked_att"));
+  int awayFreeThrowsMade = Integer.parseInt(awayTeamStats.getString("free_throws_made"));
+  int awayFreeThrowsAtt = Integer.parseInt(awayTeamStats.getString("free_throws_att"));
+  float awayFreeThrowsPct = Float.parseFloat(awayTeamStats.getString("free_throws_pct"));
+  int awayOffensiveRebounds = Integer.parseInt(awayTeamStats.getString("offensive_rebounds"));
+  int awayDefensiveRebounds = Integer.parseInt(awayTeamStats.getString("defensive_rebounds"));
+  int awayRebounds = Integer.parseInt(awayTeamStats.getString("rebounds"));
+  int awayAssists = Integer.parseInt(awayTeamStats.getString("assists"));
+  int awayTurnovers = Integer.parseInt(awayTeamStats.getString("assists"));
+  int awaySteals = Integer.parseInt(awayTeamStats.getString("steals"));
+  int awayBlocks = Integer.parseInt(awayTeamStats.getString("blocks"));
+  float awayAssistsTurnoverRatio = Float.parseFloat(awayTeamStats.getString("assists_turnover_ratio"));
+  int awayPersonalFouls = Integer.parseInt(awayTeamStats.getString("personal_fouls"));
+  int awayPoints = Integer.parseInt(awayTeamStats.getString("points"));
+  int awayTeamTurnovers = Integer.parseInt(awayTeamStats.getString("team_turnovers"));
+  int awayTeamRebounds = Integer.parseInt(awayTeamStats.getString("team_rebounds"));
+  int awayFlagrantFouls = Integer.parseInt(awayTeamStats.getString("flagrant_fouls"));
+  int awayPlayerTechFouls = Integer.parseInt(awayTeamStats.getString("player_tech_fouls"));
+  int awayTeamTechFouls = Integer.parseInt(awayTeamStats.getString("team_tech_fouls"));
+  int awayCoachTechFouls = Integer.parseInt(awayTeamStats.getString("coach_tech_fouls"));
+  // ***** END AWAY ****
+
+  nbaGameSummary = new NBAGameSummary(gametitle, gameStatus, gameScheduled, gameAttendance, 
+  gameClock, gameQuarter, homeTeamName, homeTeamID, homeQuarterOnePoints, homeQuarterTwoPoints, 
+  homeQuarterThreePoints, homeQuarterFourPoints, homeMinutes, homeFieldGoalsMade, homeFieldGoalsAtt, 
+  homeFieldGoalsPct, homeThreePointsMade, homeThreePointsAtt, homeThreePointsPct, homeTwoPointsMade, 
+  homeTwoPointsAtt, homeTwoPointsPct, homeBlockedAtt, homeFreeThrowsMade, homeFreeThrowsAtt, 
+  homeFreeThrowsPct, homeOffensiveRebounds, homeDefensiveRebounds, homeRebounds, homeAssists, 
+  homeTurnovers, homeSteals, homeBlocks, homeAssistsTurnoverRatio, homePersonalFouls, homePoints, 
+  homeTeamTurnovers, homeTeamRebounds, homeFlagrantFouls, homePlayerTechFouls, homeTeamTechFouls, 
+  homeCoachTechFouls, awayTeamName, awayTeamID, awayQuarterOnePoints, awayQuarterTwoPoints, 
+  awayQuarterThreePoints, awayQuarterFourPoints, awayMinutes, awayFieldGoalsMade, awayFieldGoalsAtt, 
+  awayFieldGoalsPct, awayThreePointsMade, awayThreePointsAtt, awayThreePointsPct, awayTwoPointsMade, 
+  awayTwoPointsAtt, awayTwoPointsPct, awayBlockedAtt, awayFreeThrowsMade, awayFreeThrowsAtt, 
+  awayFreeThrowsPct, awayOffensiveRebounds, awayDefensiveRebounds, awayRebounds, awayAssists, 
+  awayTurnovers, awaySteals, awayBlocks, awayAssistsTurnoverRatio, awayPersonalFouls, awayPoints, 
+  awayTeamTurnovers, awayTeamRebounds, awayFlagrantFouls, awayPlayerTechFouls, awayTeamTechFouls, 
+  awayCoachTechFouls);
+
+  return nbaGameSummary;
 }
 
 /*
