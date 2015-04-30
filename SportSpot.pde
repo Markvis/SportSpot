@@ -2,6 +2,7 @@
 import apwidgets.*;
 import java.io.*;
 import ketai.ui.*;
+import android.os.StrictMode; 
 
 // globals
 int mode = 0;
@@ -164,7 +165,7 @@ void draw() {
     textAlign(CENTER);
 
     fill(255);
-    
+
     textSize(65);
     text(team1, width/2, height/2 - height/8);
     text(team2, width/2, height/2 + height/8);
@@ -217,7 +218,7 @@ void draw() {
 
     float velocity1 = 0;
     float velocity2 = 0;
-    
+
     fill(255);
     textSize(60);
     text("TEAM STATISTICS", width/2, height/14);
@@ -314,8 +315,12 @@ void onClickWidget(APWidget widget) {
     } else if ((team1 == "Team 1") || (team2 == "Team 2")) {
       KetaiAlertDialog.popup(this, "Not ready yet!", "Make sure you pick 2 teams.");
     } else {
-      //   team1_obj = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team1), season);
-      //   team2_obj = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team2), season);
+      // required for calling network on newer versions of android
+      StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+      StrictMode.setThreadPolicy(policy);
+      
+      team1_obj = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team1), season);
+      team2_obj = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team2), season);
       mode = 1;
       widgetContainer_Graphs.show();
       widgetContainer_SubmitTeams.hide();
@@ -524,7 +529,7 @@ NBATeam getNBATeamSeasonTotalStats(String teamID, String year) {
   pointsOffTurnovers, secondChancePoints, freeThrowsPct, twoPointsPct, threePointsPct, fieldGoalsPct, 
   rebounds, assistsTurnoverRatio, twoPointsMade, twoPointsAtt);
 
-  println(team.toString());
+  //println(team.toString());
 
   return team;
 }
