@@ -199,7 +199,7 @@ void draw() {
     float lineWidth = 2*(width/3);
     float lineHeight = height-(height/3)-100;
     
-    moveGraph(0, 50, 0, 50);
+    moveGraph(0, 80, 0, 50);
 
     //creating x- and y-axis for the bar graphs
     stroke(255);
@@ -226,39 +226,41 @@ void draw() {
     fill(255);
     textSize(60);
     text("TEAM STATISTICS", width/2 - moveLeft + moveRight, height/14 - moveUp + moveDown);
-        
-
+    
+    textSize(40);
+    text(team1_obj.getTeamName(), width/14, height/4);
+    text(team2_obj.getTeamName(), width/14, height/2);
+    fill(255, 51, 51);   
+    rect(width/20, height/4 + height/20, width/22, height/16); 
+    fill(255, 153, 51);
+    rect(width/20, height/2 + height/20, width/22, height/16); 
+    
     float team1_3PointerPerc = team1_obj.getThreePointsPct();
-    float team2_3PointerPerc = team2_obj.getThreePointsPct();
-    
+    float team2_3PointerPerc = team2_obj.getThreePointsPct();   
     float team1_fieldGoalPerc = team1_obj.getFieldGoalsPct();
-    float team2_fieldGoalPerc = team2_obj.getFieldGoalsPct();
-    
+    float team2_fieldGoalPerc = team2_obj.getFieldGoalsPct();   
     float team1_freeThrowPerc = team1_obj.getFreeThrowsPct();
     float team2_freeThrowPerc = team2_obj.getFreeThrowsPct();
 
     //first bar graphs
+    
+    //bar graph bottom titles
+    fill(255);
     textSize(50);
     text("3 Pointers %", lineBase_w + lineWidth/11 + width/14 - moveLeft + moveRight, lineBase_h+70 - moveUp + moveDown);
+    text("Field Goals %", lineBase_w + 2*(lineWidth/11) + 3*(width/14) - moveLeft + moveRight, lineBase_h+70 - moveUp + moveDown);
+    text("Free Throws %", lineBase_w + 3*(lineWidth/11) + 5*(width/14) - moveLeft + moveRight, lineBase_h+70 - moveUp + moveDown);
+    
+    //team1 bars
     fill(255, 51, 51);
     rect(lineBase_w + (lineWidth/11) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, -(team1_3PointerPerc)*lineHeight - moveUp + moveDown);
+    rect(lineBase_w + 2*(lineWidth/11) + 2*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, -(team1_fieldGoalPerc)*lineHeight - moveUp + moveDown);
+    rect(lineBase_w + 3*(lineWidth/11) + 4*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, -(team1_freeThrowPerc)*lineHeight - moveUp + moveDown);
+    
+    //team2 bars
     fill(255, 153, 51);
     rect(lineBase_w + (lineWidth/11 + width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, -(team2_3PointerPerc)*lineHeight - moveUp + moveDown);
-
-    fill(255);
-    textSize(50);
-    text("Field Goals %", lineBase_w + 2*(lineWidth/11) + 3*(width/14) - moveLeft + moveRight, lineBase_h+70 - moveUp + moveDown);
-    fill(255, 51, 51);
-    rect(lineBase_w + 2*(lineWidth/11) + 2*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, -(team1_fieldGoalPerc)*lineHeight - moveUp + moveDown);
-    fill(255, 153, 51);
     rect(lineBase_w + 2*(lineWidth/11) + 3*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14 , -(team2_fieldGoalPerc)*lineHeight - moveUp + moveDown);
-
-    fill(255);
-    textSize(50);
-    text("Free Throws %", lineBase_w + 3*(lineWidth/11) + 5*(width/14) - moveLeft + moveRight, lineBase_h+70 - moveUp + moveDown);
-    fill(255, 51, 51);
-    rect(lineBase_w + 3*(lineWidth/11) + 4*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, -(team1_freeThrowPerc)*lineHeight - moveUp + moveDown);
-    fill(255, 153, 51);
     rect(lineBase_w + 3*(lineWidth/11) + 5*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, -(team2_freeThrowPerc)*lineHeight - moveUp + moveDown);
 
     //        if (velocity1 < -(score/100)*lineHeight) {
@@ -272,7 +274,8 @@ void draw() {
     //        
     //        velocity1 -= 0.1;
     //        velocity2 -= 0.1;
-    //second bar graphs
+    
+    
   }
 }
 
