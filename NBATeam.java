@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.Map;
+
 public class NBATeam {
 
   private String teamName;
@@ -33,6 +36,7 @@ public class NBATeam {
   private float assistsTurnoverRatio;
   private int twoPointsMade;
   private int twoPointsAtt;
+  public Map<String, String> players;
 
   public NBATeam() {
     teamName = "";
@@ -67,6 +71,7 @@ public class NBATeam {
     assistsTurnoverRatio = 0;
     twoPointsMade = 0;
     twoPointsAtt = 0;
+    players = new HashMap<String, String>();
   }
 
   public NBATeam(String teamName, int gamesPlayed, float minutes, int fieldGoalsMade, int fieldGoalsAtt, int threePointsMade, 
@@ -108,6 +113,7 @@ public class NBATeam {
     this.assistsTurnoverRatio = assistsTurnoverRatio;
     this.twoPointsMade = twoPointsMade;
     this.twoPointsAtt = twoPointsAtt;
+    this.players = new HashMap<String, String>();
   }
 
   /**
@@ -593,6 +599,8 @@ public class NBATeam {
     result += "Assists Turnover Ratio: " + Float.toString(assistsTurnoverRatio) + "\n";
     result += "Two Points Made: " + Integer.toString(twoPointsMade) + "\n";
     result += "Two Points Attempted: " + Integer.toString(twoPointsAtt) + "\n";
+    
+    result += players.toString();
 
     return result;
   }

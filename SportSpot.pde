@@ -70,8 +70,8 @@ int moveDown;
 
 void setup() {
   orientation(LANDSCAPE);
-  frameRate(60);  
-  //noLoop();
+  //frameRate(15);  
+  noLoop();
   println("START SETUP");
 
   //adding teams to teams ArrayList
@@ -172,7 +172,7 @@ void draw() {
     fill(255);
 
     textSize(65);
-    text(team1, width/2 , height/2 - height/8);
+    text(team1, width/2, height/2 - height/8);
     text(team2, width/2, height/2 + height/8);
     textSize(50);
     text("vs.", width/2, height/2);
@@ -198,7 +198,7 @@ void draw() {
     float lineTop_h = height - 100;
     float lineWidth = 2*(width/3);
     float lineHeight = height-(height/3)-100;
-    
+
     moveGraph(0, 80, 0, 50);
 
     //creating x- and y-axis for the bar graphs
@@ -226,7 +226,7 @@ void draw() {
     fill(255);
     textSize(60);
     text("TEAM STATISTICS", width/2 - moveLeft + moveRight, height/14 - moveUp + moveDown);
-    
+
     textSize(40);
     text(team1_obj.getTeamName(), width/14, height/4);
     text(team2_obj.getTeamName(), width/14, height/2);
@@ -234,7 +234,7 @@ void draw() {
     rect(width/20, height/4 + height/20, width/22, height/16); 
     fill(255, 153, 51);
     rect(width/20, height/2 + height/20, width/22, height/16); 
-    
+
     float team1_3PointerPerc = team1_obj.getThreePointsPct();
     float team2_3PointerPerc = team2_obj.getThreePointsPct();   
     float team1_fieldGoalPerc = team1_obj.getFieldGoalsPct();
@@ -243,24 +243,24 @@ void draw() {
     float team2_freeThrowPerc = team2_obj.getFreeThrowsPct();
 
     //first bar graphs
-    
+
     //bar graph bottom titles
     fill(255);
     textSize(50);
     text("3 Pointers %", lineBase_w + lineWidth/11 + width/14 - moveLeft + moveRight, lineBase_h+70 - moveUp + moveDown);
     text("Field Goals %", lineBase_w + 2*(lineWidth/11) + 3*(width/14) - moveLeft + moveRight, lineBase_h+70 - moveUp + moveDown);
     text("Free Throws %", lineBase_w + 3*(lineWidth/11) + 5*(width/14) - moveLeft + moveRight, lineBase_h+70 - moveUp + moveDown);
-    
+
     //team1 bars
     fill(255, 51, 51);
     rect(lineBase_w + (lineWidth/11) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, -(team1_3PointerPerc)*lineHeight - moveUp + moveDown);
     rect(lineBase_w + 2*(lineWidth/11) + 2*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, -(team1_fieldGoalPerc)*lineHeight - moveUp + moveDown);
     rect(lineBase_w + 3*(lineWidth/11) + 4*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, -(team1_freeThrowPerc)*lineHeight - moveUp + moveDown);
-    
+
     //team2 bars
     fill(255, 153, 51);
     rect(lineBase_w + (lineWidth/11 + width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, -(team2_3PointerPerc)*lineHeight - moveUp + moveDown);
-    rect(lineBase_w + 2*(lineWidth/11) + 3*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14 , -(team2_fieldGoalPerc)*lineHeight - moveUp + moveDown);
+    rect(lineBase_w + 2*(lineWidth/11) + 3*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, -(team2_fieldGoalPerc)*lineHeight - moveUp + moveDown);
     rect(lineBase_w + 3*(lineWidth/11) + 5*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, -(team2_freeThrowPerc)*lineHeight - moveUp + moveDown);
 
     //        if (velocity1 < -(score/100)*lineHeight) {
@@ -274,8 +274,6 @@ void draw() {
     //        
     //        velocity1 -= 0.1;
     //        velocity2 -= 0.1;
-    
-    
   }
 }
 
@@ -296,6 +294,7 @@ void mousePressed() {
       season = "2013";
     } else season = "2014";
   }
+  redraw();
 }
 
 void onKetaiListSelection(KetaiList klist) {
@@ -313,6 +312,7 @@ void onKetaiListSelection(KetaiList klist) {
   }
   team1_pressed = false;
   team2_pressed = false;
+  redraw();
 }
 
 void onClickWidget(APWidget widget) {
@@ -335,15 +335,16 @@ void onClickWidget(APWidget widget) {
       // required for calling network on newer versions of android
       StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
       StrictMode.setThreadPolicy(policy);
-      
+
       team1_obj = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team1), season);
       team2_obj = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team2), season);
       team1_obj.setTeamName(team1);
       team2_obj.setTeamName(team2);    
-      
+
       mode = 1;
       widgetContainer_Graphs.show();
       widgetContainer_SubmitTeams.hide();
+
     }
   }
   //BUTTONS OF MODE1
@@ -356,6 +357,7 @@ void onClickWidget(APWidget widget) {
     widgetContainer_SubmitTeams.show();
     fill(255);
   }
+  redraw();  
 }
 
 NBAGameSummary getNBAGameSummary(String gameID) {
@@ -506,8 +508,10 @@ NBATeam getNBATeamSeasonTotalStats(String teamID, String year) {
   // get season total stats
   XML teamXML = xml.getChild("team");
   XML teamRecordsXML = teamXML.getChild("team_records");
+  XML playerRecordsXML = teamXML.getChild("player_records");
   XML overallXML = teamRecordsXML.getChild("overall");
   XML totalXML = overallXML.getChild("total");
+  XML [] player = playerRecordsXML.getChildren("player");
 
   // parse data to the Team object
   String teamName = teamXML.getString("market") + " " + teamXML.getString("name");
@@ -548,8 +552,10 @@ NBATeam getNBATeamSeasonTotalStats(String teamID, String year) {
   turnovers, steals, blocks, personalFouls, techFouls, points, fastBreakPoints, paintPts, flagrantFouls, 
   pointsOffTurnovers, secondChancePoints, freeThrowsPct, twoPointsPct, threePointsPct, fieldGoalsPct, 
   rebounds, assistsTurnoverRatio, twoPointsMade, twoPointsAtt);
-
-  //println(team.toString());
+  
+  for (int i = 0; i < player.length; i++) {
+    team.players.put(player[i].getString("full_name"), player[i].getString("id"));
+  }
 
   return team;
 }
@@ -566,7 +572,6 @@ NBAPlayer getNBAPlayerStats(String playerID, String year) {
   println("URI is: " + URI);
   xml = loadXML(URI);
   NBAPlayer player;
-  boolean NBAPlayerInit = false;
 
   String id = xml.getString("id");
   String fullName = xml.getString("full_name");
@@ -621,8 +626,6 @@ NBAPlayer getNBAPlayerStats(String playerID, String year) {
       threePointsPct, fieldGoalsPct, rebounds, assistsTurnoverRatio, twoPointsMade, 
       twoPointsAtt);
 
-      // exit loop since data is already found
-      NBAPlayerInit = true;
       return player;
     }
   }
@@ -707,12 +710,11 @@ boolean checkIfFileExists(String path) {
   }
 }
 
-void moveGraph (int left, int right, int up, int down){
+void moveGraph (int left, int right, int up, int down) {
 
   moveLeft = left;
   moveRight = right;
   moveUp = up;
   moveDown = down;
-
 }
 
