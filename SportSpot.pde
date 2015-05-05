@@ -5,7 +5,7 @@ import ketai.ui.*;
 import android.os.StrictMode; 
 
 // globals
-int mode = 0;
+int mode = 4;
 XML xml;
 
 // keys
@@ -15,7 +15,13 @@ String MLBkey = "4nfwbpjthrsfsaeeh73szu8j";
 //selectionlists for team1 & team2 in mode0
 KetaiList selectionlist;
 KetaiList selectionlist2;
+
+//playerlists for player1 & player2 in mode4
+KetaiList playerlist;
+KetaiList playerlist2;
+
 ArrayList<String> teams = new ArrayList<String>();
+ArrayList<String> players = new ArrayList<String>();
 
 //widget containers and buttons for team selection in mode0
 APWidgetContainer widgetContainer_SubmitTeams;
@@ -24,6 +30,10 @@ APButton button_submit, button_team1, button_team2;
 //widget containers and buttons for graphs in mode1
 APWidgetContainer widgetContainer_Graphs;
 APButton button_BarGraphs, button_LineGraphs, button_Statistics, button_BackM1, button_NextM1;
+
+//widget containers and buttons for mode4
+APWidgetContainer widgetContainer_SubmitPlayers;
+APButton button_submit4, button_player1, button_player2;
 
 /*
   GRAPHS INCLUDED:
@@ -36,13 +46,21 @@ String team1 = "Team 1";
 String team2 = "Team 2";
 String season = "2014";
 
+String player1 = "Player 1";
+String player2 = "Player 2";
+
 NBATeam team1_obj;
 NBATeam team2_obj;
 
+NBAPlayer player1_obj;
+NBAPlayer player2_obj;
+
 //variables for mode0
-String selection = "Team ";
+String selection = "";
 boolean team1_pressed = false;
 boolean team2_pressed = false;
+boolean player1_pressed = false;
+boolean player2_pressed = false;
 
 int ThreePointPerc;
 int FieldGoalsPerc;
@@ -70,8 +88,8 @@ int moveDown;
 
 void setup() {
   orientation(LANDSCAPE);
-  frameRate(60);  
-  //noLoop();
+  //frameRate(15);  
+  noLoop();
   println("START SETUP");
 
   //adding teams to teams ArrayList
@@ -106,6 +124,10 @@ void setup() {
   teams.add("Warriors");
   teams.add("Wizards");
 
+  //adding players to players ArrayList
+  players.add("Stephen Curry");
+  players.add("Lebron James");
+
   //widget container for buttons in mode0
   widgetContainer_SubmitTeams = new APWidgetContainer(this); 
   //creating & adding buttons for mode0
@@ -134,6 +156,19 @@ void setup() {
   widgetContainer_Graphs.addWidget(button_NextM1);
   widgetContainer_SubmitTeams.show();
   widgetContainer_Graphs.hide();
+
+  //widget container for buttons in mode4
+  widgetContainer_SubmitPlayers = new APWidgetContainer(this);
+  button_submit4 = new APButton(width/2 - width/12, height - height/4, width/6, height/6, "Submit");
+  button_player1 = new APButton(width/12, height/9, width/4, height/7, "Select Player 1");
+  button_player2 = new APButton(width - width/12 - width/4, height/9, width/4, height/7, "Select Player 2");
+  button_submit4.setTextSize(20);
+  button_player1.setTextSize(18);
+  button_player2.setTextSize(18);
+  widgetContainer_SubmitPlayers.addWidget(button_submit4);
+  widgetContainer_SubmitPlayers.addWidget(button_player1);
+  widgetContainer_SubmitPlayers.addWidget(button_player2);
+  //widgetContainer_SubmitPlayers.hide();
 
   /*
   // ****** START OF TESTS / EXAMPLES ******
@@ -264,7 +299,7 @@ void draw() {
     rect(lineBase_w + (lineWidth/11 + width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, -(team2_3PointerPerc)*lineHeight - moveUp + moveDown);
     rect(lineBase_w + 2*(lineWidth/11) + 3*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, -(team2_fieldGoalPerc)*lineHeight - moveUp + moveDown);
     rect(lineBase_w + 3*(lineWidth/11) + 5*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, -(team2_freeThrowPerc)*lineHeight - moveUp + moveDown);
-    
+
 
     //        if (velocity1 < -(score/100)*lineHeight) {
     //          fill(255, 51, 51);
@@ -278,7 +313,7 @@ void draw() {
     //        velocity1 -= 0.1;
     //        velocity2 -= 0.1;
   }
-  
+
   //Mode 2 PER game statistics
   else if (mode == 2) {
     background(0, 0, 80);
@@ -351,7 +386,7 @@ void draw() {
     rect(lineBase_w + 2*(lineWidth/11) + 3*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, - (team2_Assists)*lineHeight - moveUp + moveDown);
     rect(lineBase_w + 3*(lineWidth/11) + 5*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, - (team2_Turnovers)*lineHeight - moveUp + moveDown);
   }
-  
+
   //Mode 3 displays where points come from
   else if (mode == 3) {
     background(0, 0, 80);
@@ -424,6 +459,104 @@ void draw() {
     rect(lineBase_w + 2*(lineWidth/11) + 3*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, - (team2_fastBreakPts)*lineHeight - moveUp + moveDown);
     rect(lineBase_w + 3*(lineWidth/11) + 5*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, - (team2_secondChancePts)*lineHeight - moveUp + moveDown);
   }
+  // mode 4 - PLAYER SELECTIONS & SUBMISSIONS 
+  else if (mode == 4) {
+    background(0, 0, 80);
+    textAlign(CENTER);
+
+    fill(255);
+
+    textSize(65);
+    text(player1, width/2, height/2 - height/8);
+    text(player2, width/2, height/2 + height/8);
+    textSize(50);
+    text("vs.", width/2, height/2);
+    textSize(70);
+    text("SEASON", width/2, height/9 - 20);
+    text(season, width/2, height/9 + 90);
+
+    //selections triangles for SEASON
+    triangle(width/2 + 150, height/9 + 40, 
+    width/2 + 150, height/9 + 90, 
+    width/2 + 200, height/9 + 65);
+    triangle(width/2 - 150, height/9 + 40, 
+    width/2 - 150, height/9 + 90, 
+    width/2 - 200, height/9 + 65);
+  }
+  // mode 5 - PLAYER COMPARISONS
+  else if (mode == 5) {
+    background(0, 0, 80);
+
+    float lineBase_h = height-height/3;
+    float lineBase_w = width/6;
+    float lineTop_h = height - 100;
+    float lineWidth = 2*(width/3);
+    float lineHeight = height-(height/3)-100;
+
+    moveGraph(0, 80, 0, 50);
+
+    //creating x- and y-axis for the bar graphs
+    stroke(255);
+    fill(255);
+    strokeWeight(10);
+    line(width/6 - moveLeft + moveRight, height-height/3 - moveUp + moveDown, width-(width/6) - moveLeft + moveRight, height-height/3 - moveUp + moveDown);
+    line(width/6 - moveLeft + moveRight, height-height/3 - moveUp + moveDown, width/6 - moveLeft + moveRight, 100 - moveUp + moveDown);
+    //creating short lines to divide the y-axis to 10 parts
+    strokeWeight(5);
+    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - ((height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - ((height-height/3 - 100)/10) - moveUp + moveDown);
+    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (2*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (2*(height-height/3 - 100)/10) - moveUp + moveDown);
+    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (3*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (3*(height-height/3 - 100)/10) - moveUp + moveDown);
+    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (4*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (4*(height-height/3 - 100)/10) - moveUp + moveDown);
+    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (5*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (5*(height-height/3 - 100)/10) - moveUp + moveDown);
+    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (6*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (6*(height-height/3 - 100)/10) - moveUp + moveDown);
+    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (7*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (7*(height-height/3 - 100)/10) - moveUp + moveDown);
+    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (8*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (8*(height-height/3 - 100)/10) - moveUp + moveDown);
+    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (9*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (9*(height-height/3 - 100)/10) - moveUp + moveDown);
+
+    text("0", width/6 - 60 - moveLeft + moveRight, height-height/3 + 18 - moveUp + moveDown);
+    text("50", width/6 - 70 - moveLeft + moveRight, (height-height/3) - (5*(height-height/3 - 100)/10) + 18 - moveUp + moveDown);
+    text("100", width/6 - 70 - moveLeft + moveRight, (height-height/3) - (10*(height-height/3 - 100)/10) + 18 - moveUp + moveDown);
+
+    fill(255);
+    textSize(60);
+    text("PLAYER SEASON STATISTICS", width/2 - moveLeft + moveRight, height/14 - moveUp + moveDown);
+
+    textSize(40);
+    text(player1_obj.getFullName(), width/14, height/4);
+    text(player2_obj.getFullName(), width/14, height/2);
+    fill(255, 51, 51);   
+    rect(width/20, height/4 + height/20, width/22, height/16); 
+    fill(255, 153, 51);
+    rect(width/20, height/2 + height/20, width/22, height/16); 
+
+    float player1_3PointerPerc = player1_obj.getThreePointsPct();
+    float player2_3PointerPerc = player2_obj.getThreePointsPct();   
+    float player1_fieldGoalPerc = player1_obj.getFieldGoalsPct();
+    float player2_fieldGoalPerc = player2_obj.getFieldGoalsPct();   
+    float player1_freeThrowPerc = player1_obj.getFreeThrowsPct();
+    float player2_freeThrowPerc = player2_obj.getFreeThrowsPct();
+
+    //first bar graphs
+
+    //bar graph bottom titles
+    fill(255);
+    textSize(50);
+    text("3 Pointers %", lineBase_w + lineWidth/11 + width/14 - moveLeft + moveRight, lineBase_h+70 - moveUp + moveDown);
+    text("Field Goals %", lineBase_w + 2*(lineWidth/11) + 3*(width/14) - moveLeft + moveRight, lineBase_h+70 - moveUp + moveDown);
+    text("Free Throws %", lineBase_w + 3*(lineWidth/11) + 5*(width/14) - moveLeft + moveRight, lineBase_h+70 - moveUp + moveDown);
+
+    //player1 bars
+    fill(255, 51, 51);
+    rect(lineBase_w + (lineWidth/11) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, - (player1_3PointerPerc)*lineHeight - moveUp + moveDown);
+    rect(lineBase_w + 2*(lineWidth/11) + 2*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, - (player1_fieldGoalPerc)*lineHeight - moveUp + moveDown);
+    rect(lineBase_w + 3*(lineWidth/11) + 4*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, - (player1_freeThrowPerc)*lineHeight - moveUp + moveDown);
+
+    //player2 bars
+    fill(255, 153, 51);
+    rect(lineBase_w + (lineWidth/11 + width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, - (player2_3PointerPerc)*lineHeight - moveUp + moveDown);
+    rect(lineBase_w + 2*(lineWidth/11) + 3*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, - (player2_fieldGoalPerc)*lineHeight - moveUp + moveDown);
+    rect(lineBase_w + 3*(lineWidth/11) + 5*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, - (player2_freeThrowPerc)*lineHeight - moveUp + moveDown);
+  }
 }
 
 void mousePressed() {
@@ -443,6 +576,7 @@ void mousePressed() {
       season = "2013";
     } else season = "2014";
   }
+  redraw();
 }
 
 void onKetaiListSelection(KetaiList klist) {
@@ -456,15 +590,22 @@ void onKetaiListSelection(KetaiList klist) {
       team1 = selection;
     } else if (team2_pressed) {
       team2 = selection;
+    } else if (player1_pressed) {
+      player1 = selection;
+    } else if (player2_pressed) {
+      player2 = selection;
     }
   }
   team1_pressed = false;
   team2_pressed = false;
+  player1_pressed = false;
+  player2_pressed = false;
+  redraw();
 }
 
 void onClickWidget(APWidget widget) {
 
-  //BUTTONS OF MODE0
+  //BUTTONS OF MODE0 
   if (widget == button_team1) {    
     selectionlist = new KetaiList(this, teams);
     team1_pressed = true;
@@ -493,6 +634,7 @@ void onClickWidget(APWidget widget) {
       widgetContainer_SubmitTeams.hide();
     }
   }
+
   //BUTTONS OF MODE1
   else if (widget == button_BarGraphs) {
   } else if (widget == button_LineGraphs) {
@@ -501,9 +643,7 @@ void onClickWidget(APWidget widget) {
     widgetContainer_Graphs.hide();
     widgetContainer_SubmitTeams.show();
     fill(255);
-  }
-  
-  else if (widget == button_BackM1) {
+  } else if (widget == button_BackM1) {
     if (mode == 1) {
       mode = 0;
       widgetContainer_Graphs.hide();
@@ -518,6 +658,7 @@ void onClickWidget(APWidget widget) {
     }
   }
 
+  //Next button changes modes
   if (widget == button_NextM1) {  
     if (mode == 1) {
       mode = 2;
@@ -526,6 +667,36 @@ void onClickWidget(APWidget widget) {
     }
     widgetContainer_Graphs.show();
   }
+
+  //BUTTONS OF MODE4
+  if (widget == button_player1) {    
+    playerlist = new KetaiList(this, players);
+    player1_pressed = true;
+  } else if (widget == button_player2) {
+    playerlist2 = new KetaiList(this, players);
+    player2_pressed = true;
+  } else if (widget == button_submit4) {
+    if (player1 == player2) {
+      KetaiAlertDialog.popup(this, "Nice try...", "Please choose two different players.");
+    } else if ((player1 == "Player 1") || (player2 == "Player 2")) {
+      KetaiAlertDialog.popup(this, "Not ready yet!", "Make sure you pick 2 players.");
+    } else {
+      // required for calling network on newer versions of android
+      StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+      StrictMode.setThreadPolicy(policy);
+
+      player1_obj = getNBAPlayerStats(Database.playerNameAndIDHash.get(player1), season);
+      player2_obj = getNBAPlayerStats(Database.playerNameAndIDHash.get(player2), season);
+      player1_obj.setFullName(player1);
+      player2_obj.setFullName(player2);    
+
+      mode = 5;
+      widgetContainer_Graphs.show();
+      widgetContainer_SubmitPlayers.hide();
+      widgetContainer_SubmitTeams.hide();
+    }
+  }
+  redraw();
 }
 
 NBAGameSummary getNBAGameSummary(String gameID) {
