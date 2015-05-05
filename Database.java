@@ -3,8 +3,9 @@ import java.util.Map;
 
 public class Database {
   public static final Map<String, String> teamNameAndIDHash = new HashMap<String, String>();
-  
-  static{
+  public static final Map<String, String> playerNameAndIDHash = new HashMap<String, String>();
+
+  static {
     // ******* START OF TEAM NAME AND IDs *******
     // EASTERN CONFFERENCE
     // South East
@@ -50,6 +51,9 @@ public class Database {
     teamNameAndIDHash.put("Suns", "583ecfa8-fb46-11e1-82cb-f4ce4684ea4c");
     teamNameAndIDHash.put("Kings", "583ed0ac-fb46-11e1-82cb-f4ce4684ea4c");
     // ******* END OF TEAM NAME AND IDs *******
+    //*** Adding players for testing *** 
+    playerNameAndIDHash.put("Stephen Curry", "8ec91366-faea-4196-bbfd-b8fab7434795");
+    playerNameAndIDHash.put("Lebron James", "0afbe608-940a-4d5d-a1f7-468718c67d91");
   }
 
   @Override
