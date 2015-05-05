@@ -73,10 +73,8 @@ float score14 = 14;
 float score81 = 81;
 float score55 = 55;
 
-int moveLeft;
-int moveRight;
-int moveUp;
-int moveDown;
+int moveHorizontal;
+int moveVertical;
 
 /*
   COMPLETE WORKING METHODS SO FAR
@@ -146,7 +144,8 @@ void setup() {
   //creating & adding buttons for mode1
   button_BarGraphs  = new APButton(width/2 - width/4 - width/12, height - height/6, "Bar Graphs");
   button_LineGraphs = new APButton(width/2 - width/12, height - height/6, "Line Graphs");
-  button_Statistics = new APButton(width/2 + width/4 - width/12, height - height/6, "    ?    ");
+  button_Statistics = new APButton(width/2 + width/4 - width/12, height - height/6, "    Teams
+  ");
   button_BackM1 = new APButton(width - width/8, height/18, "  Back  ");
   button_NextM1 = new APButton(width - width/8, height/5, " Next ");
   widgetContainer_Graphs.addWidget(button_BarGraphs);
@@ -234,35 +233,37 @@ void draw() {
     float lineBase_w = width/6;
     float lineTop_h = height - 100;
     float lineWidth = 2*(width/3);
-    float lineHeight = height-(height/3)-100;
+    float lineHeight = 2*(height/3)-100;
 
-    moveGraph(0, 80, 0, 50);
+    moveGraph(65, 55);
 
     //creating x- and y-axis for the bar graphs
     stroke(255);
     fill(255);
     strokeWeight(10);
-    line(width/6 - moveLeft + moveRight, height-height/3 - moveUp + moveDown, width-(width/6) - moveLeft + moveRight, height-height/3 - moveUp + moveDown);
-    line(width/6 - moveLeft + moveRight, height-height/3 - moveUp + moveDown, width/6 - moveLeft + moveRight, 100 - moveUp + moveDown);
+    line(width/6 + moveHorizontal, height-height/3 + moveVertical, width-(width/6) + moveHorizontal, height-height/3 + moveVertical);
+    line(width/6 + moveHorizontal, height-height/3 + moveVertical, width/6 + moveHorizontal, 100 + moveVertical);
+
     //creating short lines to divide the y-axis to 10 parts
     strokeWeight(5);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - ((height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - ((height-height/3 - 100)/10) - moveUp + moveDown);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (2*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (2*(height-height/3 - 100)/10) - moveUp + moveDown);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (3*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (3*(height-height/3 - 100)/10) - moveUp + moveDown);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (4*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (4*(height-height/3 - 100)/10) - moveUp + moveDown);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (5*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (5*(height-height/3 - 100)/10) - moveUp + moveDown);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (6*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (6*(height-height/3 - 100)/10) - moveUp + moveDown);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (7*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (7*(height-height/3 - 100)/10) - moveUp + moveDown);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (8*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (8*(height-height/3 - 100)/10) - moveUp + moveDown);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (9*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (9*(height-height/3 - 100)/10) - moveUp + moveDown);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - ((height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - ((height-height/3 - 100)/10) + moveVertical);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - (2*(height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - (2*(height-height/3 - 100)/10) + moveVertical);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - (3*(height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - (3*(height-height/3 - 100)/10) + moveVertical);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - (4*(height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - (4*(height-height/3 - 100)/10) + moveVertical);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - (5*(height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - (5*(height-height/3 - 100)/10) + moveVertical);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - (6*(height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - (6*(height-height/3 - 100)/10) + moveVertical);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - (7*(height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - (7*(height-height/3 - 100)/10) + moveVertical);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - (8*(height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - (8*(height-height/3 - 100)/10) + moveVertical);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - (9*(height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - (9*(height-height/3 - 100)/10) + moveVertical);
 
-    text("0", width/6 - 60 - moveLeft + moveRight, height-height/3 + 18 - moveUp + moveDown);
-    text("50", width/6 - 70 - moveLeft + moveRight, (height-height/3) - (5*(height-height/3 - 100)/10) + 18 - moveUp + moveDown);
-    text("100", width/6 - 70 - moveLeft + moveRight, (height-height/3) - (10*(height-height/3 - 100)/10) + 18 - moveUp + moveDown);
+    textSize(50);
+    text("0", width/6 - 60 + moveHorizontal, height-height/3 + 18 + moveVertical);
+    text("50", width/6 - 70 + moveHorizontal, (height-height/3) - (5*(height-height/3 - 100)/10) + 18 + moveVertical);
+    text("100", width/6 - 70 + moveHorizontal, (height-height/3) - (10*(height-height/3 - 100)/10) + 18 + moveVertical);
 
     fill(255);
     textSize(60);
-    text("SEASON STATISTICS", width/2 - moveLeft + moveRight, height/14 - moveUp + moveDown);
+    text("SEASON STATISTICS", width/2 + moveHorizontal, height/26 + moveVertical);
 
     textSize(40);
     text(team1_obj.getTeamName(), width/14, height/4);
@@ -279,39 +280,35 @@ void draw() {
     float team1_freeThrowPerc = team1_obj.getFreeThrowsPct();
     float team2_freeThrowPerc = team2_obj.getFreeThrowsPct();
 
-    //first bar graphs
-
     //bar graph bottom titles
     fill(255);
     textSize(50);
-    text("3 Pointers %", lineBase_w + lineWidth/11 + width/14 - moveLeft + moveRight, lineBase_h+70 - moveUp + moveDown);
-    text("Field Goals %", lineBase_w + 2*(lineWidth/11) + 3*(width/14) - moveLeft + moveRight, lineBase_h+70 - moveUp + moveDown);
-    text("Free Throws %", lineBase_w + 3*(lineWidth/11) + 5*(width/14) - moveLeft + moveRight, lineBase_h+70 - moveUp + moveDown);
+    text("3 Pointers %", lineBase_w + lineWidth/11 + width/14 + moveHorizontal, lineBase_h+70 + moveVertical);
+    text("Field Goals %", lineBase_w + 2*(lineWidth/11) + 3*(width/14) + moveHorizontal, lineBase_h+70 + moveVertical);
+    text("Free Throws %", lineBase_w + 3*(lineWidth/11) + 5*(width/14) + moveHorizontal, lineBase_h+70 + moveVertical);
+
+    //results presented on top of the bars (as numbers)
+    textSize(40);
+    text(String.format("%.1f", team1_3PointerPerc*100), lineBase_w + lineWidth/11 + width/28 + moveHorizontal, lineBase_h-(team1_3PointerPerc)*lineHeight + moveVertical - 10);
+    text(String.format("%.1f", team2_3PointerPerc*100), lineBase_w + lineWidth/11 + width/14 + width/28 + moveHorizontal, lineBase_h-(team2_3PointerPerc)*lineHeight + moveVertical - 10);
+
+    text(String.format("%.1f", team1_fieldGoalPerc*100), lineBase_w + 2*(lineWidth/11) + 3*(width/14) - width/28 + moveHorizontal, lineBase_h-(team1_fieldGoalPerc)*lineHeight + moveVertical - 10);
+    text(String.format("%.1f", team2_fieldGoalPerc*100), lineBase_w + 2*(lineWidth/11) + 3*(width/14) + width/28 + moveHorizontal, lineBase_h-(team2_fieldGoalPerc)*lineHeight + moveVertical - 10);
+
+    text(String.format("%.1f", team1_freeThrowPerc*100), lineBase_w + 3*(lineWidth/11) + 5*(width/14) - width/28 + moveHorizontal, lineBase_h-(team1_freeThrowPerc)*lineHeight + moveVertical  - 10);
+    text(String.format("%.1f", team2_freeThrowPerc*100), lineBase_w + 3*(lineWidth/11) + 5*(width/14) + width/28 + moveHorizontal, lineBase_h-(team2_freeThrowPerc)*lineHeight + moveVertical - 10);
 
     //team1 bars
     fill(255, 51, 51);
-    rect(lineBase_w + (lineWidth/11) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, -(team1_3PointerPerc)*lineHeight - moveUp + moveDown);
-    rect(lineBase_w + 2*(lineWidth/11) + 2*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, -(team1_fieldGoalPerc)*lineHeight - moveUp + moveDown);
-    rect(lineBase_w + 3*(lineWidth/11) + 4*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, -(team1_freeThrowPerc)*lineHeight - moveUp + moveDown);
+    rect(lineBase_w + (lineWidth/11) + moveHorizontal, lineBase_h + moveVertical, width/14, -(team1_3PointerPerc)*lineHeight);
+    rect(lineBase_w + 2*(lineWidth/11) + 2*(width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(team1_fieldGoalPerc)*lineHeight);
+    rect(lineBase_w + 3*(lineWidth/11) + 4*(width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(team1_freeThrowPerc)*lineHeight);
 
     //team2 bars
     fill(255, 153, 51);
-    rect(lineBase_w + (lineWidth/11 + width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, -(team2_3PointerPerc)*lineHeight - moveUp + moveDown);
-    rect(lineBase_w + 2*(lineWidth/11) + 3*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, -(team2_fieldGoalPerc)*lineHeight - moveUp + moveDown);
-    rect(lineBase_w + 3*(lineWidth/11) + 5*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, -(team2_freeThrowPerc)*lineHeight - moveUp + moveDown);
-
-
-    //        if (velocity1 < -(score/100)*lineHeight) {
-    //          fill(255, 51, 51);
-    //          rect(lineBase_w + (lineWidth/9), lineBase_h, width/12, velocity1);
-    //        }
-    //        if (velocity2 < -(score2/100)*lineHeight) {
-    //          fill(255, 153, 51);
-    //          rect(lineBase_w + (lineWidth/9 + width/12), lineBase_h, width/12, velocity2);
-    //        }  
-    //        
-    //        velocity1 -= 0.1;
-    //        velocity2 -= 0.1;
+    rect(lineBase_w + (lineWidth/11 + width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(team2_3PointerPerc)*lineHeight);
+    rect(lineBase_w + 2*(lineWidth/11) + 3*(width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(team2_fieldGoalPerc)*lineHeight);
+    rect(lineBase_w + 3*(lineWidth/11) + 5*(width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(team2_freeThrowPerc)*lineHeight);
   }
 
   //Mode 2 PER game statistics
@@ -322,35 +319,37 @@ void draw() {
     float lineBase_w = width/6;
     float lineTop_h = height - 100;
     float lineWidth = 2*(width/3);
-    float lineHeight = height-(height/3)-100;
+    float lineHeight = 2*(height/3)-100;
 
-    moveGraph(0, 80, 0, 50);
+    moveGraph(65, 55);
 
     //creating x- and y-axis for the bar graphs
     stroke(255);
     fill(255);
     strokeWeight(10);
-    line(width/6 - moveLeft + moveRight, height-height/3 - moveUp + moveDown, width-(width/6) - moveLeft + moveRight, height-height/3 - moveUp + moveDown);
-    line(width/6 - moveLeft + moveRight, height-height/3 - moveUp + moveDown, width/6 - moveLeft + moveRight, 100 - moveUp + moveDown);
+    line(width/6 + moveHorizontal, height-height/3 + moveVertical, width-(width/6) + moveHorizontal, height-height/3 + moveVertical);
+    line(width/6 + moveHorizontal, height-height/3 + moveVertical, width/6 + moveHorizontal, 100 + moveVertical);
+
     //creating short lines to divide the y-axis to 10 parts
     strokeWeight(5);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - ((height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - ((height-height/3 - 100)/10) - moveUp + moveDown);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (2*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (2*(height-height/3 - 100)/10) - moveUp + moveDown);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (3*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (3*(height-height/3 - 100)/10) - moveUp + moveDown);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (4*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (4*(height-height/3 - 100)/10) - moveUp + moveDown);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (5*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (5*(height-height/3 - 100)/10) - moveUp + moveDown);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (6*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (6*(height-height/3 - 100)/10) - moveUp + moveDown);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (7*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (7*(height-height/3 - 100)/10) - moveUp + moveDown);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (8*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (8*(height-height/3 - 100)/10) - moveUp + moveDown);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (9*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (9*(height-height/3 - 100)/10) - moveUp + moveDown);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - ((height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - ((height-height/3 - 100)/10) + moveVertical);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - (2*(height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - (2*(height-height/3 - 100)/10) + moveVertical);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - (3*(height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - (3*(height-height/3 - 100)/10) + moveVertical);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - (4*(height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - (4*(height-height/3 - 100)/10) + moveVertical);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - (5*(height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - (5*(height-height/3 - 100)/10) + moveVertical);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - (6*(height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - (6*(height-height/3 - 100)/10) + moveVertical);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - (7*(height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - (7*(height-height/3 - 100)/10) + moveVertical);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - (8*(height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - (8*(height-height/3 - 100)/10) + moveVertical);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - (9*(height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - (9*(height-height/3 - 100)/10) + moveVertical);
 
-    text("0", width/6 - 60 - moveLeft + moveRight, height-height/3 + 18 - moveUp + moveDown);
-    text("50", width/6 - 70 - moveLeft + moveRight, (height-height/3) - (5*(height-height/3 - 100)/10) + 18 - moveUp + moveDown);
-    text("100", width/6 - 70 - moveLeft + moveRight, (height-height/3) - (10*(height-height/3 - 100)/10) + 18 - moveUp + moveDown);
+    textSize(50);
+    text("0", width/6 - 60 + moveHorizontal, height-height/3 + 18 + moveVertical);
+    text("50", width/6 - 70 + moveHorizontal, (height-height/3) - (5*(height-height/3 - 100)/10) + 18 + moveVertical);
+    text("100", width/6 - 70 + moveHorizontal, (height-height/3) - (10*(height-height/3 - 100)/10) + 18 + moveVertical);
 
     fill(255);
     textSize(60);
-    text("PER GAME STATISTICS", width/2 - moveLeft + moveRight, height/14 - moveUp + moveDown);
+    text("PER GAME STATISTICS", width/2 + moveHorizontal, height/26 + moveVertical);
 
     textSize(40);
     text(team1_obj.getTeamName(), width/14, height/4);
@@ -370,21 +369,32 @@ void draw() {
     //bar graph bottom titles
     fill(255);
     textSize(50);
-    text("Rebounds", lineBase_w + lineWidth/11 + width/14 - moveLeft + moveRight, lineBase_h+70 - moveUp + moveDown);
-    text("Assists", lineBase_w + 2*(lineWidth/11) + 3*(width/14) - moveLeft + moveRight, lineBase_h+70 - moveUp + moveDown);
-    text("Turnovers", lineBase_w + 3*(lineWidth/11) + 5*(width/14) - moveLeft + moveRight, lineBase_h+70 - moveUp + moveDown);
+    text("Rebounds", lineBase_w + lineWidth/11 + width/14 + moveHorizontal, lineBase_h+70 + moveVertical);
+    text("Assists", lineBase_w + 2*(lineWidth/11) + 3*(width/14) + moveHorizontal, lineBase_h+70 + moveVertical);
+    text("Turnovers", lineBase_w + 3*(lineWidth/11) + 5*(width/14) + moveHorizontal, lineBase_h+70 + moveVertical);
+
+    //results presented on top of the bars (as numbers)
+    textSize(40);
+    text(String.format("%.1f", team1_Rebounds*100), lineBase_w + lineWidth/11 + width/28 + moveHorizontal, lineBase_h-(team1_Rebounds)*lineHeight + moveVertical - 10);
+    text(String.format("%.1f", team2_Rebounds*100), lineBase_w + lineWidth/11 + width/14 + width/28 + moveHorizontal, lineBase_h-(team2_Rebounds)*lineHeight + moveVertical - 10);
+
+    text(String.format("%.1f", team1_Assists*100), lineBase_w + 2*(lineWidth/11) + 3*(width/14) - width/28 + moveHorizontal, lineBase_h-(team1_Assists)*lineHeight + moveVertical - 10);
+    text(String.format("%.1f", team2_Assists*100), lineBase_w + 2*(lineWidth/11) + 3*(width/14) + width/28 + moveHorizontal, lineBase_h-(team2_Assists)*lineHeight + moveVertical - 10);
+
+    text(String.format("%.1f", team1_Turnovers*100), lineBase_w + 3*(lineWidth/11) + 5*(width/14) - width/28 + moveHorizontal, lineBase_h-(team1_Turnovers)*lineHeight + moveVertical  - 10);
+    text(String.format("%.1f", team2_Turnovers*100), lineBase_w + 3*(lineWidth/11) + 5*(width/14) + width/28 + moveHorizontal, lineBase_h-(team2_Turnovers)*lineHeight + moveVertical - 10);
 
     //team1 bars
     fill(255, 51, 51);
-    rect(lineBase_w + (lineWidth/11) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, - (team1_Rebounds)*lineHeight - moveUp + moveDown);
-    rect(lineBase_w + 2*(lineWidth/11) + 2*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, - (team1_Assists)*lineHeight - moveUp + moveDown);
-    rect(lineBase_w + 3*(lineWidth/11) + 4*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, - (team1_Turnovers)*lineHeight - moveUp + moveDown);
+    rect(lineBase_w + (lineWidth/11) + moveHorizontal, lineBase_h + moveVertical, width/14, -(team1_Rebounds)*lineHeight);
+    rect(lineBase_w + 2*(lineWidth/11) + 2*(width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(team1_Assists)*lineHeight);
+    rect(lineBase_w + 3*(lineWidth/11) + 4*(width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(team1_Turnovers)*lineHeight);
 
     //team2 bars
     fill(255, 153, 51);
-    rect(lineBase_w + (lineWidth/11 + width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, - (team2_Rebounds)*lineHeight - moveUp + moveDown);
-    rect(lineBase_w + 2*(lineWidth/11) + 3*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, - (team2_Assists)*lineHeight - moveUp + moveDown);
-    rect(lineBase_w + 3*(lineWidth/11) + 5*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, - (team2_Turnovers)*lineHeight - moveUp + moveDown);
+    rect(lineBase_w + (lineWidth/11 + width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(team2_Rebounds)*lineHeight);
+    rect(lineBase_w + 2*(lineWidth/11) + 3*(width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(team2_Assists)*lineHeight);
+    rect(lineBase_w + 3*(lineWidth/11) + 5*(width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(team2_Turnovers)*lineHeight);
   }
 
   //Mode 3 displays where points come from
@@ -395,35 +405,37 @@ void draw() {
     float lineBase_w = width/6;
     float lineTop_h = height - 100;
     float lineWidth = 2*(width/3);
-    float lineHeight = height-(height/3)-100;
+    float lineHeight = 2*(height/3)-100;
 
-    moveGraph(0, 80, 0, 50);
+    moveGraph(65, 55);
 
     //creating x- and y-axis for the bar graphs
     stroke(255);
     fill(255);
     strokeWeight(10);
-    line(width/6 - moveLeft + moveRight, height-height/3 - moveUp + moveDown, width-(width/6) - moveLeft + moveRight, height-height/3 - moveUp + moveDown);
-    line(width/6 - moveLeft + moveRight, height-height/3 - moveUp + moveDown, width/6 - moveLeft + moveRight, 100 - moveUp + moveDown);
+    line(width/6 + moveHorizontal, height-height/3 + moveVertical, width-(width/6) + moveHorizontal, height-height/3 + moveVertical);
+    line(width/6 + moveHorizontal, height-height/3 + moveVertical, width/6 + moveHorizontal, 100 + moveVertical);
+
     //creating short lines to divide the y-axis to 10 parts
     strokeWeight(5);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - ((height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - ((height-height/3 - 100)/10) - moveUp + moveDown);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (2*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (2*(height-height/3 - 100)/10) - moveUp + moveDown);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (3*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (3*(height-height/3 - 100)/10) - moveUp + moveDown);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (4*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (4*(height-height/3 - 100)/10) - moveUp + moveDown);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (5*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (5*(height-height/3 - 100)/10) - moveUp + moveDown);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (6*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (6*(height-height/3 - 100)/10) - moveUp + moveDown);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (7*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (7*(height-height/3 - 100)/10) - moveUp + moveDown);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (8*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (8*(height-height/3 - 100)/10) - moveUp + moveDown);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (9*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (9*(height-height/3 - 100)/10) - moveUp + moveDown);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - ((height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - ((height-height/3 - 100)/10) + moveVertical);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - (2*(height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - (2*(height-height/3 - 100)/10) + moveVertical);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - (3*(height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - (3*(height-height/3 - 100)/10) + moveVertical);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - (4*(height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - (4*(height-height/3 - 100)/10) + moveVertical);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - (5*(height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - (5*(height-height/3 - 100)/10) + moveVertical);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - (6*(height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - (6*(height-height/3 - 100)/10) + moveVertical);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - (7*(height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - (7*(height-height/3 - 100)/10) + moveVertical);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - (8*(height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - (8*(height-height/3 - 100)/10) + moveVertical);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - (9*(height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - (9*(height-height/3 - 100)/10) + moveVertical);
 
-    text("0", width/6 - 60 - moveLeft + moveRight, height-height/3 + 18 - moveUp + moveDown);
-    text("50", width/6 - 70 - moveLeft + moveRight, (height-height/3) - (5*(height-height/3 - 100)/10) + 18 - moveUp + moveDown);
-    text("100", width/6 - 70 - moveLeft + moveRight, (height-height/3) - (10*(height-height/3 - 100)/10) + 18 - moveUp + moveDown);
+    textSize(50);
+    text("0", width/6 - 60 + moveHorizontal, height-height/3 + 18 + moveVertical);
+    text("50", width/6 - 70 + moveHorizontal, (height-height/3) - (5*(height-height/3 - 100)/10) + 18 + moveVertical);
+    text("100", width/6 - 70 + moveHorizontal, (height-height/3) - (10*(height-height/3 - 100)/10) + 18 + moveVertical);
 
     fill(255);
     textSize(60);
-    text("PER GAME STATISTICS", width/2 - moveLeft + moveRight, height/14 - moveUp + moveDown);
+    text("PER GAME STATISTICS", width/2 + moveHorizontal, height/26 + moveVertical);
 
     textSize(40);
     text(team1_obj.getTeamName(), width/14, height/4);
@@ -443,22 +455,34 @@ void draw() {
     //bar graph bottom titles
     fill(255);
     textSize(50);
-    text("Points", lineBase_w + lineWidth/11 + width/14 - moveLeft + moveRight, lineBase_h+70 - moveUp + moveDown);
-    text("Fast Break Pts", lineBase_w + 2*(lineWidth/11) + 3*(width/14) - moveLeft + moveRight, lineBase_h+70 - moveUp + moveDown);
-    text("2nd Chance Pts", lineBase_w + 3*(lineWidth/11) + 5*(width/14) - moveLeft + moveRight, lineBase_h+70 - moveUp + moveDown);
+    text("Points", lineBase_w + lineWidth/11 + width/14 + moveHorizontal, lineBase_h+70 + moveVertical);
+    text("Fast Break Pts", lineBase_w + 2*(lineWidth/11) + 3*(width/14) + moveHorizontal, lineBase_h+70 + moveVertical);
+    text("2nd Chance Pts", lineBase_w + 3*(lineWidth/11) + 5*(width/14) + moveHorizontal, lineBase_h+70 + moveVertical);
+
+    //results presented on top of the bars (as numbers)
+    textSize(40);
+    text(String.format("%.1f", team1_Points*100), lineBase_w + lineWidth/11 + width/28 + moveHorizontal, lineBase_h-(team1_Points)*lineHeight + moveVertical - 10);
+    text(String.format("%.1f", team2_Points*100), lineBase_w + lineWidth/11 + width/14 + width/28 + moveHorizontal, lineBase_h-(team2_Points)*lineHeight + moveVertical - 10);
+
+    text(String.format("%.1f", team1_fastBreakPts*100), lineBase_w + 2*(lineWidth/11) + 3*(width/14) - width/28 + moveHorizontal, lineBase_h-(team1_fastBreakPts)*lineHeight + moveVertical - 10);
+    text(String.format("%.1f", team2_fastBreakPts*100), lineBase_w + 2*(lineWidth/11) + 3*(width/14) + width/28 + moveHorizontal, lineBase_h-(team2_fastBreakPts)*lineHeight + moveVertical - 10);
+
+    text(String.format("%.1f", team1_secondChancePts*100), lineBase_w + 3*(lineWidth/11) + 5*(width/14) - width/28 + moveHorizontal, lineBase_h-(team1_secondChancePts)*lineHeight + moveVertical  - 10);
+    text(String.format("%.1f", team2_secondChancePts*100), lineBase_w + 3*(lineWidth/11) + 5*(width/14) + width/28 + moveHorizontal, lineBase_h-(team2_secondChancePts)*lineHeight + moveVertical - 10);
 
     //team1 bars
     fill(255, 51, 51);
-    rect(lineBase_w + (lineWidth/11) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, - (team1_Points)*lineHeight - moveUp + moveDown);
-    rect(lineBase_w + 2*(lineWidth/11) + 2*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, - (team1_fastBreakPts)*lineHeight - moveUp + moveDown);
-    rect(lineBase_w + 3*(lineWidth/11) + 4*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, - (team1_secondChancePts)*lineHeight - moveUp + moveDown);
+    rect(lineBase_w + (lineWidth/11) + moveHorizontal, lineBase_h + moveVertical, width/14, -(team1_Points)*lineHeight);
+    rect(lineBase_w + 2*(lineWidth/11) + 2*(width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(team1_fastBreakPts)*lineHeight);
+    rect(lineBase_w + 3*(lineWidth/11) + 4*(width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(team1_secondChancePts)*lineHeight);
 
     //team2 bars
     fill(255, 153, 51);
-    rect(lineBase_w + (lineWidth/11 + width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, - (team2_Points)*lineHeight - moveUp + moveDown);
-    rect(lineBase_w + 2*(lineWidth/11) + 3*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, - (team2_fastBreakPts)*lineHeight - moveUp + moveDown);
-    rect(lineBase_w + 3*(lineWidth/11) + 5*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, - (team2_secondChancePts)*lineHeight - moveUp + moveDown);
+    rect(lineBase_w + (lineWidth/11 + width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(team2_Points)*lineHeight);
+    rect(lineBase_w + 2*(lineWidth/11) + 3*(width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(team2_fastBreakPts)*lineHeight);
+    rect(lineBase_w + 3*(lineWidth/11) + 5*(width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(team2_secondChancePts)*lineHeight);
   }
+
   // mode 4 - PLAYER SELECTIONS & SUBMISSIONS 
   else if (mode == 4) {
     background(0, 0, 80);
@@ -483,6 +507,7 @@ void draw() {
     width/2 - 150, height/9 + 90, 
     width/2 - 200, height/9 + 65);
   }
+
   // mode 5 - PLAYER COMPARISONS
   else if (mode == 5) {
     background(0, 0, 80);
@@ -491,35 +516,37 @@ void draw() {
     float lineBase_w = width/6;
     float lineTop_h = height - 100;
     float lineWidth = 2*(width/3);
-    float lineHeight = height-(height/3)-100;
+    float lineHeight = 2*(height/3)-100;
 
-    moveGraph(0, 80, 0, 50);
+    moveGraph(65, 55);
 
     //creating x- and y-axis for the bar graphs
     stroke(255);
     fill(255);
     strokeWeight(10);
-    line(width/6 - moveLeft + moveRight, height-height/3 - moveUp + moveDown, width-(width/6) - moveLeft + moveRight, height-height/3 - moveUp + moveDown);
-    line(width/6 - moveLeft + moveRight, height-height/3 - moveUp + moveDown, width/6 - moveLeft + moveRight, 100 - moveUp + moveDown);
+    line(width/6 + moveHorizontal, height-height/3 + moveVertical, width-(width/6) + moveHorizontal, height-height/3 + moveVertical);
+    line(width/6 + moveHorizontal, height-height/3 + moveVertical, width/6 + moveHorizontal, 100 + moveVertical);
+
     //creating short lines to divide the y-axis to 10 parts
     strokeWeight(5);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - ((height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - ((height-height/3 - 100)/10) - moveUp + moveDown);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (2*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (2*(height-height/3 - 100)/10) - moveUp + moveDown);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (3*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (3*(height-height/3 - 100)/10) - moveUp + moveDown);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (4*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (4*(height-height/3 - 100)/10) - moveUp + moveDown);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (5*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (5*(height-height/3 - 100)/10) - moveUp + moveDown);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (6*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (6*(height-height/3 - 100)/10) - moveUp + moveDown);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (7*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (7*(height-height/3 - 100)/10) - moveUp + moveDown);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (8*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (8*(height-height/3 - 100)/10) - moveUp + moveDown);
-    line(width/6 - 20 - moveLeft + moveRight, (height-height/3) - (9*(height-height/3 - 100)/10) - moveUp + moveDown, width/6 + 20 - moveLeft + moveRight, (height-height/3) - (9*(height-height/3 - 100)/10) - moveUp + moveDown);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - ((height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - ((height-height/3 - 100)/10) + moveVertical);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - (2*(height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - (2*(height-height/3 - 100)/10) + moveVertical);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - (3*(height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - (3*(height-height/3 - 100)/10) + moveVertical);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - (4*(height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - (4*(height-height/3 - 100)/10) + moveVertical);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - (5*(height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - (5*(height-height/3 - 100)/10) + moveVertical);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - (6*(height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - (6*(height-height/3 - 100)/10) + moveVertical);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - (7*(height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - (7*(height-height/3 - 100)/10) + moveVertical);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - (8*(height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - (8*(height-height/3 - 100)/10) + moveVertical);
+    line(width/6 - 20 + moveHorizontal, (height-height/3) - (9*(height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - (9*(height-height/3 - 100)/10) + moveVertical);
 
-    text("0", width/6 - 60 - moveLeft + moveRight, height-height/3 + 18 - moveUp + moveDown);
-    text("50", width/6 - 70 - moveLeft + moveRight, (height-height/3) - (5*(height-height/3 - 100)/10) + 18 - moveUp + moveDown);
-    text("100", width/6 - 70 - moveLeft + moveRight, (height-height/3) - (10*(height-height/3 - 100)/10) + 18 - moveUp + moveDown);
+    textSize(50);
+    text("0", width/6 - 60 + moveHorizontal, height-height/3 + 18 + moveVertical);
+    text("50", width/6 - 70 + moveHorizontal, (height-height/3) - (5*(height-height/3 - 100)/10) + 18 + moveVertical);
+    text("100", width/6 - 70 + moveHorizontal, (height-height/3) - (10*(height-height/3 - 100)/10) + 18 + moveVertical);
 
     fill(255);
     textSize(60);
-    text("PLAYER SEASON STATISTICS", width/2 - moveLeft + moveRight, height/14 - moveUp + moveDown);
+    text("PLAYER STATISTICS", width/2 + moveHorizontal, height/26 + moveVertical);
 
     textSize(40);
     text(player1_obj.getFullName(), width/14, height/4);
@@ -536,28 +563,38 @@ void draw() {
     float player1_freeThrowPerc = player1_obj.getFreeThrowsPct();
     float player2_freeThrowPerc = player2_obj.getFreeThrowsPct();
 
-    //first bar graphs
-
     //bar graph bottom titles
     fill(255);
     textSize(50);
-    text("3 Pointers %", lineBase_w + lineWidth/11 + width/14 - moveLeft + moveRight, lineBase_h+70 - moveUp + moveDown);
-    text("Field Goals %", lineBase_w + 2*(lineWidth/11) + 3*(width/14) - moveLeft + moveRight, lineBase_h+70 - moveUp + moveDown);
-    text("Free Throws %", lineBase_w + 3*(lineWidth/11) + 5*(width/14) - moveLeft + moveRight, lineBase_h+70 - moveUp + moveDown);
+    text("3 Pointers %", lineBase_w + lineWidth/11 + width/14 + moveHorizontal, lineBase_h+70 + moveVertical);
+    text("Field Goals %", lineBase_w + 2*(lineWidth/11) + 3*(width/14) + moveHorizontal, lineBase_h+70 + moveVertical);
+    text("Free Throws %", lineBase_w + 3*(lineWidth/11) + 5*(width/14) + moveHorizontal, lineBase_h+70 + moveVertical);
 
-    //player1 bars
+    //results presented on top of the bars (as numbers)
+    textSize(40);
+    text(String.format("%.1f", player1_3PointerPerc*100), lineBase_w + lineWidth/11 + width/28 + moveHorizontal, lineBase_h-(player1_3PointerPerc)*lineHeight + moveVertical - 10);
+    text(String.format("%.1f", player2_3PointerPerc*100), lineBase_w + lineWidth/11 + width/14 + width/28 + moveHorizontal, lineBase_h-(player2_3PointerPerc)*lineHeight + moveVertical - 10);
+
+    text(String.format("%.1f", player1_fieldGoalPerc*100), lineBase_w + 2*(lineWidth/11) + 3*(width/14) - width/28 + moveHorizontal, lineBase_h-(player1_fieldGoalPerc)*lineHeight + moveVertical - 10);
+    text(String.format("%.1f", player2_fieldGoalPerc*100), lineBase_w + 2*(lineWidth/11) + 3*(width/14) + width/28 + moveHorizontal, lineBase_h-(player2_fieldGoalPerc)*lineHeight + moveVertical - 10);
+
+    text(String.format("%.1f", player1_freeThrowPerc*100), lineBase_w + 3*(lineWidth/11) + 5*(width/14) - width/28 + moveHorizontal, lineBase_h-(player1_freeThrowPerc)*lineHeight + moveVertical  - 10);
+    text(String.format("%.1f", player2_freeThrowPerc*100), lineBase_w + 3*(lineWidth/11) + 5*(width/14) + width/28 + moveHorizontal, lineBase_h-(player2_freeThrowPerc)*lineHeight + moveVertical - 10);
+
+    //team1 bars
     fill(255, 51, 51);
-    rect(lineBase_w + (lineWidth/11) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, - (player1_3PointerPerc)*lineHeight - moveUp + moveDown);
-    rect(lineBase_w + 2*(lineWidth/11) + 2*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, - (player1_fieldGoalPerc)*lineHeight - moveUp + moveDown);
-    rect(lineBase_w + 3*(lineWidth/11) + 4*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, - (player1_freeThrowPerc)*lineHeight - moveUp + moveDown);
+    rect(lineBase_w + (lineWidth/11) + moveHorizontal, lineBase_h + moveVertical, width/14, -(player1_3PointerPerc)*lineHeight);
+    rect(lineBase_w + 2*(lineWidth/11) + 2*(width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(player1_fieldGoalPerc)*lineHeight);
+    rect(lineBase_w + 3*(lineWidth/11) + 4*(width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(player1_freeThrowPerc)*lineHeight);
 
-    //player2 bars
+    //team2 bars
     fill(255, 153, 51);
-    rect(lineBase_w + (lineWidth/11 + width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, - (player2_3PointerPerc)*lineHeight - moveUp + moveDown);
-    rect(lineBase_w + 2*(lineWidth/11) + 3*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, - (player2_fieldGoalPerc)*lineHeight - moveUp + moveDown);
-    rect(lineBase_w + 3*(lineWidth/11) + 5*(width/14) - moveLeft + moveRight, lineBase_h - moveUp + moveDown, width/14, - (player2_freeThrowPerc)*lineHeight - moveUp + moveDown);
+    rect(lineBase_w + (lineWidth/11 + width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(player2_3PointerPerc)*lineHeight);
+    rect(lineBase_w + 2*(lineWidth/11) + 3*(width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(player2_fieldGoalPerc)*lineHeight);
+    rect(lineBase_w + 3*(lineWidth/11) + 5*(width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(player2_freeThrowPerc)*lineHeight);
   }
 }
+
 
 void mousePressed() {
 
@@ -609,11 +646,9 @@ void onClickWidget(APWidget widget) {
   if (widget == button_team1) {    
     selectionlist = new KetaiList(this, teams);
     team1_pressed = true;
-    // team1 = selection;
   } else if (widget == button_team2) {
     selectionlist2 = new KetaiList(this, teams);
     team2_pressed = true;
-    // team2 = selection;
   } else if (widget == button_submit) {
     if (team1 == team2) {
       KetaiAlertDialog.popup(this, "Nice try...", "Please choose two different teams.");
@@ -1048,11 +1083,8 @@ boolean checkIfFileExists(String path) {
   }
 }
 
-void moveGraph (int left, int right, int up, int down) {
-
-  moveLeft = left;
-  moveRight = right;
-  moveUp = up;
-  moveDown = down;
+void moveGraph (int x, int y) {
+  moveHorizontal = x;
+  moveVertical = y;
 }
 
