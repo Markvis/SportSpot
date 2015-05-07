@@ -34,6 +34,10 @@ APButton button_BarGraphs, button_LineGraphs, button_Statistics, button_BackM1;
 
 String team1 = "Team 1";
 String team2 = "Team 2";
+String team3 = "Add Team";
+String team4 = "Add Team";
+String team5 = "Add Team";
+String team6 = "Add Team";
 String season = "2014";
 
 NBATeam team1_obj;
@@ -303,15 +307,15 @@ void draw() {
     line(lineBase_w - 20 + moveHorizontal, lineBase_h - (9*(lineHeight)/10) + moveVertical, lineBase_w + 20 + moveHorizontal, lineBase_h - (9*(lineHeight)/10) + moveVertical);
 
     //creating short lines to divide the x-axis to 10 parts
-    line(lineBase_w + ((lineWidth)/10) + moveHorizontal, lineBase_h - 35 + moveVertical, lineBase_w + ((lineWidth)/10) + moveHorizontal, lineBase_h + 20 + moveVertical);
-    line(lineBase_w + (2*(lineWidth)/10) + moveHorizontal, lineBase_h - 35 + moveVertical, lineBase_w + (2*(lineWidth)/10) + moveHorizontal, lineBase_h + 20 + moveVertical);
-    line(lineBase_w + (3*(lineWidth)/10) + moveHorizontal, lineBase_h - 35 + moveVertical, lineBase_w + (3*(lineWidth)/10) + moveHorizontal, lineBase_h + 20 + moveVertical);
-    line(lineBase_w + (4*(lineWidth)/10) + moveHorizontal, lineBase_h - 35 + moveVertical, lineBase_w + (4*(lineWidth)/10) + moveHorizontal, lineBase_h + 20 + moveVertical);
-    line(lineBase_w + (5*(lineWidth)/10) + moveHorizontal, lineBase_h - 35 + moveVertical, lineBase_w + (5*(lineWidth)/10) + moveHorizontal, lineBase_h + 20 + moveVertical);
-    line(lineBase_w + (6*(lineWidth)/10) + moveHorizontal, lineBase_h - 35 + moveVertical, lineBase_w + (6*(lineWidth)/10) + moveHorizontal, lineBase_h + 20 + moveVertical);
-    line(lineBase_w + (7*(lineWidth)/10) + moveHorizontal, lineBase_h - 35 + moveVertical, lineBase_w + (7*(lineWidth)/10) + moveHorizontal, lineBase_h + 20 + moveVertical);
-    line(lineBase_w + (8*(lineWidth)/10) + moveHorizontal, lineBase_h - 35 + moveVertical, lineBase_w + (8*(lineWidth)/10) + moveHorizontal, lineBase_h + 20 + moveVertical);
-    line(lineBase_w + (9*(lineWidth)/10) + moveHorizontal, lineBase_h - 35 + moveVertical, lineBase_w + (9*(lineWidth)/10) + moveHorizontal, lineBase_h + 20 + moveVertical);
+    line(lineBase_w + ((lineWidth)/10) + moveHorizontal, lineBase_h - 20 + moveVertical, lineBase_w + ((lineWidth)/10) + moveHorizontal, lineBase_h + 20 + moveVertical);
+    line(lineBase_w + (2*(lineWidth)/10) + moveHorizontal, lineBase_h - 20 + moveVertical, lineBase_w + (2*(lineWidth)/10) + moveHorizontal, lineBase_h + 20 + moveVertical);
+    line(lineBase_w + (3*(lineWidth)/10) + moveHorizontal, lineBase_h - 20 + moveVertical, lineBase_w + (3*(lineWidth)/10) + moveHorizontal, lineBase_h + 20 + moveVertical);
+    line(lineBase_w + (4*(lineWidth)/10) + moveHorizontal, lineBase_h - 20 + moveVertical, lineBase_w + (4*(lineWidth)/10) + moveHorizontal, lineBase_h + 20 + moveVertical);
+    line(lineBase_w + (5*(lineWidth)/10) + moveHorizontal, lineBase_h - 20 + moveVertical, lineBase_w + (5*(lineWidth)/10) + moveHorizontal, lineBase_h + 20 + moveVertical);
+    line(lineBase_w + (6*(lineWidth)/10) + moveHorizontal, lineBase_h - 20 + moveVertical, lineBase_w + (6*(lineWidth)/10) + moveHorizontal, lineBase_h + 20 + moveVertical);
+    line(lineBase_w + (7*(lineWidth)/10) + moveHorizontal, lineBase_h - 20 + moveVertical, lineBase_w + (7*(lineWidth)/10) + moveHorizontal, lineBase_h + 20 + moveVertical);
+    line(lineBase_w + (8*(lineWidth)/10) + moveHorizontal, lineBase_h - 20 + moveVertical, lineBase_w + (8*(lineWidth)/10) + moveHorizontal, lineBase_h + 20 + moveVertical);
+    line(lineBase_w + (9*(lineWidth)/10) + moveHorizontal, lineBase_h - 20 + moveVertical, lineBase_w + (9*(lineWidth)/10) + moveHorizontal, lineBase_h + 20 + moveVertical);
 
     textSize(50);
     text("0", lineBase_w - 60 + moveHorizontal, lineBase_h + 18 + moveVertical);
@@ -328,12 +332,31 @@ void draw() {
     text("SEASON STATISTICS", width/2 + moveHorizontal, height/26 + moveVertical);
 
     textSize(40);
-    text(team1_obj.getTeamName(), width/14, height/4);
-    text(team2_obj.getTeamName(), width/14, height/2);
+    text(team1_obj.getTeamName(), width/14, height/6);
+    text(team2_obj.getTeamName(), width/14, height/6 + height/7);
+    text(team1_obj.getTeamName(), width/14, height/6 + 2*(height/7));
+    text(team2_obj.getTeamName(), width/14, height/6 + 3*(height/7));
+    text(team1_obj.getTeamName(), width/14, height/6 + 4*(height/7));
+    text(team2_obj.getTeamName(), width/14, height/6 + 5*(height/7));
+
+    
     fill(255, 51, 51);   
-    rect(width/20, height/4 + height/20, width/22, height/16); 
+    rect(width/18, height/6 + height/40, width/32, height/20); 
     fill(255, 153, 51);
-    rect(width/20, height/2 + height/20, width/22, height/16);
+    rect(width/18, height/6 + height/7 + height/40, width/32, height/20);
+   
+    fill(0, 255, 128);   
+    rect(width/18, height/6 + 2*(height/7) + height/40, width/32, height/20); 
+    fill(0, 128, 255);
+    rect(width/18, height/6 + 3*(height/7) + height/40, width/32, height/20);
+   
+    fill(127, 0, 255);       
+    rect(width/18, height/6 + 4*(height/7) + height/40, width/32, height/20); 
+    fill(204, 0, 102);
+    rect(width/18, height/6 + 5*(height/7) + height/40, width/32, height/20);
+    
+    
+   
     
     float team1_2PointerPerc = team1_obj.getTwoPointsPct();
     float team1_3PointerPerc = team1_obj.getThreePointsPct();  
