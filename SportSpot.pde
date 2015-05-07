@@ -42,6 +42,10 @@ String season = "2014";
 
 NBATeam team1_obj;
 NBATeam team2_obj;
+NBATeam team3_obj;
+NBATeam team4_obj;
+NBATeam team5_obj;
+NBATeam team6_obj;
 
 //variables for mode0
 String selection = "";
@@ -279,11 +283,11 @@ void draw() {
 
     background(0, 0, 80);
 
-    float lineBase_h = height-height/3;  //y-coord of the left corner of the graph
+    float lineBase_h = height - height/3;  //y-coord of the left corner of the graph
     float lineBase_w = width/6;  //x-coord of the left corder of the graph
     float lineTop_h = height - 100;  //y-coord of the top of the y-axis
     float lineWidth = 2*(width/3);  //width of x-axis
-    float lineHeight = 2*(height/3)-100;  //height of y-axis
+    float lineHeight = 2*(height/3)-100 - 100;  //height of y-axis
 
     moveGraph(65, 55);
 
@@ -291,8 +295,8 @@ void draw() {
     stroke(255);
     fill(255);
     strokeWeight(10);
-    line(width/6 + moveHorizontal, height-height/3 + moveVertical, width-(width/6) + moveHorizontal, height-height/3 + moveVertical);
-    line(width/6 + moveHorizontal, height-height/3 + moveVertical, width/6 + moveHorizontal, 100 + moveVertical);
+    line(lineBase_w + moveHorizontal, lineBase_h + moveVertical, width-(lineBase_w) + moveHorizontal, lineBase_h + moveVertical);
+    line(lineBase_w + moveHorizontal, lineBase_h + moveVertical, lineBase_w + moveHorizontal, 100 + moveVertical);
 
     //creating short lines to divide the y-axis to 10 parts
     strokeWeight(5);
@@ -321,54 +325,52 @@ void draw() {
     text("0", lineBase_w - 60 + moveHorizontal, lineBase_h + 18 + moveVertical);
     text("50", lineBase_w - 70 + moveHorizontal, lineBase_h - (5*(lineHeight)/10) + 18 + moveVertical);
     text("100", lineBase_w - 70 + moveHorizontal, lineBase_h - (10*(lineHeight)/10) + 18 + moveVertical);
-    
+
     textSize(50);
     text("0", lineBase_w + moveHorizontal, lineBase_h + 70 + moveVertical);
     text("50", lineBase_w + (5*(lineWidth)/10) + moveHorizontal, lineBase_h + 70 + moveVertical);
     text("100", lineBase_w + (lineWidth) + moveHorizontal, lineBase_h + 70 + moveVertical);
 
-  //  fill(255);
+    //  fill(255);
     textSize(60);
     text("SEASON STATISTICS", width/2 + moveHorizontal, height/26 + moveVertical);
 
     textSize(40);
     text(team1_obj.getTeamName(), width/14, height/6);
     text(team2_obj.getTeamName(), width/14, height/6 + height/7);
-    text(team1_obj.getTeamName(), width/14, height/6 + 2*(height/7));
-    text(team2_obj.getTeamName(), width/14, height/6 + 3*(height/7));
-    text(team1_obj.getTeamName(), width/14, height/6 + 4*(height/7));
-    text(team2_obj.getTeamName(), width/14, height/6 + 5*(height/7));
+    text(team3, width/14, height/6 + 2*(height/7));
+    text(team4, width/14, height/6 + 3*(height/7));
+    text(team5, width/14, height/6 + 4*(height/7));
+    text(team6, width/14, height/6 + 5*(height/7));
 
-    
+
     fill(255, 51, 51);   
     rect(width/18, height/6 + height/40, width/32, height/20); 
     fill(255, 153, 51);
     rect(width/18, height/6 + height/7 + height/40, width/32, height/20);
-   
+
     fill(0, 255, 128);   
     rect(width/18, height/6 + 2*(height/7) + height/40, width/32, height/20); 
     fill(0, 128, 255);
     rect(width/18, height/6 + 3*(height/7) + height/40, width/32, height/20);
-   
+
     fill(127, 0, 255);       
     rect(width/18, height/6 + 4*(height/7) + height/40, width/32, height/20); 
     fill(204, 0, 102);
     rect(width/18, height/6 + 5*(height/7) + height/40, width/32, height/20);
-    
-    
-   
-    
+
+
+
+
     float team1_2PointerPerc = team1_obj.getTwoPointsPct();
     float team1_3PointerPerc = team1_obj.getThreePointsPct();  
     float team2_2PointerPerc = team2_obj.getTwoPointsPct();
     float team2_3PointerPerc = team2_obj.getThreePointsPct();
-    
+
     fill(255, 51, 51);
     rect(lineBase_w + (team1_2PointerPerc)*lineWidth - 10, lineBase_h - (team1_3PointerPerc)*lineHeight - 10, 20, 20);
     fill(255, 153, 51);
     rect(lineBase_w + (team2_2PointerPerc)*lineWidth - 10, lineBase_h - (team2_3PointerPerc)*lineHeight - 10, 20, 20);
-    
-    
   }
 }
 
@@ -453,6 +455,7 @@ void onClickWidget(APWidget widget) {
 }
 
 NBAGameSummary getNBAGameSummary(String gameID) {
+  pauseFor(1000);
   println("********** getNBALiveGameData **********");
   String URI = "http://api.sportradar.us/nba-t3/games/" + gameID +"/summary.xml?api_key=" + NBAkey;
   NBAGameSummary nbaGameSummary;
@@ -590,6 +593,7 @@ NBAGameSummary getNBAGameSummary(String gameID) {
  which will contain all the total statistical data 
  */
 NBATeam getNBATeamSeasonTotalStats(String teamID, String year) {
+  pauseFor(1000);
   println("********** getNBATeamSeasonStats **********");
   String URI = "http://api.sportradar.us/nba-t3/seasontd/" + year + "/REG/teams/" + teamID + "/statistics.xml?api_key=" + NBAkey;
 
@@ -655,6 +659,7 @@ NBATeam getNBATeamSeasonTotalStats(String teamID, String year) {
  Refer to NBAPlayer in what types of data will be returned
  */
 NBAPlayer getNBAPlayerStats(String playerID, String year) {
+  pauseFor(1000);
   println("********** getNBAPlayerStats **********");
   String URI = "http://api.sportradar.us/nba-t3/players/" + playerID + "/profile.xml?api_key=" + NBAkey;
   println("URI is: " + URI);
@@ -729,6 +734,7 @@ NBAPlayer getNBAPlayerStats(String playerID, String year) {
  year, month and day
  */
 ArrayList <NBAGame> getAllGamesOnDate(String year, String month, String day) {
+  pauseFor(1000);
   println("********** Getting all games for " + year + "/" + month + "/" + day + " **********");
   ArrayList <NBAGame> allGames = new ArrayList<NBAGame>();
   String URI = "http://api.sportradar.us/nba-t3/games/" + year + "/" + month + "/" + day + "/schedule.xml?api_key=" + NBAkey;
@@ -766,6 +772,7 @@ ArrayList <NBAGame> getAllGamesOnDate(String year, String month, String day) {
  ONLY FOR DEBUGGING AND TESTING
  */
 void leagueHierarchy() {
+  pauseFor(1000);
   println("********** LEAGUE HIERARCHY **********");
   xml = loadXML("cache/LeagueHierarchy.xml");
   XML [] conference = xml.getChildren("conference");
@@ -805,5 +812,14 @@ void moveGraph (int x, int y) {
 
   moveHorizontal = x;
   moveVertical = y;
+}
+
+void pauseFor(int timeInMiliSec) {
+  try {
+    Thread.sleep(timeInMiliSec);
+  } 
+  catch(InterruptedException ex) {
+    Thread.currentThread().interrupt();
+  }
 }
 
