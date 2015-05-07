@@ -170,7 +170,7 @@ void draw() {
     fill(255);
 
     textSize(65);
-    text(team1, width/2 , height/2 - height/8);
+    text(team1, width/2, height/2 - height/8);
     text(team2, width/2, height/2 + height/8);
     textSize(50);
     text("vs.", width/2, height/2);
@@ -196,7 +196,7 @@ void draw() {
     float lineTop_h = height - 100;
     float lineWidth = 2*(width/3);
     float lineHeight = 2*(height/3)-100;
-    
+
     moveGraph(65, 55);
 
     //creating x- and y-axis for the bar graphs
@@ -205,7 +205,7 @@ void draw() {
     strokeWeight(10);
     line(width/6 + moveHorizontal, height-height/3 + moveVertical, width-(width/6) + moveHorizontal, height-height/3 + moveVertical);
     line(width/6 + moveHorizontal, height-height/3 + moveVertical, width/6 + moveHorizontal, 100 + moveVertical);
-    
+
     //creating short lines to divide the y-axis to 10 parts
     strokeWeight(5);
     line(width/6 - 20 + moveHorizontal, (height-height/3) - ((height-height/3 - 100)/10) + moveVertical, width/6 + 20 + moveHorizontal, (height-height/3) - ((height-height/3 - 100)/10) + moveVertical);
@@ -226,7 +226,7 @@ void draw() {
     fill(255);
     textSize(60);
     text("SEASON STATISTICS", width/2 + moveHorizontal, height/26 + moveVertical);
-    
+
     textSize(40);
     text(team1_obj.getTeamName(), width/14, height/4);
     text(team2_obj.getTeamName(), width/14, height/2);
@@ -234,21 +234,21 @@ void draw() {
     rect(width/20, height/4 + height/20, width/22, height/16); 
     fill(255, 153, 51);
     rect(width/20, height/2 + height/20, width/22, height/16); 
-    
+
     float team1_3PointerPerc = team1_obj.getThreePointsPct();
     float team2_3PointerPerc = team2_obj.getThreePointsPct();   
     float team1_fieldGoalPerc = team1_obj.getFieldGoalsPct();
     float team2_fieldGoalPerc = team2_obj.getFieldGoalsPct();   
     float team1_freeThrowPerc = team1_obj.getFreeThrowsPct();
     float team2_freeThrowPerc = team2_obj.getFreeThrowsPct();
-        
+
     //bar graph bottom titles
     fill(255);
     textSize(50);
     text("3 Pointers %", lineBase_w + lineWidth/11 + width/14 + moveHorizontal, lineBase_h+70 + moveVertical);
     text("Field Goals %", lineBase_w + 2*(lineWidth/11) + 3*(width/14) + moveHorizontal, lineBase_h+70 + moveVertical);
     text("Free Throws %", lineBase_w + 3*(lineWidth/11) + 5*(width/14) + moveHorizontal, lineBase_h+70 + moveVertical);
-      
+
     //results presented on top of the bars (as numbers)
     textSize(40);
     text(String.format("%.1f", team1_3PointerPerc*100), lineBase_w + lineWidth/11 + width/28 + moveHorizontal, lineBase_h-(team1_3PointerPerc)*lineHeight + moveVertical - 10);
@@ -256,22 +256,97 @@ void draw() {
 
     text(String.format("%.1f", team1_fieldGoalPerc*100), lineBase_w + 2*(lineWidth/11) + 3*(width/14) - width/28 + moveHorizontal, lineBase_h-(team1_fieldGoalPerc)*lineHeight + moveVertical - 10);
     text(String.format("%.1f", team2_fieldGoalPerc*100), lineBase_w + 2*(lineWidth/11) + 3*(width/14) + width/28 + moveHorizontal, lineBase_h-(team2_fieldGoalPerc)*lineHeight + moveVertical - 10);
-    
+
     text(String.format("%.1f", team1_freeThrowPerc*100), lineBase_w + 3*(lineWidth/11) + 5*(width/14) - width/28 + moveHorizontal, lineBase_h-(team1_freeThrowPerc)*lineHeight + moveVertical  - 10);
     text(String.format("%.1f", team2_freeThrowPerc*100), lineBase_w + 3*(lineWidth/11) + 5*(width/14) + width/28 + moveHorizontal, lineBase_h-(team2_freeThrowPerc)*lineHeight + moveVertical - 10);
-    
+
     //team1 bars
     fill(255, 51, 51);
     rect(lineBase_w + (lineWidth/11) + moveHorizontal, lineBase_h + moveVertical, width/14, -(team1_3PointerPerc)*lineHeight);
     rect(lineBase_w + 2*(lineWidth/11) + 2*(width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(team1_fieldGoalPerc)*lineHeight);
     rect(lineBase_w + 3*(lineWidth/11) + 4*(width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(team1_freeThrowPerc)*lineHeight);
-    
+
     //team2 bars
     fill(255, 153, 51);
     rect(lineBase_w + (lineWidth/11 + width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(team2_3PointerPerc)*lineHeight);
-    rect(lineBase_w + 2*(lineWidth/11) + 3*(width/14) + moveHorizontal, lineBase_h + moveVertical, width/14 , -(team2_fieldGoalPerc)*lineHeight);
+    rect(lineBase_w + 2*(lineWidth/11) + 3*(width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(team2_fieldGoalPerc)*lineHeight);
     rect(lineBase_w + 3*(lineWidth/11) + 5*(width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(team2_freeThrowPerc)*lineHeight);
-  }  
+  } else if (mode == 2) {
+
+    background(0, 0, 80);
+
+    float lineBase_h = height-height/3;  //y-coord of the left corner of the graph
+    float lineBase_w = width/6;  //x-coord of the left corder of the graph
+    float lineTop_h = height - 100;  //y-coord of the top of the y-axis
+    float lineWidth = 2*(width/3);  //width of x-axis
+    float lineHeight = 2*(height/3)-100;  //height of y-axis
+
+    moveGraph(65, 55);
+
+    //creating x- and y-axis for the bar graphs
+    stroke(255);
+    fill(255);
+    strokeWeight(10);
+    line(width/6 + moveHorizontal, height-height/3 + moveVertical, width-(width/6) + moveHorizontal, height-height/3 + moveVertical);
+    line(width/6 + moveHorizontal, height-height/3 + moveVertical, width/6 + moveHorizontal, 100 + moveVertical);
+
+    //creating short lines to divide the y-axis to 10 parts
+    strokeWeight(5);
+    line(lineBase_w - 20 + moveHorizontal, lineBase_h - ((lineHeight)/10) + moveVertical, lineBase_w + 20 + moveHorizontal, lineBase_h - ((lineHeight)/10) + moveVertical);
+    line(lineBase_w - 20 + moveHorizontal, lineBase_h - (2*(lineHeight)/10) + moveVertical, lineBase_w + 20 + moveHorizontal, lineBase_h - (2*(lineHeight)/10) + moveVertical);
+    line(lineBase_w - 20 + moveHorizontal, lineBase_h - (3*(lineHeight)/10) + moveVertical, lineBase_w + 20 + moveHorizontal, lineBase_h - (3*(lineHeight)/10) + moveVertical);
+    line(lineBase_w - 20 + moveHorizontal, lineBase_h - (4*(lineHeight)/10) + moveVertical, lineBase_w + 20 + moveHorizontal, lineBase_h - (4*(lineHeight)/10) + moveVertical);
+    line(lineBase_w - 20 + moveHorizontal, lineBase_h - (5*(lineHeight)/10) + moveVertical, lineBase_w + 20 + moveHorizontal, lineBase_h - (5*(lineHeight)/10) + moveVertical);
+    line(lineBase_w - 20 + moveHorizontal, lineBase_h - (6*(lineHeight)/10) + moveVertical, lineBase_w + 20 + moveHorizontal, lineBase_h - (6*(lineHeight)/10) + moveVertical);
+    line(lineBase_w - 20 + moveHorizontal, lineBase_h - (7*(lineHeight)/10) + moveVertical, lineBase_w + 20 + moveHorizontal, lineBase_h - (7*(lineHeight)/10) + moveVertical);
+    line(lineBase_w - 20 + moveHorizontal, lineBase_h - (8*(lineHeight)/10) + moveVertical, lineBase_w + 20 + moveHorizontal, lineBase_h - (8*(lineHeight)/10) + moveVertical);
+    line(lineBase_w - 20 + moveHorizontal, lineBase_h - (9*(lineHeight)/10) + moveVertical, lineBase_w + 20 + moveHorizontal, lineBase_h - (9*(lineHeight)/10) + moveVertical);
+
+    //creating short lines to divide the x-axis to 10 parts
+    line(lineBase_w + ((lineWidth)/10) + moveHorizontal, lineBase_h - 35 + moveVertical, lineBase_w + ((lineWidth)/10) + moveHorizontal, lineBase_h + 20 + moveVertical);
+    line(lineBase_w + (2*(lineWidth)/10) + moveHorizontal, lineBase_h - 35 + moveVertical, lineBase_w + (2*(lineWidth)/10) + moveHorizontal, lineBase_h + 20 + moveVertical);
+    line(lineBase_w + (3*(lineWidth)/10) + moveHorizontal, lineBase_h - 35 + moveVertical, lineBase_w + (3*(lineWidth)/10) + moveHorizontal, lineBase_h + 20 + moveVertical);
+    line(lineBase_w + (4*(lineWidth)/10) + moveHorizontal, lineBase_h - 35 + moveVertical, lineBase_w + (4*(lineWidth)/10) + moveHorizontal, lineBase_h + 20 + moveVertical);
+    line(lineBase_w + (5*(lineWidth)/10) + moveHorizontal, lineBase_h - 35 + moveVertical, lineBase_w + (5*(lineWidth)/10) + moveHorizontal, lineBase_h + 20 + moveVertical);
+    line(lineBase_w + (6*(lineWidth)/10) + moveHorizontal, lineBase_h - 35 + moveVertical, lineBase_w + (6*(lineWidth)/10) + moveHorizontal, lineBase_h + 20 + moveVertical);
+    line(lineBase_w + (7*(lineWidth)/10) + moveHorizontal, lineBase_h - 35 + moveVertical, lineBase_w + (7*(lineWidth)/10) + moveHorizontal, lineBase_h + 20 + moveVertical);
+    line(lineBase_w + (8*(lineWidth)/10) + moveHorizontal, lineBase_h - 35 + moveVertical, lineBase_w + (8*(lineWidth)/10) + moveHorizontal, lineBase_h + 20 + moveVertical);
+    line(lineBase_w + (9*(lineWidth)/10) + moveHorizontal, lineBase_h - 35 + moveVertical, lineBase_w + (9*(lineWidth)/10) + moveHorizontal, lineBase_h + 20 + moveVertical);
+
+    textSize(50);
+    text("0", lineBase_w - 60 + moveHorizontal, lineBase_h + 18 + moveVertical);
+    text("50", lineBase_w - 70 + moveHorizontal, lineBase_h - (5*(lineHeight)/10) + 18 + moveVertical);
+    text("100", lineBase_w - 70 + moveHorizontal, lineBase_h - (10*(lineHeight)/10) + 18 + moveVertical);
+    
+    textSize(50);
+    text("0", lineBase_w + moveHorizontal, lineBase_h + 70 + moveVertical);
+    text("50", lineBase_w + (5*(lineWidth)/10) + moveHorizontal, lineBase_h + 70 + moveVertical);
+    text("100", lineBase_w + (lineWidth) + moveHorizontal, lineBase_h + 70 + moveVertical);
+
+  //  fill(255);
+    textSize(60);
+    text("SEASON STATISTICS", width/2 + moveHorizontal, height/26 + moveVertical);
+
+    textSize(40);
+    text(team1_obj.getTeamName(), width/14, height/4);
+    text(team2_obj.getTeamName(), width/14, height/2);
+    fill(255, 51, 51);   
+    rect(width/20, height/4 + height/20, width/22, height/16); 
+    fill(255, 153, 51);
+    rect(width/20, height/2 + height/20, width/22, height/16);
+    
+    float team1_2PointerPerc = team1_obj.getTwoPointsPct();
+    float team1_3PointerPerc = team1_obj.getThreePointsPct();  
+    float team2_2PointerPerc = team2_obj.getTwoPointsPct();
+    float team2_3PointerPerc = team2_obj.getThreePointsPct();
+    
+    fill(255, 51, 51);
+    rect(lineBase_w + (team1_2PointerPerc)*lineWidth - 10, lineBase_h - (team1_3PointerPerc)*lineHeight - 10, 20, 20);
+    fill(255, 153, 51);
+    rect(lineBase_w + (team2_2PointerPerc)*lineWidth - 10, lineBase_h - (team2_3PointerPerc)*lineHeight - 10, 20, 20);
+    
+    
+  }
 }
 
 
@@ -329,12 +404,12 @@ void onClickWidget(APWidget widget) {
       // required for calling network on newer versions of android
       StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
       StrictMode.setThreadPolicy(policy);
-      
+
       team1_obj = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team1), season);
       team2_obj = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team2), season);
       team1_obj.setTeamName(team1);
       team2_obj.setTeamName(team2);    
-      
+
       mode = 1;
       widgetContainer_Graphs.show();
       widgetContainer_SubmitTeams.hide();
@@ -342,7 +417,9 @@ void onClickWidget(APWidget widget) {
   }
   //BUTTONS OF MODE1
   else if (widget == button_BarGraphs) {
+    mode = 1;
   } else if (widget == button_LineGraphs) {
+    mode = 2;
   } else if (widget == button_Statistics) {
   } else if (widget == button_BackM1) {
     mode = 0;
@@ -701,10 +778,9 @@ boolean checkIfFileExists(String path) {
   }
 }
 
-void moveGraph (int x, int y){
+void moveGraph (int x, int y) {
 
   moveHorizontal = x;
   moveVertical = y;
-
 }
 
