@@ -144,8 +144,7 @@ void setup() {
   //creating & adding buttons for mode1
   button_BarGraphs  = new APButton(width/2 - width/4 - width/12, height - height/6, "Bar Graphs");
   button_LineGraphs = new APButton(width/2 - width/12, height - height/6, "Line Graphs");
-  button_Statistics = new APButton(width/2 + width/4 - width/12, height - height/6, "    Teams
-  ");
+  button_Statistics = new APButton(width/2 + width/4 - width/12, height - height/6, "    Teams");
   button_BackM1 = new APButton(width - width/8, height/18, "  Back  ");
   button_NextM1 = new APButton(width - width/8, height/5, " Next ");
   widgetContainer_Graphs.addWidget(button_BarGraphs);
@@ -667,7 +666,6 @@ void onClickWidget(APWidget widget) {
       mode = 1;
       widgetContainer_Graphs.show();
       widgetContainer_SubmitTeams.hide();
-
     }
   }
 
@@ -927,7 +925,7 @@ NBATeam getNBATeamSeasonTotalStats(String teamID, String year) {
   turnovers, steals, blocks, personalFouls, techFouls, points, fastBreakPoints, paintPts, flagrantFouls, 
   pointsOffTurnovers, secondChancePoints, freeThrowsPct, twoPointsPct, threePointsPct, fieldGoalsPct, 
   rebounds, assistsTurnoverRatio, twoPointsMade, twoPointsAtt);
-  
+
   for (int i = 0; i < player.length; i++) {
     team.players.put(player[i].getString("full_name"), player[i].getString("id"));
   }
