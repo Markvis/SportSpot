@@ -244,6 +244,7 @@ void draw() {
 
   //mode 0 - TEAM SELECTIONS & SUBMISSIONS
   if (mode == 0) {
+    preMode();
     background(0, 0, 80);
     textAlign(CENTER);
 
@@ -265,6 +266,8 @@ void draw() {
     triangle(width/2 - 150, height/9 + 40, 
     width/2 - 150, height/9 + 90, 
     width/2 - 200, height/9 + 65);
+    
+    widgetContainer_SubmitTeams.show();
   }
   //mode1 - GRAPH COMPARISONS
   else if (mode == 1) {
@@ -1019,8 +1022,8 @@ void onClickWidget(APWidget widget) {
     } 
     // team comparison
     else if (WC_mainButtons_counter == 2) {
-      //      backButtonStack.push(mode);
-      //      mode = 99;
+            backButtonStack.push(mode);
+            mode = 0;
     }
     // PLACEHOLDER
     else if (WC_mainButtons_counter == 3) {
