@@ -16,6 +16,28 @@ String MLBkey = "4nfwbpjthrsfsaeeh73szu8j";
 KetaiList selectionlist;
 KetaiList selectionlist2;
 
+//selectionlists for additional teams in relational graphs
+//in mode 6
+KetaiList relGraphList_team3;
+KetaiList relGraphList_team4;
+KetaiList relGraphList_team5;
+KetaiList relGraphList_team6;
+
+
+
+boolean relGraph_Team3Pressed = false;
+boolean relGraph_Team4Pressed = false;
+boolean relGraph_Team5Pressed = false;
+boolean relGraph_Team6Pressed = false;
+boolean relGraph_showTeam3 = false;
+boolean relGraph_showTeam4 = false;
+boolean relGraph_showTeam5 = false;
+boolean relGraph_showTeam6 = false;
+String relGraph_Team3;
+String relGraph_Team4;
+String relGraph_Team5;
+String relGraph_Team6;
+
 //playerlists for player1 & player2 in mode4
 KetaiList playerlist;
 KetaiList playerlist2;
@@ -675,16 +697,19 @@ else if (mode == 6) {
 
     fill(255, 51, 51);   
     rect(width/18, height/6 + height/40, width/32, height/20); 
+   
     fill(255, 153, 51);
     rect(width/18, height/6 + height/7 + height/40, width/32, height/20);
 
     fill(0, 255, 128);   
     rect(width/18, height/6 + 2*(height/7) + height/40, width/32, height/20); 
+    
     fill(0, 128, 255);
     rect(width/18, height/6 + 3*(height/7) + height/40, width/32, height/20);
 
     fill(127, 0, 255);       
     rect(width/18, height/6 + 4*(height/7) + height/40, width/32, height/20); 
+   
     fill(204, 0, 102);
     rect(width/18, height/6 + 5*(height/7) + height/40, width/32, height/20);
 
@@ -697,6 +722,11 @@ else if (mode == 6) {
     rect(lineBase_w + (team1_2PointerPerc)*lineWidth - 10, lineBase_h - (team1_3PointerPerc)*lineHeight - 10, 20, 20);
     fill(255, 153, 51);
     rect(lineBase_w + (team2_2PointerPerc)*lineWidth - 10, lineBase_h - (team2_3PointerPerc)*lineHeight - 10, 20, 20);
+    
+    
+    
+    
+    
   }
 }
 
@@ -718,6 +748,13 @@ void mousePressed() {
       season = "2013";
     } else season = "2014";
   }
+  else if (((mouseX > width/22) && (mouseX < width/18 + width/30)) && 
+    ((mouseY > height/6 + 2*(height/7) + height/40) && (mouseY <height/6 + 2*(height/7) + height/40 + height/16))){ 
+    relGraphList_team3 = new KetaiList(this, teams);
+    relGraph_Team3Pressed = true;
+  }
+  
+  
   redraw();
 }
 
@@ -736,12 +773,18 @@ void onKetaiListSelection(KetaiList klist) {
       player1 = selection;
     } else if (player2_pressed) {
       player2 = selection;
-    }
+    } else if (relGraph_Team3Pressed){
+      relGraph_Team3 = selection;
+      relGraph_showTeam3 = true;
+      team3_obj = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(relGraph_Team3), season);
+      team3_obj.setTeamName(relGraph_Team3);
+    } 
   }
   team1_pressed = false;
   team2_pressed = false;
   player1_pressed = false;
   player2_pressed = false;
+  relGraph_Team3Pressed = false;
   redraw();
 }
 
