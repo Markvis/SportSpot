@@ -880,7 +880,7 @@ void draw() {
       float team2_2013_2PointerPerc = team2_obj2013.getTwoPointsPct();
       float team2_2014_2PointerPerc = team2_obj2014.getTwoPointsPct();
 
-      strokeWeight(8);
+      strokeWeight(7);
       stroke(255, 51, 51); 
       line(lineBase_w + (2*(lineWidth)/10) + moveHorizontal, lineBase_h - (team1_2013_2PointerPerc)*lineHeight - 10, 
       lineBase_w + (8*(lineWidth)/10) + moveHorizontal, lineBase_h - (team1_2014_2PointerPerc)*lineHeight - 10);
@@ -895,43 +895,43 @@ void draw() {
 
       fill(255);
       textSize(55);
-      text("2 Pointers % vs. time Graph", width/2 + moveHorizontal, height/26 + moveVertical);
+      text("3 Pointers % vs. time Graph", width/2 + moveHorizontal, height/26 + moveVertical);
 
-      float team1_2013_2PointerPerc = team1_obj2013.getTwoPointsPct();
-      float team1_2014_2PointerPerc = team1_obj2014.getTwoPointsPct();     
-      float team2_2013_2PointerPerc = team2_obj2013.getTwoPointsPct();
-      float team2_2014_2PointerPerc = team2_obj2014.getTwoPointsPct();
+      float team1_2013_3PointerPerc = team1_obj2013.getThreePointsPct();
+      float team1_2014_3PointerPerc = team1_obj2014.getThreePointsPct();     
+      float team2_2013_3PointerPerc = team2_obj2013.getThreePointsPct();
+      float team2_2014_3PointerPerc = team2_obj2014.getThreePointsPct();
 
-      strokeWeight(8);
+      strokeWeight(7);
       stroke(255, 51, 51); 
-      line(lineBase_w + (2*(lineWidth)/10) + moveHorizontal, lineBase_h - (team1_2013_2PointerPerc)*lineHeight - 10, 
-      lineBase_w + (8*(lineWidth)/10) + moveHorizontal, lineBase_h - (team1_2014_2PointerPerc)*lineHeight - 10);
+      line(lineBase_w + (2*(lineWidth)/10) + moveHorizontal, lineBase_h - (team1_2013_3PointerPerc)*lineHeight - 10, 
+      lineBase_w + (8*(lineWidth)/10) + moveHorizontal, lineBase_h - (team1_2014_3PointerPerc)*lineHeight - 10);
 
       stroke(255, 153, 51);      
-      line(lineBase_w + (2*(lineWidth)/10) + moveHorizontal, lineBase_h - (team2_2013_2PointerPerc)*lineHeight - 10, 
-      lineBase_w + (8*(lineWidth)/10) + moveHorizontal, lineBase_h - (team2_2014_2PointerPerc)*lineHeight - 10);
+      line(lineBase_w + (2*(lineWidth)/10) + moveHorizontal, lineBase_h - (team2_2013_3PointerPerc)*lineHeight - 10, 
+      lineBase_w + (8*(lineWidth)/10) + moveHorizontal, lineBase_h - (team2_2014_3PointerPerc)*lineHeight - 10);
       stroke(255);
     } 
-    //Fast Break Points
+    //Free Throws %
     else if (mode == 10) {
 
       fill(255);
       textSize(55);
-      text("2 Pointers % vs. time Graph", width/2 + moveHorizontal, height/26 + moveVertical);
+      text("Free Throws % vs. time Graph", width/2 + moveHorizontal, height/26 + moveVertical);
 
-      float team1_2013_2PointerPerc = team1_obj2013.getTwoPointsPct();
-      float team1_2014_2PointerPerc = team1_obj2014.getTwoPointsPct();     
-      float team2_2013_2PointerPerc = team2_obj2013.getTwoPointsPct();
-      float team2_2014_2PointerPerc = team2_obj2014.getTwoPointsPct();
+      float team1_2013_FreeThrowPerc = team1_obj2013.getFreeThrowsPct();
+      float team1_2014_FreeThrowPerc = team1_obj2014.getFreeThrowsPct();     
+      float team2_2013_FreeThrowPerc = team2_obj2013.getFreeThrowsPct();
+      float team2_2014_FreeThrowPerc = team2_obj2014.getFreeThrowsPct();
 
-      strokeWeight(8);
+      strokeWeight(7);
       stroke(255, 51, 51); 
-      line(lineBase_w + (2*(lineWidth)/10) + moveHorizontal, lineBase_h - (team1_2013_2PointerPerc)*lineHeight - 10, 
-      lineBase_w + (8*(lineWidth)/10) + moveHorizontal, lineBase_h - (team1_2014_2PointerPerc)*lineHeight - 10);
+      line(lineBase_w + (2*(lineWidth)/10) + moveHorizontal, lineBase_h - (team1_2013_FreeThrowPerc)*lineHeight - 10, 
+      lineBase_w + (8*(lineWidth)/10) + moveHorizontal, lineBase_h - (team1_2014_FreeThrowPerc)*lineHeight - 10);
 
       stroke(255, 153, 51);      
-      line(lineBase_w + (2*(lineWidth)/10) + moveHorizontal, lineBase_h - (team2_2013_2PointerPerc)*lineHeight - 10, 
-      lineBase_w + (8*(lineWidth)/10) + moveHorizontal, lineBase_h - (team2_2014_2PointerPerc)*lineHeight - 10);
+      line(lineBase_w + (2*(lineWidth)/10) + moveHorizontal, lineBase_h - (team2_2013_FreeThrowPerc)*lineHeight - 10, 
+      lineBase_w + (8*(lineWidth)/10) + moveHorizontal, lineBase_h - (team2_2014_FreeThrowPerc)*lineHeight - 10);
       stroke(255);
     }
   }
@@ -1088,17 +1088,26 @@ void onClickWidget(APWidget widget) {
     mode = 0;
     widgetContainer_SelectDataDisplay.hide();
     widgetContainer_SubmitTeams.show();
+    fill(255);
   } else if (widget == button_BackM7) {
     if (mode == 2) {
       mode = 1;
     } else if (mode == 3) {
       mode = 2;
+    } else if (mode == 9){
+      mode = 8;
+    } else if (mode == 10){
+      mode = 9;
     }
   } else if (widget == button_NextM7) {
     if (mode == 1) {
       mode = 2;
     } else if (mode == 2) {
       mode = 3;
+    } else if (mode == 8){
+      mode = 9;
+    } else if (mode == 9){
+      mode = 10;
     }
   } else if (widget == button_ReturnM7) {
     mode = 7;
