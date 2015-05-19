@@ -2,10 +2,26 @@
 import apwidgets.*;
 import java.io.*;
 import ketai.ui.*;
-import android.os.StrictMode; 
+import android.os.StrictMode;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Iterator;
+import java.util.Calendar;
+import java.util.Stack;
+
+/*
+  modes
+ 0 = team selection
+ 1 = team season stats
+ 2 = team per game stats
+ 3 = more team per game stats
+ 4 = player selection
+ 5 = player season stats
+ 6 = relational graphics
+ */
 
 // globals
-int mode = 4;
+int mode = 98;
 XML xml;
 
 // keys
@@ -35,6 +51,22 @@ APButton button_BarGraphs, button_LineGraphs, button_Statistics, button_BackM1, 
 APWidgetContainer widgetContainer_SubmitPlayers;
 APButton button_submit4, button_player1, button_player2;
 
+// widget container for home screen mode 99
+APWidgetContainer WC_home;
+//APButton button_submit4, button_player1, button_player2;
+
+// widget container for live screen mode 98 and other mode 98 requirements
+APWidgetContainer WC_live = new APWidgetContainer(this);
+ArrayList<APButton> WC_LiveButtons = new ArrayList<APButton>();
+ArrayList<NBAGame> gamesToday;
+int gameSelected = -1;
+NBAGameSummary selectedGameSummary;
+boolean liveModeLoaded = false;
+
+// stack for back button
+Stack<Integer> backButtonStack = new Stack<Integer>();
+
+//
 /*
   GRAPHS INCLUDED:
  - 3 Pointers %
@@ -316,9 +348,7 @@ void draw() {
     rect(lineBase_w + (lineWidth/11 + width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(team2_3PointerPerc)*lineHeight);
     rect(lineBase_w + 2*(lineWidth/11) + 3*(width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(team2_fieldGoalPerc)*lineHeight);
     rect(lineBase_w + 3*(lineWidth/11) + 5*(width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(team2_freeThrowPerc)*lineHeight);
-  } 
-
-else if (mode == 2) {
+  } else if (mode == 2) {
 
     background(0, 0, 80);
 
@@ -600,9 +630,9 @@ else if (mode == 2) {
     rect(lineBase_w + (lineWidth/11 + width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(player2_3PointerPerc)*lineHeight);
     rect(lineBase_w + 2*(lineWidth/11) + 3*(width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(player2_fieldGoalPerc)*lineHeight);
     rect(lineBase_w + 3*(lineWidth/11) + 5*(width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(player2_freeThrowPerc)*lineHeight);
-}
-
-else if (mode == 6) {
+  }
+  // relational 
+  else if (mode == 6) {
 
     background(0, 0, 80);
 
@@ -618,10 +648,10 @@ else if (mode == 6) {
     stroke(255);
     fill(255);
     strokeWeight(10);
-    
+
     line(lineBase_w + moveHorizontal, lineBase_h + moveVertical, width-(lineBase_w) + moveHorizontal, lineBase_h + moveVertical);
     line(lineBase_w + moveHorizontal, lineBase_h + moveVertical, lineBase_w + moveHorizontal, 100 + moveVertical);
-  
+
     textSize(50);
     text("0", width/6 - 60 + moveHorizontal, height-height/3 + 18 + moveVertical);
     text("50", width/6 - 70 + moveHorizontal, (height-height/3) - (5*(height-height/3 - 100)/10) + 18 + moveVertical);
@@ -698,8 +728,69 @@ else if (mode == 6) {
     fill(255, 153, 51);
     rect(lineBase_w + (team2_2PointerPerc)*lineWidth - 10, lineBase_h - (team2_3PointerPerc)*lineHeight - 10, 20, 20);
   }
-}
 
+  // when game is selected in mode 98 live game
+  else if (mode == 97) {
+    preMode();
+    textAlign(CENTER); 
+    text(selectedGameSummary.getAwayTeamName() + " @ " + selectedGameSummary.getHomeTeamName(), width/2, 200);
+    textAlign(LEFT);
+    // display teams score
+    text(selectedGameSummary.getHomeTeamName(), width/4, 300);
+    text(selectedGameSummary.getAwayTeamName(), width/4, 400);
+    text(selectedGameSummary.getHomePoints(), width*2/3, 300);
+    text(selectedGameSummary.getAwayPoints(), width*2/3, 400);
+    stroke(255);
+    line(0, 500, width, 500);
+    text(selectedGameSummary.getHomeTeamName(), 200, 600);
+    text(selectedGameSummary.getAwayTeamName(), width*5/6, 600);
+    textAlign(LEFT);
+    text(selectedGameSummary.getHomeFieldGoalsPct(), width/5, 700);
+    text(selectedGameSummary.getHomeThreePointsPct(), width/5, 800);
+    text(selectedGameSummary.getHomeFreeThrowsPct(), width/5, 900);
+    text(selectedGameSummary.getAwayFieldGoalsPct(), width*3/4, 700);
+    text(selectedGameSummary.getAwayThreePointsPct(), width*3/4, 800);
+    text(selectedGameSummary.getAwayFreeThrowsPct(), width*3/4, 900);
+    textAlign(CENTER);
+    text("Field Goals %", width/2, 700);
+    text("Three Points %", width/2, 800);
+    text("Free Throws %", width/2, 900);
+  }
+
+  // this is the live game for current day
+  else if (mode == 98) {
+    preMode(); 
+    if (!liveModeLoaded) {
+      Calendar c = Calendar.getInstance(); 
+      //gamesToday = getAllGamesOnDate(Integer.toString(c.get(Calendar.YEAR)), Integer.toString(c.get(Calendar.MONTH) + 1), Integer.toString(c.get(Calendar.DAY_OF_MONTH)));
+      gamesToday = getAllGamesOnDate("2015", "05", "15");
+      for (int i = 0; i < gamesToday.size (); i++) {
+        APButton apb = new APButton(0, 100+(i*150), gamesToday.get(i).getAwayTeamName() + " @ " + gamesToday.get(i).getHomeTeamName());
+        WC_LiveButtons.add(apb);
+      }
+      for (int i = 0; i < WC_LiveButtons.size (); i++) {
+        WC_live.addWidget(WC_LiveButtons.get(i));
+      }
+      liveModeLoaded = true;
+    }
+    WC_live.show();
+  }
+  // this is the main screen
+  else if (mode == 99) {
+    preMode();
+    textSize(100); 
+    textAlign(CENTER); 
+    text("SportSpot", width/2, 150);
+
+    //    Map<String, String> roster = getTeamRoster("583ec825-fb46-11e1-82cb-f4ce4684ea4c");
+    //    Iterator it = roster.entrySet().iterator();
+    //    while (it.hasNext ()) {
+    //      Map.Entry pair = (Map.Entry)it.next();
+    //      System.out.println(pair.getKey() + " = " + pair.getValue());
+    //      it.remove(); // avoids a ConcurrentModificationException
+    //    }
+  }
+}
 
 void mousePressed() {
 
@@ -738,21 +829,24 @@ void onKetaiListSelection(KetaiList klist) {
       player2 = selection;
     }
   }
-  team1_pressed = false;
-  team2_pressed = false;
-  player1_pressed = false;
-  player2_pressed = false;
+  team1_pressed = false; 
+  team2_pressed = false; 
+  player1_pressed = false; 
+  player2_pressed = false; 
   redraw();
 }
 
 void onClickWidget(APWidget widget) {
 
+  StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build(); 
+  StrictMode.setThreadPolicy(policy); 
+
   //BUTTONS OF MODE0 
   if (widget == button_team1) {    
-    selectionlist = new KetaiList(this, teams);
+    selectionlist = new KetaiList(this, teams); 
     team1_pressed = true;
   } else if (widget == button_team2) {
-    selectionlist2 = new KetaiList(this, teams);
+    selectionlist2 = new KetaiList(this, teams); 
     team2_pressed = true;
   } else if (widget == button_submit) {
     if (team1 == team2) {
@@ -761,16 +855,16 @@ void onClickWidget(APWidget widget) {
       KetaiAlertDialog.popup(this, "Not ready yet!", "Make sure you pick 2 teams.");
     } else {
       // required for calling network on newer versions of android
-      StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-      StrictMode.setThreadPolicy(policy);
+      //      StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build(); 
+      //      StrictMode.setThreadPolicy(policy); 
 
-      team1_obj = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team1), season);
-      team2_obj = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team2), season);
-      team1_obj.setTeamName(team1);
-      team2_obj.setTeamName(team2);    
+      team1_obj = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team1), season); 
+      team2_obj = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team2), season); 
+      team1_obj.setTeamName(team1); 
+      team2_obj.setTeamName(team2); 
 
-      mode = 1;
-      widgetContainer_Graphs.show();
+      mode = 1; 
+      widgetContainer_Graphs.show(); 
       widgetContainer_SubmitTeams.hide();
     }
   }
@@ -781,21 +875,21 @@ void onClickWidget(APWidget widget) {
   } else if (widget == button_LineGraphs) {
     mode = 6;
   } else if (widget == button_Statistics) {
-    mode = 0;
-    widgetContainer_Graphs.hide();
-    widgetContainer_SubmitTeams.show();
+    mode = 0; 
+    widgetContainer_Graphs.hide(); 
+    widgetContainer_SubmitTeams.show(); 
     fill(255);
   } else if (widget == button_BackM1) {
     if (mode == 1) {
-      mode = 0;
-      widgetContainer_Graphs.hide();
-      widgetContainer_SubmitTeams.show();
+      mode = 0; 
+      widgetContainer_Graphs.hide(); 
+      widgetContainer_SubmitTeams.show(); 
       fill(255);
     } else if (mode == 2) {
-      mode = 1;
+      mode = 1; 
       widgetContainer_Graphs.show();
     } else if (mode == 3) {
-      mode = 2;
+      mode = 2; 
       widgetContainer_Graphs.show();
     }
   }
@@ -812,10 +906,10 @@ void onClickWidget(APWidget widget) {
 
   //BUTTONS OF MODE4
   if (widget == button_player1) {    
-    playerlist = new KetaiList(this, players);
+    playerlist = new KetaiList(this, players); 
     player1_pressed = true;
   } else if (widget == button_player2) {
-    playerlist2 = new KetaiList(this, players);
+    playerlist2 = new KetaiList(this, players); 
     player2_pressed = true;
   } else if (widget == button_submit4) {
     if (player1 == player2) {
@@ -824,134 +918,152 @@ void onClickWidget(APWidget widget) {
       KetaiAlertDialog.popup(this, "Not ready yet!", "Make sure you pick 2 players.");
     } else {
       // required for calling network on newer versions of android
-      StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-      StrictMode.setThreadPolicy(policy);
+      //      StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build(); 
+      //      StrictMode.setThreadPolicy(policy); 
 
-      player1_obj = getNBAPlayerStats(Database.playerNameAndIDHash.get(player1), season);
-      player2_obj = getNBAPlayerStats(Database.playerNameAndIDHash.get(player2), season);
-      player1_obj.setFullName(player1);
-      player2_obj.setFullName(player2);    
+      player1_obj = getNBAPlayerStats(Database.playerNameAndIDHash.get(player1), season); 
+      player2_obj = getNBAPlayerStats(Database.playerNameAndIDHash.get(player2), season); 
+      player1_obj.setFullName(player1); 
+      player2_obj.setFullName(player2); 
 
-      mode = 5;
-      widgetContainer_Graphs.show();
-      widgetContainer_SubmitPlayers.hide();
+      mode = 5; 
+      widgetContainer_Graphs.show(); 
+      widgetContainer_SubmitPlayers.hide(); 
       widgetContainer_SubmitTeams.hide();
     }
+  }
+
+  // used for selecting live game in mode 98 (live games)
+  int WC_LiveButtons_counter = 0;
+  boolean LiveButtonWidgetFound = false;
+  for (int i = 0; i < WC_LiveButtons.size (); i++) {
+    if (widget == WC_LiveButtons.get(i)) {
+      backButtonStack.push(mode);
+      mode = 97;
+      LiveButtonWidgetFound = true;
+      break;
+    }
+    WC_LiveButtons_counter++;
+  }
+  if (LiveButtonWidgetFound) {
+    NBAGame selectedGame = gamesToday.get(WC_LiveButtons_counter);
+    selectedGameSummary = getNBAGameSummary(selectedGame.getId());
+    WC_live.hide();
   }
   redraw();
 }
 
 NBAGameSummary getNBAGameSummary(String gameID) {
-  pauseFor(1000);
-  println("********** getNBALiveGameData **********");
-  String URI = "http://api.sportradar.us/nba-t3/games/" + gameID +"/summary.xml?api_key=" + NBAkey;
-  NBAGameSummary nbaGameSummary;
-  xml = loadXML(URI);
+  pauseFor(1000); 
+  println("********** getNBALiveGameData **********"); 
+  String URI = "http://api.sportradar.us/nba-t3/games/" + gameID +"/summary.xml?api_key=" + NBAkey; 
+  NBAGameSummary nbaGameSummary; 
+  xml = loadXML(URI); 
   //xml = loadXML("cache/LiveGameExample.xml");
 
   // get xml lines
-  XML [] team = xml.getChildren("team");
-  XML homeTeamScoring = team[0].getChild("scoring");
-  XML awayTeamScoring = team[1].getChild("scoring");
-  XML [] homeTeamQuarter = homeTeamScoring.getChildren("quarter");
-  XML [] awayTeamQuarter = awayTeamScoring.getChildren("quarter");
-  XML homeTeamStats = team[0].getChild("statistics");
-  XML awayTeamStats = team[1].getChild("statistics");
+  XML [] team = xml.getChildren("team"); 
+  XML homeTeamScoring = team[0].getChild("scoring"); 
+  XML awayTeamScoring = team[1].getChild("scoring"); 
+  XML [] homeTeamQuarter = homeTeamScoring.getChildren("quarter"); 
+  XML [] awayTeamQuarter = awayTeamScoring.getChildren("quarter"); 
+  XML homeTeamStats = team[0].getChild("statistics"); 
+  XML awayTeamStats = team[1].getChild("statistics"); 
 
   // ***** GAME INFO *****
-  String gametitle = xml.getString("title");
-  String gameStatus = xml.getString("status");
-  String gameScheduled = xml.getString("scheduled");
-  String gameAttendance = xml.getString("attendance");
-  String gameClock = xml.getString("clock");
-  String gameQuarter = xml.getString("quarter");
+  String gametitle = xml.getString("title"); 
+  String gameStatus = xml.getString("status"); 
+  String gameScheduled = xml.getString("scheduled"); 
+  String gameAttendance = xml.getString("attendance"); 
+  String gameClock = xml.getString("clock"); 
+  String gameQuarter = xml.getString("quarter"); 
 
   // ***** START HOME ****
   // Home Team Data
-  String homeTeamName = team[0].getString("name");
-  String homeTeamID = team[0].getString("id");
+  String homeTeamName = team[0].getString("name"); 
+  String homeTeamID = team[0].getString("id"); 
 
   // Quarterly Points
-  int homeQuarterOnePoints = Integer.parseInt(homeTeamQuarter[0].getString("points"));
-  int homeQuarterTwoPoints = Integer.parseInt(homeTeamQuarter[1].getString("points"));
-  int homeQuarterThreePoints = Integer.parseInt(homeTeamQuarter[2].getString("points"));
-  int homeQuarterFourPoints = Integer.parseInt(homeTeamQuarter[3].getString("points"));
+  int homeQuarterOnePoints = Integer.parseInt(homeTeamQuarter[0].getString("points")); 
+  int homeQuarterTwoPoints = Integer.parseInt(homeTeamQuarter[1].getString("points")); 
+  int homeQuarterThreePoints = Integer.parseInt(homeTeamQuarter[2].getString("points")); 
+  int homeQuarterFourPoints = Integer.parseInt(homeTeamQuarter[3].getString("points")); 
 
   // Team Statistics
-  String homeMinutes = homeTeamStats.getString("minutes");
-  int homeFieldGoalsMade = Integer.parseInt(homeTeamStats.getString("field_goals_made"));
-  int homeFieldGoalsAtt = Integer.parseInt(homeTeamStats.getString("field_goals_att"));
-  float homeFieldGoalsPct = Float.parseFloat(homeTeamStats.getString("field_goals_pct"));
-  int homeThreePointsMade = Integer.parseInt(homeTeamStats.getString("three_points_made"));
-  int homeThreePointsAtt = Integer.parseInt(homeTeamStats.getString("three_points_att"));
-  float homeThreePointsPct = Float.parseFloat(homeTeamStats.getString("three_points_pct"));
-  int homeTwoPointsMade = Integer.parseInt(homeTeamStats.getString("two_points_made"));
-  int homeTwoPointsAtt = Integer.parseInt(homeTeamStats.getString("two_points_att"));
-  float homeTwoPointsPct = Float.parseFloat(homeTeamStats.getString("two_points_pct"));
-  int homeBlockedAtt = Integer.parseInt(homeTeamStats.getString("blocked_att"));
-  int homeFreeThrowsMade = Integer.parseInt(homeTeamStats.getString("free_throws_made"));
-  int homeFreeThrowsAtt = Integer.parseInt(homeTeamStats.getString("free_throws_att"));
-  float homeFreeThrowsPct = Float.parseFloat(homeTeamStats.getString("free_throws_pct"));
-  int homeOffensiveRebounds = Integer.parseInt(homeTeamStats.getString("offensive_rebounds"));
-  int homeDefensiveRebounds = Integer.parseInt(homeTeamStats.getString("defensive_rebounds"));
-  int homeRebounds = Integer.parseInt(homeTeamStats.getString("rebounds"));
-  int homeAssists = Integer.parseInt(homeTeamStats.getString("assists"));
-  int homeTurnovers = Integer.parseInt(homeTeamStats.getString("turnovers"));
-  int homeSteals = Integer.parseInt(homeTeamStats.getString("steals"));
-  int homeBlocks = Integer.parseInt(homeTeamStats.getString("blocks"));
-  float homeAssistsTurnoverRatio = Float.parseFloat(homeTeamStats.getString("assists_turnover_ratio"));
-  int homePersonalFouls = Integer.parseInt(homeTeamStats.getString("personal_fouls"));
-  int homePoints = Integer.parseInt(homeTeamStats.getString("points"));
-  int homeTeamTurnovers = Integer.parseInt(homeTeamStats.getString("team_turnovers"));
-  int homeTeamRebounds = Integer.parseInt(homeTeamStats.getString("team_rebounds"));
-  int homeFlagrantFouls = Integer.parseInt(homeTeamStats.getString("flagrant_fouls"));
-  int homePlayerTechFouls = Integer.parseInt(homeTeamStats.getString("player_tech_fouls"));
-  int homeTeamTechFouls = Integer.parseInt(homeTeamStats.getString("team_tech_fouls"));
-  int homeCoachTechFouls = Integer.parseInt(homeTeamStats.getString("coach_tech_fouls"));
+  String homeMinutes = homeTeamStats.getString("minutes"); 
+  int homeFieldGoalsMade = Integer.parseInt(homeTeamStats.getString("field_goals_made")); 
+  int homeFieldGoalsAtt = Integer.parseInt(homeTeamStats.getString("field_goals_att")); 
+  float homeFieldGoalsPct = Float.parseFloat(homeTeamStats.getString("field_goals_pct")); 
+  int homeThreePointsMade = Integer.parseInt(homeTeamStats.getString("three_points_made")); 
+  int homeThreePointsAtt = Integer.parseInt(homeTeamStats.getString("three_points_att")); 
+  float homeThreePointsPct = Float.parseFloat(homeTeamStats.getString("three_points_pct")); 
+  int homeTwoPointsMade = Integer.parseInt(homeTeamStats.getString("two_points_made")); 
+  int homeTwoPointsAtt = Integer.parseInt(homeTeamStats.getString("two_points_att")); 
+  float homeTwoPointsPct = Float.parseFloat(homeTeamStats.getString("two_points_pct")); 
+  int homeBlockedAtt = Integer.parseInt(homeTeamStats.getString("blocked_att")); 
+  int homeFreeThrowsMade = Integer.parseInt(homeTeamStats.getString("free_throws_made")); 
+  int homeFreeThrowsAtt = Integer.parseInt(homeTeamStats.getString("free_throws_att")); 
+  float homeFreeThrowsPct = Float.parseFloat(homeTeamStats.getString("free_throws_pct")); 
+  int homeOffensiveRebounds = Integer.parseInt(homeTeamStats.getString("offensive_rebounds")); 
+  int homeDefensiveRebounds = Integer.parseInt(homeTeamStats.getString("defensive_rebounds")); 
+  int homeRebounds = Integer.parseInt(homeTeamStats.getString("rebounds")); 
+  int homeAssists = Integer.parseInt(homeTeamStats.getString("assists")); 
+  int homeTurnovers = Integer.parseInt(homeTeamStats.getString("turnovers")); 
+  int homeSteals = Integer.parseInt(homeTeamStats.getString("steals")); 
+  int homeBlocks = Integer.parseInt(homeTeamStats.getString("blocks")); 
+  float homeAssistsTurnoverRatio = Float.parseFloat(homeTeamStats.getString("assists_turnover_ratio")); 
+  int homePersonalFouls = Integer.parseInt(homeTeamStats.getString("personal_fouls")); 
+  int homePoints = Integer.parseInt(homeTeamStats.getString("points")); 
+  int homeTeamTurnovers = Integer.parseInt(homeTeamStats.getString("team_turnovers")); 
+  int homeTeamRebounds = Integer.parseInt(homeTeamStats.getString("team_rebounds")); 
+  int homeFlagrantFouls = Integer.parseInt(homeTeamStats.getString("flagrant_fouls")); 
+  int homePlayerTechFouls = Integer.parseInt(homeTeamStats.getString("player_tech_fouls")); 
+  int homeTeamTechFouls = Integer.parseInt(homeTeamStats.getString("team_tech_fouls")); 
+  int homeCoachTechFouls = Integer.parseInt(homeTeamStats.getString("coach_tech_fouls")); 
   // ***** END HOME ****
 
   // ***** START AWAY ****
   // Away Team Data
-  String awayTeamName = team[1].getString("name");
-  String awayTeamID = team[1].getString("id");
+  String awayTeamName = team[1].getString("name"); 
+  String awayTeamID = team[1].getString("id"); 
 
   // Quarterly Points
-  int awayQuarterOnePoints = Integer.parseInt(awayTeamQuarter[0].getString("points"));
-  int awayQuarterTwoPoints = Integer.parseInt(awayTeamQuarter[1].getString("points"));
-  int awayQuarterThreePoints = Integer.parseInt(awayTeamQuarter[2].getString("points"));
-  int awayQuarterFourPoints = Integer.parseInt(awayTeamQuarter[3].getString("points"));
+  int awayQuarterOnePoints = Integer.parseInt(awayTeamQuarter[0].getString("points")); 
+  int awayQuarterTwoPoints = Integer.parseInt(awayTeamQuarter[1].getString("points")); 
+  int awayQuarterThreePoints = Integer.parseInt(awayTeamQuarter[2].getString("points")); 
+  int awayQuarterFourPoints = Integer.parseInt(awayTeamQuarter[3].getString("points")); 
 
   // Team Statistics
-  String awayMinutes = awayTeamStats.getString("minutes");
-  int awayFieldGoalsMade = Integer.parseInt(awayTeamStats.getString("field_goals_made"));
-  int awayFieldGoalsAtt = Integer.parseInt(awayTeamStats.getString("field_goals_att"));
-  float awayFieldGoalsPct = Float.parseFloat(awayTeamStats.getString("field_goals_pct"));
-  int awayThreePointsMade = Integer.parseInt(awayTeamStats.getString("three_points_made"));
-  int awayThreePointsAtt = Integer.parseInt(awayTeamStats.getString("three_points_att"));
-  float awayThreePointsPct = Float.parseFloat(awayTeamStats.getString("three_points_pct"));
-  int awayTwoPointsMade = Integer.parseInt(awayTeamStats.getString("two_points_made"));
-  int awayTwoPointsAtt = Integer.parseInt(awayTeamStats.getString("two_points_att"));
-  float awayTwoPointsPct = Float.parseFloat(awayTeamStats.getString("two_points_pct"));
-  int awayBlockedAtt = Integer.parseInt(awayTeamStats.getString("blocked_att"));
-  int awayFreeThrowsMade = Integer.parseInt(awayTeamStats.getString("free_throws_made"));
-  int awayFreeThrowsAtt = Integer.parseInt(awayTeamStats.getString("free_throws_att"));
-  float awayFreeThrowsPct = Float.parseFloat(awayTeamStats.getString("free_throws_pct"));
-  int awayOffensiveRebounds = Integer.parseInt(awayTeamStats.getString("offensive_rebounds"));
-  int awayDefensiveRebounds = Integer.parseInt(awayTeamStats.getString("defensive_rebounds"));
-  int awayRebounds = Integer.parseInt(awayTeamStats.getString("rebounds"));
-  int awayAssists = Integer.parseInt(awayTeamStats.getString("assists"));
-  int awayTurnovers = Integer.parseInt(awayTeamStats.getString("assists"));
-  int awaySteals = Integer.parseInt(awayTeamStats.getString("steals"));
-  int awayBlocks = Integer.parseInt(awayTeamStats.getString("blocks"));
-  float awayAssistsTurnoverRatio = Float.parseFloat(awayTeamStats.getString("assists_turnover_ratio"));
-  int awayPersonalFouls = Integer.parseInt(awayTeamStats.getString("personal_fouls"));
-  int awayPoints = Integer.parseInt(awayTeamStats.getString("points"));
-  int awayTeamTurnovers = Integer.parseInt(awayTeamStats.getString("team_turnovers"));
-  int awayTeamRebounds = Integer.parseInt(awayTeamStats.getString("team_rebounds"));
-  int awayFlagrantFouls = Integer.parseInt(awayTeamStats.getString("flagrant_fouls"));
-  int awayPlayerTechFouls = Integer.parseInt(awayTeamStats.getString("player_tech_fouls"));
-  int awayTeamTechFouls = Integer.parseInt(awayTeamStats.getString("team_tech_fouls"));
-  int awayCoachTechFouls = Integer.parseInt(awayTeamStats.getString("coach_tech_fouls"));
+  String awayMinutes = awayTeamStats.getString("minutes"); 
+  int awayFieldGoalsMade = Integer.parseInt(awayTeamStats.getString("field_goals_made")); 
+  int awayFieldGoalsAtt = Integer.parseInt(awayTeamStats.getString("field_goals_att")); 
+  float awayFieldGoalsPct = Float.parseFloat(awayTeamStats.getString("field_goals_pct")); 
+  int awayThreePointsMade = Integer.parseInt(awayTeamStats.getString("three_points_made")); 
+  int awayThreePointsAtt = Integer.parseInt(awayTeamStats.getString("three_points_att")); 
+  float awayThreePointsPct = Float.parseFloat(awayTeamStats.getString("three_points_pct")); 
+  int awayTwoPointsMade = Integer.parseInt(awayTeamStats.getString("two_points_made")); 
+  int awayTwoPointsAtt = Integer.parseInt(awayTeamStats.getString("two_points_att")); 
+  float awayTwoPointsPct = Float.parseFloat(awayTeamStats.getString("two_points_pct")); 
+  int awayBlockedAtt = Integer.parseInt(awayTeamStats.getString("blocked_att")); 
+  int awayFreeThrowsMade = Integer.parseInt(awayTeamStats.getString("free_throws_made")); 
+  int awayFreeThrowsAtt = Integer.parseInt(awayTeamStats.getString("free_throws_att")); 
+  float awayFreeThrowsPct = Float.parseFloat(awayTeamStats.getString("free_throws_pct")); 
+  int awayOffensiveRebounds = Integer.parseInt(awayTeamStats.getString("offensive_rebounds")); 
+  int awayDefensiveRebounds = Integer.parseInt(awayTeamStats.getString("defensive_rebounds")); 
+  int awayRebounds = Integer.parseInt(awayTeamStats.getString("rebounds")); 
+  int awayAssists = Integer.parseInt(awayTeamStats.getString("assists")); 
+  int awayTurnovers = Integer.parseInt(awayTeamStats.getString("assists")); 
+  int awaySteals = Integer.parseInt(awayTeamStats.getString("steals")); 
+  int awayBlocks = Integer.parseInt(awayTeamStats.getString("blocks")); 
+  float awayAssistsTurnoverRatio = Float.parseFloat(awayTeamStats.getString("assists_turnover_ratio")); 
+  int awayPersonalFouls = Integer.parseInt(awayTeamStats.getString("personal_fouls")); 
+  int awayPoints = Integer.parseInt(awayTeamStats.getString("points")); 
+  int awayTeamTurnovers = Integer.parseInt(awayTeamStats.getString("team_turnovers")); 
+  int awayTeamRebounds = Integer.parseInt(awayTeamStats.getString("team_rebounds")); 
+  int awayFlagrantFouls = Integer.parseInt(awayTeamStats.getString("flagrant_fouls")); 
+  int awayPlayerTechFouls = Integer.parseInt(awayTeamStats.getString("player_tech_fouls")); 
+  int awayTeamTechFouls = Integer.parseInt(awayTeamStats.getString("team_tech_fouls")); 
+  int awayCoachTechFouls = Integer.parseInt(awayTeamStats.getString("coach_tech_fouls")); 
   // ***** END AWAY ****
 
   nbaGameSummary = new NBAGameSummary(gametitle, gameStatus, gameScheduled, gameAttendance, 
@@ -969,7 +1081,7 @@ NBAGameSummary getNBAGameSummary(String gameID) {
   awayFreeThrowsPct, awayOffensiveRebounds, awayDefensiveRebounds, awayRebounds, awayAssists, 
   awayTurnovers, awaySteals, awayBlocks, awayAssistsTurnoverRatio, awayPersonalFouls, awayPoints, 
   awayTeamTurnovers, awayTeamRebounds, awayFlagrantFouls, awayPlayerTechFouls, awayTeamTechFouls, 
-  awayCoachTechFouls);
+  awayCoachTechFouls); 
 
   return nbaGameSummary;
 }
@@ -980,59 +1092,59 @@ NBAGameSummary getNBAGameSummary(String gameID) {
  which will contain all the total statistical data 
  */
 NBATeam getNBATeamSeasonTotalStats(String teamID, String year) {
-  pauseFor(1000);
-  println("********** getNBATeamSeasonStats **********");
-  String URI = "http://api.sportradar.us/nba-t3/seasontd/" + year + "/REG/teams/" + teamID + "/statistics.xml?api_key=" + NBAkey;
+  pauseFor(1000); 
+  println("********** getNBATeamSeasonStats **********"); 
+  String URI = "http://api.sportradar.us/nba-t3/seasontd/" + year + "/REG/teams/" + teamID + "/statistics.xml?api_key=" + NBAkey; 
 
-  println("URI is: " + URI);
+  println("URI is: " + URI); 
 
-  xml = loadXML(URI);
+  xml = loadXML(URI); 
 
   // get season total stats
-  XML teamXML = xml.getChild("team");
-  XML teamRecordsXML = teamXML.getChild("team_records");
-  XML overallXML = teamRecordsXML.getChild("overall");
-  XML totalXML = overallXML.getChild("total");
+  XML teamXML = xml.getChild("team"); 
+  XML teamRecordsXML = teamXML.getChild("team_records"); 
+  XML overallXML = teamRecordsXML.getChild("overall"); 
+  XML totalXML = overallXML.getChild("total"); 
 
   // parse data to the Team object
-  String teamName = teamXML.getString("market") + " " + teamXML.getString("name");
-  int gamesPlayed = Integer.parseInt(totalXML.getString("games_played"));
-  float minutes = Float.parseFloat(totalXML.getString("minutes"));
-  int fieldGoalsMade = Integer.parseInt(totalXML.getString("field_goals_made"));
-  int fieldGoalsAtt = Integer.parseInt(totalXML.getString("field_goals_att"));
-  int threePointsMade = Integer.parseInt(totalXML.getString("three_points_made"));
-  int threePointsAtt = Integer.parseInt(totalXML.getString("three_points_att"));
-  int blockedAtt = Integer.parseInt(totalXML.getString("blocked_att"));
-  int freeThrowsMade = Integer.parseInt(totalXML.getString("free_throws_made"));
-  int freeThrowsAtt = Integer.parseInt(totalXML.getString("free_throws_att"));
-  int offensiveRebounds = Integer.parseInt(totalXML.getString("offensive_rebounds"));
-  int defensiveRebounds = Integer.parseInt(totalXML.getString("defensive_rebounds"));
-  int assists = Integer.parseInt(totalXML.getString("assists"));
-  int turnovers = Integer.parseInt(totalXML.getString("turnovers"));
-  int steals = Integer.parseInt(totalXML.getString("steals"));
-  int blocks = Integer.parseInt(totalXML.getString("blocks"));
-  int personalFouls = Integer.parseInt(totalXML.getString("personal_fouls"));
-  int techFouls = Integer.parseInt(totalXML.getString("tech_fouls"));
-  int points = Integer.parseInt(totalXML.getString("points"));
-  int fastBreakPoints = Integer.parseInt(totalXML.getString("fast_break_pts"));
-  int paintPts = Integer.parseInt(totalXML.getString("paint_pts"));
-  int flagrantFouls = Integer.parseInt(totalXML.getString("flagrant_fouls"));
-  int pointsOffTurnovers = Integer.parseInt(totalXML.getString("points_off_turnovers"));
-  int secondChancePoints = Integer.parseInt(totalXML.getString("second_chance_pts"));
-  float freeThrowsPct = Float.parseFloat(totalXML.getString("free_throws_pct"));
-  float twoPointsPct = Float.parseFloat(totalXML.getString("two_points_pct"));
-  float threePointsPct = Float.parseFloat(totalXML.getString("three_points_pct"));
-  float fieldGoalsPct = Float.parseFloat(totalXML.getString("field_goals_pct"));
-  int rebounds = Integer.parseInt(totalXML.getString("rebounds"));
-  float assistsTurnoverRatio = Float.parseFloat(totalXML.getString("assists_turnover_ratio"));
-  int twoPointsMade = Integer.parseInt(totalXML.getString("two_points_made"));
-  int twoPointsAtt = Integer.parseInt(totalXML.getString("two_points_att"));
+  String teamName = teamXML.getString("market") + " " + teamXML.getString("name"); 
+  int gamesPlayed = Integer.parseInt(totalXML.getString("games_played")); 
+  float minutes = Float.parseFloat(totalXML.getString("minutes")); 
+  int fieldGoalsMade = Integer.parseInt(totalXML.getString("field_goals_made")); 
+  int fieldGoalsAtt = Integer.parseInt(totalXML.getString("field_goals_att")); 
+  int threePointsMade = Integer.parseInt(totalXML.getString("three_points_made")); 
+  int threePointsAtt = Integer.parseInt(totalXML.getString("three_points_att")); 
+  int blockedAtt = Integer.parseInt(totalXML.getString("blocked_att")); 
+  int freeThrowsMade = Integer.parseInt(totalXML.getString("free_throws_made")); 
+  int freeThrowsAtt = Integer.parseInt(totalXML.getString("free_throws_att")); 
+  int offensiveRebounds = Integer.parseInt(totalXML.getString("offensive_rebounds")); 
+  int defensiveRebounds = Integer.parseInt(totalXML.getString("defensive_rebounds")); 
+  int assists = Integer.parseInt(totalXML.getString("assists")); 
+  int turnovers = Integer.parseInt(totalXML.getString("turnovers")); 
+  int steals = Integer.parseInt(totalXML.getString("steals")); 
+  int blocks = Integer.parseInt(totalXML.getString("blocks")); 
+  int personalFouls = Integer.parseInt(totalXML.getString("personal_fouls")); 
+  int techFouls = Integer.parseInt(totalXML.getString("tech_fouls")); 
+  int points = Integer.parseInt(totalXML.getString("points")); 
+  int fastBreakPoints = Integer.parseInt(totalXML.getString("fast_break_pts")); 
+  int paintPts = Integer.parseInt(totalXML.getString("paint_pts")); 
+  int flagrantFouls = Integer.parseInt(totalXML.getString("flagrant_fouls")); 
+  int pointsOffTurnovers = Integer.parseInt(totalXML.getString("points_off_turnovers")); 
+  int secondChancePoints = Integer.parseInt(totalXML.getString("second_chance_pts")); 
+  float freeThrowsPct = Float.parseFloat(totalXML.getString("free_throws_pct")); 
+  float twoPointsPct = Float.parseFloat(totalXML.getString("two_points_pct")); 
+  float threePointsPct = Float.parseFloat(totalXML.getString("three_points_pct")); 
+  float fieldGoalsPct = Float.parseFloat(totalXML.getString("field_goals_pct")); 
+  int rebounds = Integer.parseInt(totalXML.getString("rebounds")); 
+  float assistsTurnoverRatio = Float.parseFloat(totalXML.getString("assists_turnover_ratio")); 
+  int twoPointsMade = Integer.parseInt(totalXML.getString("two_points_made")); 
+  int twoPointsAtt = Integer.parseInt(totalXML.getString("two_points_att")); 
 
   NBATeam team = new NBATeam(teamName, gamesPlayed, minutes, fieldGoalsMade, fieldGoalsAtt, threePointsMade, threePointsAtt, 
   blockedAtt, freeThrowsMade, freeThrowsAtt, offensiveRebounds, defensiveRebounds, assists, 
   turnovers, steals, blocks, personalFouls, techFouls, points, fastBreakPoints, paintPts, flagrantFouls, 
   pointsOffTurnovers, secondChancePoints, freeThrowsPct, twoPointsPct, threePointsPct, fieldGoalsPct, 
-  rebounds, assistsTurnoverRatio, twoPointsMade, twoPointsAtt);
+  rebounds, assistsTurnoverRatio, twoPointsMade, twoPointsAtt); 
 
   //println(team.toString());
 
@@ -1046,57 +1158,57 @@ NBATeam getNBATeamSeasonTotalStats(String teamID, String year) {
  Refer to NBAPlayer in what types of data will be returned
  */
 NBAPlayer getNBAPlayerStats(String playerID, String year) {
-  pauseFor(1000);
-  println("********** getNBAPlayerStats **********");
-  String URI = "http://api.sportradar.us/nba-t3/players/" + playerID + "/profile.xml?api_key=" + NBAkey;
-  println("URI is: " + URI);
-  xml = loadXML(URI);
-  NBAPlayer player;
-  boolean NBAPlayerInit = false;
+  pauseFor(1000); 
+  println("********** getNBAPlayerStats **********"); 
+  String URI = "http://api.sportradar.us/nba-t3/players/" + playerID + "/profile.xml?api_key=" + NBAkey; 
+  println("URI is: " + URI); 
+  xml = loadXML(URI); 
+  NBAPlayer player; 
+  boolean NBAPlayerInit = false; 
 
-  String id = xml.getString("id");
-  String fullName = xml.getString("full_name");
-  String jerseyNumber = xml.getString("jersey_number");
-  String primaryPosition = xml.getString("primary_position");
-  String college = xml.getString("college");
+  String id = xml.getString("id"); 
+  String fullName = xml.getString("full_name"); 
+  String jerseyNumber = xml.getString("jersey_number"); 
+  String primaryPosition = xml.getString("primary_position"); 
+  String college = xml.getString("college"); 
 
-  XML seasons = xml.getChild("seasons");
-  XML [] season = seasons.getChildren("season");
+  XML seasons = xml.getChild("seasons"); 
+  XML [] season = seasons.getChildren("season"); 
 
   for (int i = 0; i < season.length; i++) {
     if (season[i].getString("year").equals(year)) {
-      XML team = season[i].getChild("team");
-      XML statistics = team.getChild("statistics");
-      XML total = statistics.getChild("total");
+      XML team = season[i].getChild("team"); 
+      XML statistics = team.getChild("statistics"); 
+      XML total = statistics.getChild("total"); 
 
-      int gamesPlayed = Integer.parseInt(total.getString("games_played"));
-      int gamesStarted = Integer.parseInt(total.getString("games_started"));
-      float minutes = Float.parseFloat(total.getString("minutes"));
-      int fieldGoalsMade = Integer.parseInt(total.getString("field_goals_made"));
-      int fieldGoalsAtt = Integer.parseInt(total.getString("field_goals_att"));
-      int threePointsMade = Integer.parseInt(total.getString("three_points_made"));
-      int threePointsAtt = Integer.parseInt(total.getString("three_points_att"));
-      int blockedAtt = Integer.parseInt(total.getString("blocked_att"));
-      int freeThrowsMade = Integer.parseInt(total.getString("free_throws_made"));
-      int freeThrowsAtt = Integer.parseInt(total.getString("free_throws_att"));
-      int offensiveRebounds = Integer.parseInt(total.getString("offensive_rebounds"));
-      int defensiveRebounds = Integer.parseInt(total.getString("defensive_rebounds"));
-      int assists = Integer.parseInt(total.getString("assists"));
-      int turnovers = Integer.parseInt(total.getString("turnovers"));
-      int steals = Integer.parseInt(total.getString("steals"));
-      int blocks = Integer.parseInt(total.getString("blocks"));
-      int personalFouls = Integer.parseInt(total.getString("personal_fouls"));
-      int techFouls = Integer.parseInt(total.getString("tech_fouls"));
-      int points = Integer.parseInt(total.getString("points"));
-      int flagrantFouls = Integer.parseInt(total.getString("flagrant_fouls"));
-      float freeThrowsPct = Float.parseFloat(total.getString("free_throws_pct"));
-      float twoPointsPct = Float.parseFloat(total.getString("two_points_pct"));
-      float threePointsPct = Float.parseFloat(total.getString("three_points_pct"));
-      float fieldGoalsPct = Float.parseFloat(total.getString("field_goals_pct"));
-      int rebounds = Integer.parseInt(total.getString("rebounds"));
-      float assistsTurnoverRatio = Float.parseFloat(total.getString("assists_turnover_ratio"));
-      int twoPointsMade = Integer.parseInt(total.getString("two_points_made"));
-      int twoPointsAtt = Integer.parseInt(total.getString("two_points_att"));
+      int gamesPlayed = Integer.parseInt(total.getString("games_played")); 
+      int gamesStarted = Integer.parseInt(total.getString("games_started")); 
+      float minutes = Float.parseFloat(total.getString("minutes")); 
+      int fieldGoalsMade = Integer.parseInt(total.getString("field_goals_made")); 
+      int fieldGoalsAtt = Integer.parseInt(total.getString("field_goals_att")); 
+      int threePointsMade = Integer.parseInt(total.getString("three_points_made")); 
+      int threePointsAtt = Integer.parseInt(total.getString("three_points_att")); 
+      int blockedAtt = Integer.parseInt(total.getString("blocked_att")); 
+      int freeThrowsMade = Integer.parseInt(total.getString("free_throws_made")); 
+      int freeThrowsAtt = Integer.parseInt(total.getString("free_throws_att")); 
+      int offensiveRebounds = Integer.parseInt(total.getString("offensive_rebounds")); 
+      int defensiveRebounds = Integer.parseInt(total.getString("defensive_rebounds")); 
+      int assists = Integer.parseInt(total.getString("assists")); 
+      int turnovers = Integer.parseInt(total.getString("turnovers")); 
+      int steals = Integer.parseInt(total.getString("steals")); 
+      int blocks = Integer.parseInt(total.getString("blocks")); 
+      int personalFouls = Integer.parseInt(total.getString("personal_fouls")); 
+      int techFouls = Integer.parseInt(total.getString("tech_fouls")); 
+      int points = Integer.parseInt(total.getString("points")); 
+      int flagrantFouls = Integer.parseInt(total.getString("flagrant_fouls")); 
+      float freeThrowsPct = Float.parseFloat(total.getString("free_throws_pct")); 
+      float twoPointsPct = Float.parseFloat(total.getString("two_points_pct")); 
+      float threePointsPct = Float.parseFloat(total.getString("three_points_pct")); 
+      float fieldGoalsPct = Float.parseFloat(total.getString("field_goals_pct")); 
+      int rebounds = Integer.parseInt(total.getString("rebounds")); 
+      float assistsTurnoverRatio = Float.parseFloat(total.getString("assists_turnover_ratio")); 
+      int twoPointsMade = Integer.parseInt(total.getString("two_points_made")); 
+      int twoPointsAtt = Integer.parseInt(total.getString("two_points_att")); 
 
       // initialize the player
       player = new NBAPlayer(id, fullName, jerseyNumber, primaryPosition, college, 
@@ -1105,10 +1217,10 @@ NBAPlayer getNBAPlayerStats(String playerID, String year) {
       offensiveRebounds, defensiveRebounds, assists, turnovers, steals, blocks, 
       personalFouls, techFouls, points, flagrantFouls, freeThrowsPct, twoPointsPct, 
       threePointsPct, fieldGoalsPct, rebounds, assistsTurnoverRatio, twoPointsMade, 
-      twoPointsAtt);
+      twoPointsAtt); 
 
       // exit loop since data is already found
-      NBAPlayerInit = true;
+      NBAPlayerInit = true; 
       return player;
     }
   }
@@ -1121,37 +1233,56 @@ NBAPlayer getNBAPlayerStats(String playerID, String year) {
  year, month and day
  */
 ArrayList <NBAGame> getAllGamesOnDate(String year, String month, String day) {
-  pauseFor(1000);
-  println("********** Getting all games for " + year + "/" + month + "/" + day + " **********");
-  ArrayList <NBAGame> allGames = new ArrayList<NBAGame>();
-  String URI = "http://api.sportradar.us/nba-t3/games/" + year + "/" + month + "/" + day + "/schedule.xml?api_key=" + NBAkey;
-  println("URI is: " + URI);
-  xml = loadXML(URI);
+  pauseFor(1000); 
+  println("********** Getting all games for " + year + "/" + month + "/" + day + " **********"); 
+  ArrayList <NBAGame> allGames = new ArrayList<NBAGame>(); 
+  String URI = "http://api.sportradar.us/nba-t3/games/" + year + "/" + month + "/" + day + "/schedule.xml?api_key=" + NBAkey; 
+  println("URI is: " + URI); 
+  xml = loadXML(URI); 
 
-  XML dailyScheduleXML = xml.getChild("daily-schedule");
-  XML gamesXML = dailyScheduleXML.getChild("games");
-  XML [] gameXML = gamesXML.getChildren("game");
+  XML dailyScheduleXML = xml.getChild("daily-schedule"); 
+  XML gamesXML = dailyScheduleXML.getChild("games"); 
+  XML [] gameXML = gamesXML.getChildren("game"); 
 
   for (int i = 0; i < gameXML.length; i++) {
-    XML home = gameXML[i].getChild("home");
-    XML away = gameXML[i].getChild("away");
+    XML home = gameXML[i].getChild("home"); 
+    XML away = gameXML[i].getChild("away"); 
 
     // place holders for data to be pushed into Game objects
-    String id = gameXML[i].getString("id");
-    String title = gameXML[i].getString("title");
-    String status = gameXML[i].getString("status");
-    String coverage = gameXML[i].getString("coverage");
-    String homeTeamID = gameXML[i].getString("home_team");
-    String awayTeamID = gameXML[i].getString("away_team");
-    String scheduled = gameXML[i].getString("scheduled");
-    String homeTeamName = home.getString("name");
-    String awayTeamName = away.getString("name");
+    String id = gameXML[i].getString("id"); 
+    String title = gameXML[i].getString("title"); 
+    String status = gameXML[i].getString("status"); 
+    String coverage = gameXML[i].getString("coverage"); 
+    String homeTeamID = gameXML[i].getString("home_team"); 
+    String awayTeamID = gameXML[i].getString("away_team"); 
+    String scheduled = gameXML[i].getString("scheduled"); 
+    String homeTeamName = home.getString("name"); 
+    String awayTeamName = away.getString("name"); 
 
-    NBAGame newGame = new NBAGame(id, title, status, coverage, homeTeamID, awayTeamID, scheduled, homeTeamName, awayTeamName);
+    NBAGame newGame = new NBAGame(id, title, status, coverage, homeTeamID, awayTeamID, scheduled, homeTeamName, awayTeamName); 
     allGames.add(newGame);
   }
 
   return allGames;
+}
+
+// argument is team ID for a specific team
+Map<String, String> getTeamRoster(String teamID) {
+  pauseFor(1000); 
+  println("********** Getting roster for " + teamID + " **********"); 
+  Map<String, String> roster = new HashMap<String, String>(); // Player Name -> Player ID
+  String URI = "http://api.sportradar.us/nba-t3/teams/" + teamID + "/profile.xml?api_key=" + NBAkey; 
+  println("URI is: " + URI); 
+  xml = loadXML(URI);
+
+  XML players = xml.getChild("players");
+  XML [] player = players.getChildren("player");
+
+  for (int i = 0; i < player.length; i++) {
+    roster.put(player[i].getString("full_name"), player[i].getString("id"));
+  }
+
+  return roster;
 }
 
 /*
@@ -1159,21 +1290,21 @@ ArrayList <NBAGame> getAllGamesOnDate(String year, String month, String day) {
  ONLY FOR DEBUGGING AND TESTING
  */
 void leagueHierarchy() {
-  pauseFor(1000);
-  println("********** LEAGUE HIERARCHY **********");
-  xml = loadXML("cache/LeagueHierarchy.xml");
-  XML [] conference = xml.getChildren("conference");
+  pauseFor(1000); 
+  println("********** LEAGUE HIERARCHY **********"); 
+  xml = loadXML("cache/LeagueHierarchy.xml"); 
+  XML [] conference = xml.getChildren("conference"); 
 
   for (int i = 0; i < conference.length; i++) {
-    println(conference[i].getString("name"));
-    XML [] division = conference[i].getChildren("division");
+    println(conference[i].getString("name")); 
+    XML [] division = conference[i].getChildren("division"); 
     for (int j = 0; j < division.length; j++) {
-      println(division[j].getString("name"));
-      XML [] team = division[j].getChildren("team");
+      println(division[j].getString("name")); 
+      XML [] team = division[j].getChildren("team"); 
       for (int k = 0; k < team.length; k++) {
-        String name = team[k].getString("name");
-        String id = team[k].getString("id");
-        String market = team[k].getString("market");
+        String name = team[k].getString("name"); 
+        String id = team[k].getString("id"); 
+        String market = team[k].getString("market"); 
         println(market + " " + name + ", " + id);
       }
     }
@@ -1185,9 +1316,9 @@ void leagueHierarchy() {
  This method will return true if the file exists or false otherwise
  */
 boolean checkIfFileExists(String path) {
-  File fileDir = getFilesDir();
+  File fileDir = getFilesDir(); 
   // check if file exists
-  File f = new File(fileDir.getAbsolutePath() + path);
+  File f = new File(fileDir.getAbsolutePath() + path); 
   if (f.exists() && !f.isDirectory()) {
     return true;
   } else {
@@ -1196,7 +1327,7 @@ boolean checkIfFileExists(String path) {
 }
 
 void moveGraph (int x, int y) {
-  moveHorizontal = x;
+  moveHorizontal = x; 
   moveVertical = y;
 }
 
@@ -1206,6 +1337,27 @@ void pauseFor(int timeInMiliSec) {
   } 
   catch(InterruptedException ex) {
     Thread.currentThread().interrupt();
+  }
+}
+
+void preMode() {
+  WC_live.hide();
+  widgetContainer_SubmitPlayers.hide();
+  widgetContainer_SubmitTeams.hide();
+  widgetContainer_Graphs.hide();
+  background(0, 0, 80);
+  fill(255);
+  textSize(80); 
+  textAlign(LEFT);
+}
+
+@ Override
+void onBackPressed() {
+  if (!backButtonStack.empty()) {
+    mode = backButtonStack.pop();
+    redraw();
+  } else {
+    super.onBackPressed();
   }
 }
 
