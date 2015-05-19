@@ -91,6 +91,11 @@ NBATeam team4_obj;
 NBATeam team5_obj;
 NBATeam team6_obj;
 
+NBATeam team1_obj2013;
+NBATeam team2_obj2013; 
+NBATeam team1_obj2014; 
+NBATeam team2_obj2014; 
+
 NBAPlayer player1_obj;
 NBAPlayer player2_obj;
 
@@ -192,7 +197,7 @@ void setup() {
   widgetContainer_Graphs.addWidget(button_Statistics);
   widgetContainer_Graphs.addWidget(button_BackM1);
   widgetContainer_Graphs.addWidget(button_NextM1);
-  
+
 
   //widget container for buttons in mode4
   widgetContainer_SubmitPlayers = new APWidgetContainer(this);
@@ -205,7 +210,7 @@ void setup() {
   widgetContainer_SubmitPlayers.addWidget(button_submit4);
   widgetContainer_SubmitPlayers.addWidget(button_player1);
   widgetContainer_SubmitPlayers.addWidget(button_player2);
- 
+
 
   //widget container for buttons in mode7
   widgetContainer_SelectDataDisplay = new APWidgetContainer(this);
@@ -242,7 +247,7 @@ void setup() {
   TeamComparison_modeChanges.hide();
 
   widgetContainer_SubmitTeams.show();
-  
+
   /*
   // ****** START OF TESTS / EXAMPLES ******
    NBATeam Warriors = new NBATeam();
@@ -298,7 +303,7 @@ void draw() {
     width/2 - 150, height/9 + 90, 
     width/2 - 200, height/9 + 65);
   }
-  //mode1 - GRAPH COMPARISONS
+  //MODE 1: Bar Graphs: 3P %, Field Goal %, Free Throw % - Team Comparison
   else if (mode == 1) {
 
     background(0, 0, 80);
@@ -384,7 +389,7 @@ void draw() {
     rect(lineBase_w + 2*(lineWidth/11) + 3*(width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(team2_fieldGoalPerc)*lineHeight);
     rect(lineBase_w + 3*(lineWidth/11) + 5*(width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(team2_freeThrowPerc)*lineHeight);
   } 
-
+  //MODE 2: Bar Graphs: Rebounds, Assists, Turnovers - Team Comparison
   else if (mode == 2) {
 
     background(0, 0, 80);
@@ -668,7 +673,7 @@ void draw() {
     rect(lineBase_w + 2*(lineWidth/11) + 3*(width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(player2_fieldGoalPerc)*lineHeight);
     rect(lineBase_w + 3*(lineWidth/11) + 5*(width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(player2_freeThrowPerc)*lineHeight);
   }
-
+  //MODE 6: Relational Graph: 2p vs 3p
   else if (mode == 6) {
 
     background(0, 0, 80);
@@ -685,10 +690,10 @@ void draw() {
     stroke(255);
     fill(255);
     strokeWeight(10);
-    
+
     line(lineBase_w + moveHorizontal, lineBase_h + moveVertical, width-(lineBase_w) + moveHorizontal, lineBase_h + moveVertical);
     line(lineBase_w + moveHorizontal, lineBase_h + moveVertical, lineBase_w + moveHorizontal, 100 + moveVertical);
-  
+
     textSize(50);
     text("0", width/6 - 60 + moveHorizontal, height-height/3 + 18 + moveVertical);
     text("50", width/6 - 70 + moveHorizontal, (height-height/3) - (5*(height-height/3 - 100)/10) + 18 + moveVertical);
@@ -762,43 +767,173 @@ void draw() {
     float team1_3PointerPerc = team1_obj.getThreePointsPct(); 
     fill(255, 51, 51);
     rect(lineBase_w + (team1_2PointerPerc)*lineWidth - 10, lineBase_h - (team1_3PointerPerc)*lineHeight - 10, 20, 20);
-    
+
     float team2_2PointerPerc = team2_obj.getTwoPointsPct();
     float team2_3PointerPerc = team2_obj.getThreePointsPct();
     fill(255, 153, 51);
     rect(lineBase_w + (team2_2PointerPerc)*lineWidth - 10, lineBase_h - (team2_3PointerPerc)*lineHeight - 10, 20, 20);
-    
-    if (relGraph_showTeam3){     
+
+    if (relGraph_showTeam3) {     
       float team3_2PointerPerc = team3_obj.getTwoPointsPct();
       float team3_3PointerPerc = team3_obj.getThreePointsPct();     
       fill(0, 255, 128); 
       rect(lineBase_w + (team3_2PointerPerc)*lineWidth - 10, lineBase_h - (team3_3PointerPerc)*lineHeight - 10, 20, 20);
     } 
-    if (relGraph_showTeam4){     
+    if (relGraph_showTeam4) {     
       float team4_2PointerPerc = team4_obj.getTwoPointsPct();
       float team4_3PointerPerc = team4_obj.getThreePointsPct();     
       fill(0, 128, 255); 
       rect(lineBase_w + (team4_2PointerPerc)*lineWidth - 10, lineBase_h - (team4_3PointerPerc)*lineHeight - 10, 20, 20);
     }
-    if (relGraph_showTeam5){     
+    if (relGraph_showTeam5) {     
       float team5_2PointerPerc = team5_obj.getTwoPointsPct();
       float team5_3PointerPerc = team5_obj.getThreePointsPct();     
       fill(127, 0, 255);   
       rect(lineBase_w + (team5_2PointerPerc)*lineWidth - 10, lineBase_h - (team5_3PointerPerc)*lineHeight - 10, 20, 20);
     }
-    if (relGraph_showTeam6){     
+    if (relGraph_showTeam6) {     
       float team6_2PointerPerc = team6_obj.getTwoPointsPct();
       float team6_3PointerPerc = team6_obj.getThreePointsPct();     
       fill(204, 0, 102); 
       rect(lineBase_w + (team6_2PointerPerc)*lineWidth - 10, lineBase_h - (team6_3PointerPerc)*lineHeight - 10, 20, 20);
-    }     
-  } else if (mode == 7){
-  
+    }
+  } 
+  //MODE 7: Data Display Selectio mode for Team Comparison
+  else if (mode == 7) {
+
     background(0, 0, 80);  
     fill(255); 
     textSize(70);
     text(team1 + " vs. " + team2, width/2, height/10);
     text(season, width/2, height/10 + 100);
+  }
+  //MODE 8: Time Graphs for Team Comparison
+  else if ((mode == 8) || (mode == 9) || (mode == 10)) {
+
+    background(0, 0, 80);
+
+    float lineBase_h = height - height/3;  //y-coord of the left corner of the graph
+    float lineBase_w = width/6;  //x-coord of the left corder of the graph
+    float lineTop_h = height - 100;  //y-coord of the top of the y-axis
+    float lineWidth = 2*(width/3);  //width of x-axis
+    float lineHeight = 2*(height/3)-100;  //height of y-axis
+
+    moveGraph(65, 55);
+
+    //creating x- and y-axis for the bar graphs
+    stroke(255);
+    fill(255);
+    strokeWeight(10);
+
+    line(lineBase_w + moveHorizontal, lineBase_h + moveVertical, width-(lineBase_w) + moveHorizontal, lineBase_h + moveVertical);
+    line(lineBase_w + moveHorizontal, lineBase_h + moveVertical, lineBase_w + moveHorizontal, 100 + moveVertical);
+
+    textSize(50);
+    text("0", width/6 - 60 + moveHorizontal, height-height/3 + 18 + moveVertical);
+    text("50", width/6 - 70 + moveHorizontal, (height-height/3) - (5*(height-height/3 - 100)/10) + 18 + moveVertical);
+    text("100", width/6 - 70 + moveHorizontal, (height-height/3) - (10*(height-height/3 - 100)/10) + 18 + moveVertical);
+
+    //creating short lines to divide the y-axis to 10 parts
+    strokeWeight(5);
+    line(lineBase_w - 20 + moveHorizontal, lineBase_h - ((lineHeight)/10) + moveVertical, lineBase_w + 20 + moveHorizontal, lineBase_h - ((lineHeight)/10) + moveVertical);
+    line(lineBase_w - 20 + moveHorizontal, lineBase_h - (2*(lineHeight)/10) + moveVertical, lineBase_w + 20 + moveHorizontal, lineBase_h - (2*(lineHeight)/10) + moveVertical);
+    line(lineBase_w - 20 + moveHorizontal, lineBase_h - (3*(lineHeight)/10) + moveVertical, lineBase_w + 20 + moveHorizontal, lineBase_h - (3*(lineHeight)/10) + moveVertical);
+    line(lineBase_w - 20 + moveHorizontal, lineBase_h - (4*(lineHeight)/10) + moveVertical, lineBase_w + 20 + moveHorizontal, lineBase_h - (4*(lineHeight)/10) + moveVertical);
+    line(lineBase_w - 20 + moveHorizontal, lineBase_h - (5*(lineHeight)/10) + moveVertical, lineBase_w + 20 + moveHorizontal, lineBase_h - (5*(lineHeight)/10) + moveVertical);
+    line(lineBase_w - 20 + moveHorizontal, lineBase_h - (6*(lineHeight)/10) + moveVertical, lineBase_w + 20 + moveHorizontal, lineBase_h - (6*(lineHeight)/10) + moveVertical);
+    line(lineBase_w - 20 + moveHorizontal, lineBase_h - (7*(lineHeight)/10) + moveVertical, lineBase_w + 20 + moveHorizontal, lineBase_h - (7*(lineHeight)/10) + moveVertical);
+    line(lineBase_w - 20 + moveHorizontal, lineBase_h - (8*(lineHeight)/10) + moveVertical, lineBase_w + 20 + moveHorizontal, lineBase_h - (8*(lineHeight)/10) + moveVertical);
+    line(lineBase_w - 20 + moveHorizontal, lineBase_h - (9*(lineHeight)/10) + moveVertical, lineBase_w + 20 + moveHorizontal, lineBase_h - (9*(lineHeight)/10) + moveVertical);
+
+    //creating short lines to divide the x-axis for two seasons
+    line(lineBase_w + (2*(lineWidth)/10) + moveHorizontal, lineBase_h - 20 + moveVertical, lineBase_w + (2*(lineWidth)/10) + moveHorizontal, lineBase_h + 20 + moveVertical);
+    line(lineBase_w + (8*(lineWidth)/10) + moveHorizontal, lineBase_h - 20 + moveVertical, lineBase_w + (8*(lineWidth)/10) + moveHorizontal, lineBase_h + 20 + moveVertical);
+
+    textSize(50);
+    text("2013", lineBase_w + (2*(lineWidth)/10) + moveHorizontal, lineBase_h + 70 + moveVertical);
+    text("2014", lineBase_w + (8*(lineWidth)/10) + moveHorizontal, lineBase_h + 70 + moveVertical);
+    text("time", lineBase_w + (lineWidth) + moveHorizontal + 40, lineBase_h + 70 + moveVertical);
+
+    //vertical digits
+    text("0", lineBase_w - 60 + moveHorizontal, lineBase_h + 18 + moveVertical);
+    text("50", lineBase_w - 70 + moveHorizontal, lineBase_h - (5*(lineHeight)/10) + 18 + moveVertical);
+    text("100", lineBase_w - 70 + moveHorizontal, lineBase_h - (10*(lineHeight)/10) + 18 + moveVertical);
+
+    //small color boxes to identify teams on the graph
+    textSize(40);
+    text(team1_obj.getTeamName(), width/14, height/4);
+    text(team2_obj.getTeamName(), width/14, height/2);
+    fill(255, 51, 51);   
+    rect(width/20, height/4 + height/20, width/22, height/16); 
+    fill(255, 153, 51);
+    rect(width/20, height/2 + height/20, width/22, height/16); 
+
+    //2 Pointer %
+    if (mode == 8) { 
+
+      fill(255);
+      textSize(55);
+      text("2 Pointers % vs. time Graph", width/2 + moveHorizontal, height/26 + moveVertical);
+
+      float team1_2013_2PointerPerc = team1_obj2013.getTwoPointsPct();
+      float team1_2014_2PointerPerc = team1_obj2014.getTwoPointsPct();     
+      float team2_2013_2PointerPerc = team2_obj2013.getTwoPointsPct();
+      float team2_2014_2PointerPerc = team2_obj2014.getTwoPointsPct();
+
+      strokeWeight(8);
+      stroke(255, 51, 51); 
+      line(lineBase_w + (2*(lineWidth)/10) + moveHorizontal, lineBase_h - (team1_2013_2PointerPerc)*lineHeight - 10, 
+      lineBase_w + (8*(lineWidth)/10) + moveHorizontal, lineBase_h - (team1_2014_2PointerPerc)*lineHeight - 10);
+
+      stroke(255, 153, 51);      
+      line(lineBase_w + (2*(lineWidth)/10) + moveHorizontal, lineBase_h - (team2_2013_2PointerPerc)*lineHeight - 10, 
+      lineBase_w + (8*(lineWidth)/10) + moveHorizontal, lineBase_h - (team2_2014_2PointerPerc)*lineHeight - 10);
+      stroke(255);
+    } 
+    //3 Pointer %
+    else if (mode == 9) {
+
+      fill(255);
+      textSize(55);
+      text("2 Pointers % vs. time Graph", width/2 + moveHorizontal, height/26 + moveVertical);
+
+      float team1_2013_2PointerPerc = team1_obj2013.getTwoPointsPct();
+      float team1_2014_2PointerPerc = team1_obj2014.getTwoPointsPct();     
+      float team2_2013_2PointerPerc = team2_obj2013.getTwoPointsPct();
+      float team2_2014_2PointerPerc = team2_obj2014.getTwoPointsPct();
+
+      strokeWeight(8);
+      stroke(255, 51, 51); 
+      line(lineBase_w + (2*(lineWidth)/10) + moveHorizontal, lineBase_h - (team1_2013_2PointerPerc)*lineHeight - 10, 
+      lineBase_w + (8*(lineWidth)/10) + moveHorizontal, lineBase_h - (team1_2014_2PointerPerc)*lineHeight - 10);
+
+      stroke(255, 153, 51);      
+      line(lineBase_w + (2*(lineWidth)/10) + moveHorizontal, lineBase_h - (team2_2013_2PointerPerc)*lineHeight - 10, 
+      lineBase_w + (8*(lineWidth)/10) + moveHorizontal, lineBase_h - (team2_2014_2PointerPerc)*lineHeight - 10);
+      stroke(255);
+    } 
+    //Fast Break Points
+    else if (mode == 10) {
+
+      fill(255);
+      textSize(55);
+      text("2 Pointers % vs. time Graph", width/2 + moveHorizontal, height/26 + moveVertical);
+
+      float team1_2013_2PointerPerc = team1_obj2013.getTwoPointsPct();
+      float team1_2014_2PointerPerc = team1_obj2014.getTwoPointsPct();     
+      float team2_2013_2PointerPerc = team2_obj2013.getTwoPointsPct();
+      float team2_2014_2PointerPerc = team2_obj2014.getTwoPointsPct();
+
+      strokeWeight(8);
+      stroke(255, 51, 51); 
+      line(lineBase_w + (2*(lineWidth)/10) + moveHorizontal, lineBase_h - (team1_2013_2PointerPerc)*lineHeight - 10, 
+      lineBase_w + (8*(lineWidth)/10) + moveHorizontal, lineBase_h - (team1_2014_2PointerPerc)*lineHeight - 10);
+
+      stroke(255, 153, 51);      
+      line(lineBase_w + (2*(lineWidth)/10) + moveHorizontal, lineBase_h - (team2_2013_2PointerPerc)*lineHeight - 10, 
+      lineBase_w + (8*(lineWidth)/10) + moveHorizontal, lineBase_h - (team2_2014_2PointerPerc)*lineHeight - 10);
+      stroke(255);
+    }
   }
 }
 
@@ -819,30 +954,26 @@ void mousePressed() {
     if (season == "2014") {
       season = "2013";
     } else season = "2014";
-  }
-  else if ((mode == 6) && ((mouseX > width/22) && (mouseX < width/18 + width/30)) && 
-    ((mouseY > height/6 + 2*(height/7) + height/40) && (mouseY <height/6 + 2*(height/7) + height/40 + height/16))){ 
+  } else if ((mode == 6) && ((mouseX > width/22) && (mouseX < width/18 + width/30)) && 
+    ((mouseY > height/6 + 2*(height/7) + height/40) && (mouseY <height/6 + 2*(height/7) + height/40 + height/16))) { 
     relGraphList_team3 = new KetaiList(this, teams);
     relGraph_Team3Pressed = true;
-  }
-  else if ((mode == 6) && ((mouseX > width/22) && (mouseX < width/18 + width/30)) && 
-    ((mouseY > height/6 + 3*(height/7) + height/40) && (mouseY <height/6 + 3*(height/7) + height/40 + height/16))){ 
+  } else if ((mode == 6) && ((mouseX > width/22) && (mouseX < width/18 + width/30)) && 
+    ((mouseY > height/6 + 3*(height/7) + height/40) && (mouseY <height/6 + 3*(height/7) + height/40 + height/16))) { 
     relGraphList_team4 = new KetaiList(this, teams);
     relGraph_Team4Pressed = true;
-  }
-  else if ((mode == 6) && ((mouseX > width/22) && (mouseX < width/18 + width/30)) && 
-    ((mouseY > height/6 + 4*(height/7) + height/40) && (mouseY <height/6 + 4*(height/7) + height/40 + height/16))){ 
+  } else if ((mode == 6) && ((mouseX > width/22) && (mouseX < width/18 + width/30)) && 
+    ((mouseY > height/6 + 4*(height/7) + height/40) && (mouseY <height/6 + 4*(height/7) + height/40 + height/16))) { 
     relGraphList_team5 = new KetaiList(this, teams);
     relGraph_Team5Pressed = true;
-  }
-  else if ((mode == 6) && ((mouseX > width/22) && (mouseX < width/18 + width/30)) && 
-    ((mouseY > height/6 + 5*(height/7) + height/40) && (mouseY <height/6 + 5*(height/7) + height/40 + height/16))){ 
+  } else if ((mode == 6) && ((mouseX > width/22) && (mouseX < width/18 + width/30)) && 
+    ((mouseY > height/6 + 5*(height/7) + height/40) && (mouseY <height/6 + 5*(height/7) + height/40 + height/16))) { 
     relGraphList_team6 = new KetaiList(this, teams);
     relGraph_Team6Pressed = true;
   }
-  
-  
-  
+
+
+
   redraw();
 }
 
@@ -861,27 +992,27 @@ void onKetaiListSelection(KetaiList klist) {
       player1 = selection;
     } else if (player2_pressed) {
       player2 = selection;
-    } else if (relGraph_Team3Pressed){
+    } else if (relGraph_Team3Pressed) {
       team3 = selection;
       team3_obj = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team3), season);
       team3_obj.setTeamName(team3);
       relGraph_showTeam3 = true;
-    } else if (relGraph_Team4Pressed){
+    } else if (relGraph_Team4Pressed) {
       team4 = selection;
       team4_obj = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team4), season);
       team4_obj.setTeamName(team4);
       relGraph_showTeam4 = true;
-    } else if (relGraph_Team5Pressed){
+    } else if (relGraph_Team5Pressed) {
       team5 = selection;
       team5_obj = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team5), season);
       team5_obj.setTeamName(team5);
       relGraph_showTeam5 = true;
-    } else if (relGraph_Team6Pressed){
+    } else if (relGraph_Team6Pressed) {
       team6 = selection;
       team6_obj = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team6), season);
       team6_obj.setTeamName(team6);
       relGraph_showTeam6 = true;
-    } 
+    }
   }
   team1_pressed = false;
   team2_pressed = false;
@@ -923,56 +1054,59 @@ void onClickWidget(APWidget widget) {
       widgetContainer_SubmitTeams.hide();
     }
   }
-  
-  
+
+
   //BUTTONS OF MODE7
-  else if (widget == button_BarGraph){
+  else if (widget == button_BarGraph) {
     mode = 1;
     widgetContainer_SelectDataDisplay.hide();
     TeamComparison_modeChanges.show();
-  }
-  else if (widget == button_TimeGraph){
+  } else if (widget == button_TimeGraph) {
+
+    team1_obj2013 = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team1), "2013");
+    team2_obj2013 = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team2), "2013");
+    team1_obj2013.setTeamName(team1);
+    team2_obj2013.setTeamName(team2);  
+
+    team1_obj2014 = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team1), "2014");
+    team2_obj2014 = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team2), "2014");
+    team1_obj2014.setTeamName(team1);
+    team2_obj2014.setTeamName(team2);  
+
+    mode = 8;
+    widgetContainer_SelectDataDisplay.hide();
+    TeamComparison_modeChanges.show();
+  } else if (widget == button_RelGraph) {
     mode = 6;
     widgetContainer_SelectDataDisplay.hide();
     TeamComparison_modeChanges.show();
-  }
-  else if (widget == button_RelGraph){
-    mode = 6;
-    widgetContainer_SelectDataDisplay.hide();
-    TeamComparison_modeChanges.show();
-  }
-  else if (widget == button_head2head){
+  } else if (widget == button_head2head) {
     mode = 1;
     widgetContainer_SelectDataDisplay.hide();
     TeamComparison_modeChanges.show();
-  } 
-  else if (widget == button_BackToTeamSelectionM7){
+  } else if (widget == button_BackToTeamSelectionM7) {
     mode = 0;
     widgetContainer_SelectDataDisplay.hide();
     widgetContainer_SubmitTeams.show();
-  }
-  
-  else if (widget == button_BackM7){
-    if (mode == 2){
+  } else if (widget == button_BackM7) {
+    if (mode == 2) {
       mode = 1;
-    } else if (mode == 3){
+    } else if (mode == 3) {
       mode = 2;
     }
-  } 
-  else if (widget == button_NextM7){
-     if (mode == 1){
+  } else if (widget == button_NextM7) {
+    if (mode == 1) {
       mode = 2;
-    } else if (mode == 2){
+    } else if (mode == 2) {
       mode = 3;
-    } 
-  }
-  else if (widget == button_ReturnM7){
+    }
+  } else if (widget == button_ReturnM7) {
     mode = 7;
     TeamComparison_modeChanges.hide();
     widgetContainer_SelectDataDisplay.show();
   }
-  
-  
+
+
   //BUTTONS OF MODE1
   else if (widget == button_BarGraphs) {
     mode = 1;
@@ -995,7 +1129,7 @@ void onClickWidget(APWidget widget) {
     } else if (mode == 3) {
       mode = 2;
       widgetContainer_Graphs.show();
-    } else if (mode == 6){
+    } else if (mode == 6) {
       mode = 7;
       widgetContainer_Graphs.hide();
       widgetContainer_SelectDataDisplay.show();
