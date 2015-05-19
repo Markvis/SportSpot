@@ -26,6 +26,7 @@ XML xml;
 
 // keys
 String NBAkey = "k4mqkpzfmq24f7yatqyvztxk";
+// String NBA key = "8yu67bww8nrbdk9qx9dbnjvn"; // ALTERNATE
 String MLBkey = "4nfwbpjthrsfsaeeh73szu8j";
 
 //selectionlists for team1 & team2 in mode0
@@ -1318,7 +1319,7 @@ void onClickWidget(APWidget widget) {
       player2_obj.setFullName(player2); 
 
       mode = 5; 
-      widgetContainer_Graphs.show(); 
+      //widgetContainer_Graphs.show(); 
       widgetContainer_SubmitPlayers.hide(); 
       widgetContainer_SubmitTeams.hide();
     }
@@ -1362,8 +1363,9 @@ void onClickWidget(APWidget widget) {
     }
     // player comparison
     else if (WC_mainButtons_counter == 1) {
-      //      backButtonStack.push(mode);
-      //      mode = 99;
+      backButtonStack.push(mode);
+      mode = 4;
+      widgetContainer_SubmitPlayers.show();
     } 
     // team comparison
     else if (WC_mainButtons_counter == 2) {
@@ -1373,8 +1375,8 @@ void onClickWidget(APWidget widget) {
     }
     // PLACEHOLDER
     else if (WC_mainButtons_counter == 3) {
-      //      backButtonStack.push(mode);
-      //      mode = 99;
+//      backButtonStack.push(mode);
+//      mode = 99;
     }
     WC_main.hide();
   }
