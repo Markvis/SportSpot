@@ -54,13 +54,17 @@ APButton button_submit, button_team1, button_team2;
 APWidgetContainer widgetContainer_Graphs;
 APButton button_BarGraphs, button_LineGraphs, button_Statistics, button_BackM1, button_NextM1;
 
+//container and buttons for all the modes within mode7 (Team Comparsion Data Display)
+APWidgetContainer TeamComparison_modeChanges;
+APButton button_NextM7, button_BackM7, button_ReturnM7;
+
 //widget containers and buttons for mode4
 APWidgetContainer widgetContainer_SubmitPlayers;
 APButton button_submit4, button_player1, button_player2;
 
 //widget container for mode7
 APWidgetContainer widgetContainer_SelectDataDisplay;
-APButton button_BarGraph, button_TimeGraph, button_head2head, button_RelGraph, button_BackM7;
+APButton button_BarGraph, button_TimeGraph, button_head2head, button_RelGraph, button_BackToTeamSelectionM7;
 
 /*
   GRAPHS INCLUDED:
@@ -205,20 +209,37 @@ void setup() {
 
   //widget container for buttons in mode7
   widgetContainer_SelectDataDisplay = new APWidgetContainer(this);
-  button_BarGraph  = new APButton(width/2 - width/4, height/2 - 2*(height/7) - 20, width/2, height/7, "Bar Graphs");
-  button_TimeGraph = new APButton(width/2 - width/4, height/2 - height/7 - 10, width/2, height/7, "Time Graphs");
+  button_BarGraph  = new APButton(width/2 - width/4, height/2 - height/7 - 30, width/2, height/7, "Bar Graphs");
+  button_TimeGraph = new APButton(width/2 - width/4, height/2 - 10, width/2, height/7, "Time Graphs");
   button_RelGraph = new APButton(width/2 - width/4, height/2 + height/7 + 10, width/2, height/7, "Relational Graphs");
-  button_head2head = new APButton(width/2 - width/4, height/2 + 2*(height/7) + 20, width/2, height/7, "Head to Head");
-  button_BackM7 = new APButton(width - width/8, height/18, "  Back  ");
-  widgetContainer_Graphs.addWidget(button_BarGraph);
-  widgetContainer_Graphs.addWidget(button_LineGraph);
-  widgetContainer_Graphs.addWidget(button_Statistic);
-  widgetContainer_Graphs.addWidget(button_BackM7);
- 
+  button_head2head = new APButton(width/2 - width/4, height/2 + 2*(height/7) + 30, width/2, height/7, "Head to Head");
+  button_BackToTeamSelectionM7 = new APButton(width - width/8, height/18, "  Back  ");
+  widgetContainer_SelectDataDisplay.addWidget(button_BarGraph);
+  widgetContainer_SelectDataDisplay.addWidget(button_TimeGraph);
+  widgetContainer_SelectDataDisplay.addWidget(button_RelGraph);
+  widgetContainer_SelectDataDisplay.addWidget(button_head2head);
+  widgetContainer_SelectDataDisplay.addWidget(button_BackToTeamSelectionM7);
+  button_BarGraph.setTextSize(18);
+  button_TimeGraph.setTextSize(18);
+  button_RelGraph.setTextSize(18);
+  button_head2head.setTextSize(18);
 
-   
+
+  //widget container for buttons in mode1
+  TeamComparison_modeChanges = new APWidgetContainer(this);
+  //creating & adding buttons for mode1
+  button_NextM7 = new APButton(width - 200, height/2 + 10, 180, 160, " Next ");
+  button_BackM7 = new APButton(width - 200, height/2 - 190, 180, 160, "  Back  ");
+  button_ReturnM7 = new APButton(width/2 - (width/2-100)/2, height - 180, width/2 - 100, height/7, "Return to Data Display Selection");
+  TeamComparison_modeChanges.addWidget(button_NextM7);
+  TeamComparison_modeChanges.addWidget(button_BackM7);
+  TeamComparison_modeChanges.addWidget(button_ReturnM7);
+  button_ReturnM7.setTextSize(18);
+
   widgetContainer_Graphs.hide();
   widgetContainer_SubmitPlayers.hide();
+  widgetContainer_SelectDataDisplay.hide();
+  TeamComparison_modeChanges.hide();
 
   widgetContainer_SubmitTeams.show();
   
@@ -708,7 +729,7 @@ void draw() {
     text("0", lineBase_w + moveHorizontal, lineBase_h + 70 + moveVertical);
     text("50", lineBase_w + (5*(lineWidth)/10) + moveHorizontal, lineBase_h + 70 + moveVertical);
     text("100", lineBase_w + (lineWidth) + moveHorizontal, lineBase_h + 70 + moveVertical);
-    text("x", lineBase_w + (lineWidth) + moveHorizontal + 40, lineBase_h + moveVertical + 20);
+    text("x", lineBase_w + (lineWidth) + moveHorizontal + 40, lineBase_h + moveVertical + 15);
 
     //  fill(255);
     textSize(55);
@@ -773,9 +794,11 @@ void draw() {
     }     
   } else if (mode == 7){
   
-    background(0, 0, 80);   
+    background(0, 0, 80);  
+    fill(255); 
     textSize(70);
-    text(team1 + "vs." + team2, width/2, height/10);
+    text(team1 + " vs. " + team2, width/2, height/10);
+    text(season, width/2, height/10 + 100);
   }
 }
 
@@ -895,12 +918,61 @@ void onClickWidget(APWidget widget) {
       team1_obj.setTeamName(team1);
       team2_obj.setTeamName(team2);    
 
-      mode = 1;
-      widgetContainer_Graphs.show();
+      mode = 7;
+      widgetContainer_SelectDataDisplay.show();
       widgetContainer_SubmitTeams.hide();
     }
   }
-
+  
+  
+  //BUTTONS OF MODE7
+  else if (widget == button_BarGraph){
+    mode = 1;
+    widgetContainer_SelectDataDisplay.hide();
+    TeamComparison_modeChanges.show();
+  }
+  else if (widget == button_TimeGraph){
+    mode = 6;
+    widgetContainer_SelectDataDisplay.hide();
+    TeamComparison_modeChanges.show();
+  }
+  else if (widget == button_RelGraph){
+    mode = 6;
+    widgetContainer_SelectDataDisplay.hide();
+    TeamComparison_modeChanges.show();
+  }
+  else if (widget == button_head2head){
+    mode = 1;
+    widgetContainer_SelectDataDisplay.hide();
+    TeamComparison_modeChanges.show();
+  } 
+  else if (widget == button_BackToTeamSelectionM7){
+    mode = 0;
+    widgetContainer_SelectDataDisplay.hide();
+    widgetContainer_SubmitTeams.show();
+  }
+  
+  else if (widget == button_BackM7){
+    if (mode == 2){
+      mode = 1;
+    } else if (mode == 3){
+      mode = 2;
+    }
+  } 
+  else if (widget == button_NextM7){
+     if (mode == 1){
+      mode = 2;
+    } else if (mode == 2){
+      mode = 3;
+    } 
+  }
+  else if (widget == button_ReturnM7){
+    mode = 7;
+    TeamComparison_modeChanges.hide();
+    widgetContainer_SelectDataDisplay.show();
+  }
+  
+  
   //BUTTONS OF MODE1
   else if (widget == button_BarGraphs) {
     mode = 1;
@@ -913,9 +985,9 @@ void onClickWidget(APWidget widget) {
     fill(255);
   } else if (widget == button_BackM1) {
     if (mode == 1) {
-      mode = 0;
+      mode = 7;
       widgetContainer_Graphs.hide();
-      widgetContainer_SubmitTeams.show();
+      widgetContainer_SelectDataDisplay.show();
       fill(255);
     } else if (mode == 2) {
       mode = 1;
@@ -923,6 +995,10 @@ void onClickWidget(APWidget widget) {
     } else if (mode == 3) {
       mode = 2;
       widgetContainer_Graphs.show();
+    } else if (mode == 6){
+      mode = 7;
+      widgetContainer_Graphs.hide();
+      widgetContainer_SelectDataDisplay.show();
     }
   }
 
