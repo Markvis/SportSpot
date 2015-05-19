@@ -23,8 +23,6 @@ KetaiList relGraphList_team4;
 KetaiList relGraphList_team5;
 KetaiList relGraphList_team6;
 
-
-
 boolean relGraph_Team3Pressed = false;
 boolean relGraph_Team4Pressed = false;
 boolean relGraph_Team5Pressed = false;
@@ -45,6 +43,9 @@ KetaiList playerlist2;
 ArrayList<String> teams = new ArrayList<String>();
 ArrayList<String> players = new ArrayList<String>();
 
+
+//BUTTONS
+
 //widget containers and buttons for team selection in mode0
 APWidgetContainer widgetContainer_SubmitTeams;
 APButton button_submit, button_team1, button_team2;
@@ -56,6 +57,10 @@ APButton button_BarGraphs, button_LineGraphs, button_Statistics, button_BackM1, 
 //widget containers and buttons for mode4
 APWidgetContainer widgetContainer_SubmitPlayers;
 APButton button_submit4, button_player1, button_player2;
+
+//widget container for mode7
+APWidgetContainer widgetContainer_SelectDataDisplay;
+APButton button_BarGraph, button_TimeGraph, button_head2head, button_RelGraph, button_BackM7;
 
 /*
   GRAPHS INCLUDED:
@@ -169,6 +174,7 @@ void setup() {
   widgetContainer_SubmitTeams.addWidget(button_team1);
   widgetContainer_SubmitTeams.addWidget(button_team2);
 
+
   //widget container for buttons in mode1
   widgetContainer_Graphs = new APWidgetContainer(this);
   //creating & adding buttons for mode1
@@ -182,8 +188,7 @@ void setup() {
   widgetContainer_Graphs.addWidget(button_Statistics);
   widgetContainer_Graphs.addWidget(button_BackM1);
   widgetContainer_Graphs.addWidget(button_NextM1);
-  widgetContainer_SubmitTeams.show();
-  widgetContainer_Graphs.hide();
+  
 
   //widget container for buttons in mode4
   widgetContainer_SubmitPlayers = new APWidgetContainer(this);
@@ -196,8 +201,27 @@ void setup() {
   widgetContainer_SubmitPlayers.addWidget(button_submit4);
   widgetContainer_SubmitPlayers.addWidget(button_player1);
   widgetContainer_SubmitPlayers.addWidget(button_player2);
-  //widgetContainer_SubmitPlayers.hide();
+ 
 
+  //widget container for buttons in mode7
+  widgetContainer_SelectDataDisplay = new APWidgetContainer(this);
+  button_BarGraph  = new APButton(width/2 - width/4, height/2 - 2*(height/7) - 20, width/2, height/7, "Bar Graphs");
+  button_TimeGraph = new APButton(width/2 - width/4, height/2 - height/7 - 10, width/2, height/7, "Time Graphs");
+  button_RelGraph = new APButton(width/2 - width/4, height/2 + height/7 + 10, width/2, height/7, "Relational Graphs");
+  button_head2head = new APButton(width/2 - width/4, height/2 + 2*(height/7) + 20, width/2, height/7, "Head to Head");
+  button_BackM7 = new APButton(width - width/8, height/18, "  Back  ");
+  widgetContainer_Graphs.addWidget(button_BarGraph);
+  widgetContainer_Graphs.addWidget(button_LineGraph);
+  widgetContainer_Graphs.addWidget(button_Statistic);
+  widgetContainer_Graphs.addWidget(button_BackM7);
+ 
+
+   
+  widgetContainer_Graphs.hide();
+  widgetContainer_SubmitPlayers.hide();
+
+  widgetContainer_SubmitTeams.show();
+  
   /*
   // ****** START OF TESTS / EXAMPLES ******
    NBATeam Warriors = new NBATeam();
@@ -340,7 +364,7 @@ void draw() {
     rect(lineBase_w + 3*(lineWidth/11) + 5*(width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(team2_freeThrowPerc)*lineHeight);
   } 
 
-else if (mode == 2) {
+  else if (mode == 2) {
 
     background(0, 0, 80);
 
@@ -622,9 +646,9 @@ else if (mode == 2) {
     rect(lineBase_w + (lineWidth/11 + width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(player2_3PointerPerc)*lineHeight);
     rect(lineBase_w + 2*(lineWidth/11) + 3*(width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(player2_fieldGoalPerc)*lineHeight);
     rect(lineBase_w + 3*(lineWidth/11) + 5*(width/14) + moveHorizontal, lineBase_h + moveVertical, width/14, -(player2_freeThrowPerc)*lineHeight);
-}
+  }
 
-else if (mode == 6) {
+  else if (mode == 6) {
 
     background(0, 0, 80);
 
@@ -672,19 +696,23 @@ else if (mode == 6) {
     line(lineBase_w + (8*(lineWidth)/10) + moveHorizontal, lineBase_h - 20 + moveVertical, lineBase_w + (8*(lineWidth)/10) + moveHorizontal, lineBase_h + 20 + moveVertical);
     line(lineBase_w + (9*(lineWidth)/10) + moveHorizontal, lineBase_h - 20 + moveVertical, lineBase_w + (9*(lineWidth)/10) + moveHorizontal, lineBase_h + 20 + moveVertical);
 
+    //vertical digits
     textSize(50);
     text("0", lineBase_w - 60 + moveHorizontal, lineBase_h + 18 + moveVertical);
     text("50", lineBase_w - 70 + moveHorizontal, lineBase_h - (5*(lineHeight)/10) + 18 + moveVertical);
     text("100", lineBase_w - 70 + moveHorizontal, lineBase_h - (10*(lineHeight)/10) + 18 + moveVertical);
+    text("y", lineBase_w + moveHorizontal, lineBase_h - (10*(lineHeight)/10) - 40 + moveVertical);
 
+    //horizontal digits
     textSize(50);
     text("0", lineBase_w + moveHorizontal, lineBase_h + 70 + moveVertical);
     text("50", lineBase_w + (5*(lineWidth)/10) + moveHorizontal, lineBase_h + 70 + moveVertical);
     text("100", lineBase_w + (lineWidth) + moveHorizontal, lineBase_h + 70 + moveVertical);
+    text("x", lineBase_w + (lineWidth) + moveHorizontal + 40, lineBase_h + moveVertical + 20);
 
     //  fill(255);
-    textSize(60);
-    text("SEASON STATISTICS", width/2 + moveHorizontal, height/26 + moveVertical);
+    textSize(55);
+    text("2 Pointers (x) vs. 3 Pointers (y)", width/2 + moveHorizontal, height/26 + moveVertical);
 
     textSize(40);
     text(team1_obj.getTeamName(), width/14, height/6);
@@ -737,13 +765,17 @@ else if (mode == 6) {
       fill(127, 0, 255);   
       rect(lineBase_w + (team5_2PointerPerc)*lineWidth - 10, lineBase_h - (team5_3PointerPerc)*lineHeight - 10, 20, 20);
     }
-    if (relGraph_showTeam4){     
+    if (relGraph_showTeam6){     
       float team6_2PointerPerc = team6_obj.getTwoPointsPct();
       float team6_3PointerPerc = team6_obj.getThreePointsPct();     
       fill(204, 0, 102); 
       rect(lineBase_w + (team6_2PointerPerc)*lineWidth - 10, lineBase_h - (team6_3PointerPerc)*lineHeight - 10, 20, 20);
-    }    
-    
+    }     
+  } else if (mode == 7){
+  
+    background(0, 0, 80);   
+    textSize(70);
+    text(team1 + "vs." + team2, width/2, height/10);
   }
 }
 
