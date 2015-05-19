@@ -5,7 +5,7 @@ import ketai.ui.*;
 import android.os.StrictMode; 
 
 // globals
-int mode = 4;
+int mode = 0;
 XML xml;
 
 // keys
@@ -694,38 +694,55 @@ else if (mode == 6) {
     text(team5, width/14, height/6 + 4*(height/7));
     text(team6, width/14, height/6 + 5*(height/7));
 
-
+    //draw small boxes to represent all the additional teams
+    //on the relational graph one the left
     fill(255, 51, 51);   
-    rect(width/18, height/6 + height/40, width/32, height/20); 
-   
+    rect(width/18, height/6 + height/40, width/32, height/20);    
     fill(255, 153, 51);
     rect(width/18, height/6 + height/7 + height/40, width/32, height/20);
-
     fill(0, 255, 128);   
-    rect(width/18, height/6 + 2*(height/7) + height/40, width/32, height/20); 
-    
+    rect(width/18, height/6 + 2*(height/7) + height/40, width/32, height/20);  
     fill(0, 128, 255);
     rect(width/18, height/6 + 3*(height/7) + height/40, width/32, height/20);
-
     fill(127, 0, 255);       
-    rect(width/18, height/6 + 4*(height/7) + height/40, width/32, height/20); 
-   
+    rect(width/18, height/6 + 4*(height/7) + height/40, width/32, height/20);    
     fill(204, 0, 102);
     rect(width/18, height/6 + 5*(height/7) + height/40, width/32, height/20);
 
     float team1_2PointerPerc = team1_obj.getTwoPointsPct();
-    float team1_3PointerPerc = team1_obj.getThreePointsPct();  
-    float team2_2PointerPerc = team2_obj.getTwoPointsPct();
-    float team2_3PointerPerc = team2_obj.getThreePointsPct();
-
+    float team1_3PointerPerc = team1_obj.getThreePointsPct(); 
     fill(255, 51, 51);
     rect(lineBase_w + (team1_2PointerPerc)*lineWidth - 10, lineBase_h - (team1_3PointerPerc)*lineHeight - 10, 20, 20);
+    
+    float team2_2PointerPerc = team2_obj.getTwoPointsPct();
+    float team2_3PointerPerc = team2_obj.getThreePointsPct();
     fill(255, 153, 51);
     rect(lineBase_w + (team2_2PointerPerc)*lineWidth - 10, lineBase_h - (team2_3PointerPerc)*lineHeight - 10, 20, 20);
     
-    
-    
-    
+    if (relGraph_showTeam3){     
+      float team3_2PointerPerc = team3_obj.getTwoPointsPct();
+      float team3_3PointerPerc = team3_obj.getThreePointsPct();     
+      fill(0, 255, 128); 
+      rect(lineBase_w + (team3_2PointerPerc)*lineWidth - 10, lineBase_h - (team3_3PointerPerc)*lineHeight - 10, 20, 20);
+    } 
+    if (relGraph_showTeam4){     
+      float team4_2PointerPerc = team4_obj.getTwoPointsPct();
+      float team4_3PointerPerc = team4_obj.getThreePointsPct();     
+      fill(0, 128, 255); 
+      rect(lineBase_w + (team4_2PointerPerc)*lineWidth - 10, lineBase_h - (team4_3PointerPerc)*lineHeight - 10, 20, 20);
+    }
+    if (relGraph_showTeam5){     
+      float team5_2PointerPerc = team5_obj.getTwoPointsPct();
+      float team5_3PointerPerc = team5_obj.getThreePointsPct();     
+      fill(127, 0, 255);   
+      rect(lineBase_w + (team5_2PointerPerc)*lineWidth - 10, lineBase_h - (team5_3PointerPerc)*lineHeight - 10, 20, 20);
+    }
+    if (relGraph_showTeam4){     
+      float team6_2PointerPerc = team6_obj.getTwoPointsPct();
+      float team6_3PointerPerc = team6_obj.getThreePointsPct();     
+      fill(204, 0, 102); 
+      rect(lineBase_w + (team6_2PointerPerc)*lineWidth - 10, lineBase_h - (team6_3PointerPerc)*lineHeight - 10, 20, 20);
+    }    
     
   }
 }
@@ -748,11 +765,27 @@ void mousePressed() {
       season = "2013";
     } else season = "2014";
   }
-  else if (((mouseX > width/22) && (mouseX < width/18 + width/30)) && 
+  else if ((mode == 6) && ((mouseX > width/22) && (mouseX < width/18 + width/30)) && 
     ((mouseY > height/6 + 2*(height/7) + height/40) && (mouseY <height/6 + 2*(height/7) + height/40 + height/16))){ 
     relGraphList_team3 = new KetaiList(this, teams);
     relGraph_Team3Pressed = true;
   }
+  else if ((mode == 6) && ((mouseX > width/22) && (mouseX < width/18 + width/30)) && 
+    ((mouseY > height/6 + 3*(height/7) + height/40) && (mouseY <height/6 + 3*(height/7) + height/40 + height/16))){ 
+    relGraphList_team4 = new KetaiList(this, teams);
+    relGraph_Team4Pressed = true;
+  }
+  else if ((mode == 6) && ((mouseX > width/22) && (mouseX < width/18 + width/30)) && 
+    ((mouseY > height/6 + 4*(height/7) + height/40) && (mouseY <height/6 + 4*(height/7) + height/40 + height/16))){ 
+    relGraphList_team5 = new KetaiList(this, teams);
+    relGraph_Team5Pressed = true;
+  }
+  else if ((mode == 6) && ((mouseX > width/22) && (mouseX < width/18 + width/30)) && 
+    ((mouseY > height/6 + 5*(height/7) + height/40) && (mouseY <height/6 + 5*(height/7) + height/40 + height/16))){ 
+    relGraphList_team6 = new KetaiList(this, teams);
+    relGraph_Team6Pressed = true;
+  }
+  
   
   
   redraw();
@@ -774,10 +807,25 @@ void onKetaiListSelection(KetaiList klist) {
     } else if (player2_pressed) {
       player2 = selection;
     } else if (relGraph_Team3Pressed){
-      relGraph_Team3 = selection;
+      team3 = selection;
+      team3_obj = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team3), season);
+      team3_obj.setTeamName(team3);
       relGraph_showTeam3 = true;
-      team3_obj = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(relGraph_Team3), season);
-      team3_obj.setTeamName(relGraph_Team3);
+    } else if (relGraph_Team4Pressed){
+      team4 = selection;
+      team4_obj = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team4), season);
+      team4_obj.setTeamName(team4);
+      relGraph_showTeam4 = true;
+    } else if (relGraph_Team5Pressed){
+      team5 = selection;
+      team5_obj = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team5), season);
+      team5_obj.setTeamName(team5);
+      relGraph_showTeam5 = true;
+    } else if (relGraph_Team6Pressed){
+      team6 = selection;
+      team6_obj = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team6), season);
+      team6_obj.setTeamName(team6);
+      relGraph_showTeam6 = true;
     } 
   }
   team1_pressed = false;
@@ -785,6 +833,9 @@ void onKetaiListSelection(KetaiList klist) {
   player1_pressed = false;
   player2_pressed = false;
   relGraph_Team3Pressed = false;
+  relGraph_Team4Pressed = false;
+  relGraph_Team5Pressed = false;
+  relGraph_Team6Pressed = false;
   redraw();
 }
 
