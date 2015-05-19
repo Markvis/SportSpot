@@ -57,9 +57,10 @@ String relGraph_Team6;
 KetaiList playerlist;
 KetaiList playerlist2;
 
-ArrayList<String> teams = new ArrayList<String>();
-ArrayList<String> players = new ArrayList<String>();
 
+ArrayList<String> teams = new ArrayList<String>();
+ArrayList<String> players1 = new ArrayList<String>();
+ArrayList<String> players2 = new ArrayList<String>();
 
 //BUTTONS
 
@@ -77,7 +78,11 @@ APButton button_NextM7, button_BackM7, button_ReturnM7;
 
 //widget containers and buttons for mode4
 APWidgetContainer widgetContainer_SubmitPlayers;
-APButton button_submit4, button_player1, button_player2;
+APButton button_submit4, button_player1, button_player2, btnSelectTeam1, btnSelectTeam2;
+Map<String, String> selectedTeam1Hash;
+Map<String, String> selectedTeam2Hash;
+KetaiList m4Team1List;
+KetaiList m4Team2List;
 
 //widget container for mode7
 APWidgetContainer widgetContainer_SelectDataDisplay;
@@ -116,6 +121,9 @@ String team5 = "Add Team";
 String team6 = "Add Team";
 String season = "2014";
 
+String m4Team1 = "m4Team1";
+String m4Team2 = "m4Team2";
+
 String player1 = "Player 1";
 String player2 = "Player 2";
 
@@ -140,6 +148,8 @@ boolean team1_pressed = false;
 boolean team2_pressed = false;
 boolean player1_pressed = false;
 boolean player2_pressed = false;
+boolean btnTeam1_pressed = false;
+boolean btnTeam2_pressed = false;
 
 int ThreePointPerc;
 int FieldGoalsPerc;
@@ -202,8 +212,8 @@ void setup() {
   teams.add("Wizards");
 
   //adding players to players ArrayList
-  players.add("Stephen Curry");
-  players.add("Lebron James");
+  //  players.add("Stephen Curry");
+  //  players.add("Lebron James");
 
   //widget container for buttons in mode0
   widgetContainer_SubmitTeams = new APWidgetContainer(this); 
@@ -237,11 +247,20 @@ void setup() {
   //widget container for buttons in mode4
   widgetContainer_SubmitPlayers = new APWidgetContainer(this);
   button_submit4 = new APButton(width/2 - width/12, height - height/4, width/6, height/6, "Submit");
-  button_player1 = new APButton(width/12, height/9, width/4, height/7, "Select Player 1");
-  button_player2 = new APButton(width - width/12 - width/4, height/9, width/4, height/7, "Select Player 2");
+  //button_team1 = new APButton(width/12, height/9, width/4, height/7, "Select Team 1"); 
+
+  button_player1 = new APButton(width/12, height*7/9, width/4, height/7, "Select Player 1");
+  button_player2 = new APButton(width - width/12 - width/4, height*7/9, width/4, height/7, "Select Player 2");
+  btnSelectTeam1 = new APButton(width/12, height/9, width/4, height/7, "Select Team 1");
+  btnSelectTeam2 = new APButton(width - width/12 - width/4, height/9, width/4, height/7, "Select Team 2");
   button_submit4.setTextSize(20);
   button_player1.setTextSize(18);
   button_player2.setTextSize(18);
+  btnSelectTeam1.setTextSize(18);
+  btnSelectTeam2.setTextSize(18);
+  //btnSelectTeam1
+  widgetContainer_SubmitPlayers.addWidget(btnSelectTeam1);
+  widgetContainer_SubmitPlayers.addWidget(btnSelectTeam2);
   widgetContainer_SubmitPlayers.addWidget(button_submit4);
   widgetContainer_SubmitPlayers.addWidget(button_player1);
   widgetContainer_SubmitPlayers.addWidget(button_player2);
@@ -1149,6 +1168,10 @@ void onKetaiListSelection(KetaiList klist) {
       team6_obj = getNBATeamSeasonTotalStats(Database.teamNameAndIDHash.get(team6), season);
       team6_obj.setTeamName(team6);
       relGraph_showTeam6 = true;
+    } else if (btnTeam1_pressed) {
+      m4Team1 = selection;
+    } else if (btnTeam2_pressed) {
+      m4Team2 = selection;
     }
   }
   team1_pressed = false;
@@ -1159,6 +1182,8 @@ void onKetaiListSelection(KetaiList klist) {
   relGraph_Team4Pressed = false;
   relGraph_Team5Pressed = false;
   relGraph_Team6Pressed = false;
+  btnTeam1_pressed = false;
+  btnTeam2_pressed = false;
 
   redraw();
 }
@@ -1297,12 +1322,36 @@ void onClickWidget(APWidget widget) {
   }
 
   //BUTTONS OF MODE4
-  if (widget == button_player1) {    
-    playerlist = new KetaiList(this, players); 
+  if (widget == button_player1) {
+//    selectedTeam1Hash = getTeamRoster(Database.teamNameAndIDHash.get(m4Team1));
+//    ArrayList<String> playersArrayList = new ArrayList<String>();
+//    Iterator it = selectedTeam1Hash.entrySet().iterator();
+//    while (it.hasNext ()) {
+//      Map.Entry pair = (Map.Entry)it.next();
+//      playersArrayList.add(pair.getKey().toString());
+//      it.remove(); // avoids a ConcurrentModificationException
+//    }
+    playerlist = new KetaiList(this, getTeamRosterArray(Database.teamNameAndIDHash.get(m4Team1))); 
+//    playerlist = new KetaiList(this, playersArrayList); 
     player1_pressed = true;
   } else if (widget == button_player2) {
-    playerlist2 = new KetaiList(this, players); 
+//    selectedTeam2Hash = getTeamRoster(Database.teamNameAndIDHash.get(m4Team2));
+//    ArrayList<String> playersArrayList = new ArrayList<String>();
+//    Iterator it = selectedTeam2Hash.entrySet().iterator();
+//    while (it.hasNext ()) {
+//      Map.Entry pair = (Map.Entry)it.next();
+//      playersArrayList.add(pair.getKey().toString());
+//      it.remove(); // avoids a ConcurrentModificationException
+//    }
+    playerlist2 = new KetaiList(this, getTeamRosterArray(Database.teamNameAndIDHash.get(m4Team2))); 
+//    playerlist2 = new KetaiList(this, playersArrayList); 
     player2_pressed = true;
+  } else if (widget == btnSelectTeam1) {
+    m4Team1List = new KetaiList(this, teams);
+    btnTeam1_pressed = true;
+  } else if (widget == btnSelectTeam2) {
+    m4Team2List = new KetaiList(this, teams); 
+    btnTeam2_pressed = true;
   } else if (widget == button_submit4) {
     if (player1 == player2) {
       KetaiAlertDialog.popup(this, "Nice try...", "Please choose two different players.");
@@ -1313,8 +1362,11 @@ void onClickWidget(APWidget widget) {
       //      StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build(); 
       //      StrictMode.setThreadPolicy(policy); 
 
-      player1_obj = getNBAPlayerStats(Database.playerNameAndIDHash.get(player1), season); 
-      player2_obj = getNBAPlayerStats(Database.playerNameAndIDHash.get(player2), season); 
+      Map<String, String> m4t1 = getTeamRoster(Database.teamNameAndIDHash.get(m4Team1));
+      Map<String, String> m4t2 = getTeamRoster(Database.teamNameAndIDHash.get(m4Team2));
+
+      player1_obj = getNBAPlayerStats(m4t1.get(player1), season); 
+      player2_obj = getNBAPlayerStats(m4t2.get(player2), season); 
       player1_obj.setFullName(player1); 
       player2_obj.setFullName(player2); 
 
@@ -1375,8 +1427,8 @@ void onClickWidget(APWidget widget) {
     }
     // PLACEHOLDER
     else if (WC_mainButtons_counter == 3) {
-//      backButtonStack.push(mode);
-//      mode = 99;
+      //      backButtonStack.push(mode);
+      //      mode = 99;
     }
     WC_main.hide();
   }
@@ -1711,6 +1763,25 @@ Map<String, String> getTeamRoster(String teamID) {
 
   for (int i = 0; i < player.length; i++) {
     roster.put(player[i].getString("full_name"), player[i].getString("id"));
+  }
+
+  return roster;
+}
+
+// arraylist of roster
+ArrayList<String> getTeamRosterArray(String teamID) {
+  pauseFor(1000); 
+  println("********** Getting roster array for " + teamID + " **********"); 
+  ArrayList<String> roster = new ArrayList<String>(); // Player Name -> Player ID
+  String URI = "http://api.sportradar.us/nba-t3/teams/" + teamID + "/profile.xml?api_key=" + NBAkey; 
+  println("URI is: " + URI); 
+  xml = loadXML(URI);
+
+  XML players = xml.getChild("players");
+  XML [] player = players.getChildren("player");
+
+  for (int i = 0; i < player.length; i++) {
+    roster.add(player[i].getString("full_name"));
   }
 
   return roster;
