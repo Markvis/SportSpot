@@ -21,7 +21,7 @@ import java.util.Stack;
  */
 
 // globals
-int mode = 98;
+int mode = 99;
 XML xml;
 
 // keys
@@ -52,16 +52,19 @@ APWidgetContainer widgetContainer_SubmitPlayers;
 APButton button_submit4, button_player1, button_player2;
 
 // widget container for home screen mode 99
-APWidgetContainer WC_home;
-//APButton button_submit4, button_player1, button_player2;
+APWidgetContainer WC_main = new APWidgetContainer(this);
+ArrayList<APButton> WC_mainButtons = new ArrayList<APButton>();
+boolean mainModeLoaded = false;
 
 // widget container for live screen mode 98 and other mode 98 requirements
 APWidgetContainer WC_live = new APWidgetContainer(this);
 ArrayList<APButton> WC_LiveButtons = new ArrayList<APButton>();
 ArrayList<NBAGame> gamesToday;
-int gameSelected = -1;
 NBAGameSummary selectedGameSummary;
+NBAGame selectedGame;
 boolean liveModeLoaded = false;
+int gameSelected = -1;
+
 
 // stack for back button
 Stack<Integer> backButtonStack = new Stack<Integer>();
@@ -732,40 +735,58 @@ void draw() {
   // when game is selected in mode 98 live game
   else if (mode == 97) {
     preMode();
-    textAlign(CENTER); 
-    text(selectedGameSummary.getAwayTeamName() + " @ " + selectedGameSummary.getHomeTeamName(), width/2, 200);
-    textAlign(LEFT);
-    // display teams score
-    text(selectedGameSummary.getHomeTeamName(), width/4, 300);
-    text(selectedGameSummary.getAwayTeamName(), width/4, 400);
-    text(selectedGameSummary.getHomePoints(), width*2/3, 300);
-    text(selectedGameSummary.getAwayPoints(), width*2/3, 400);
-    stroke(255);
-    line(0, 500, width, 500);
-    text(selectedGameSummary.getHomeTeamName(), 200, 600);
-    text(selectedGameSummary.getAwayTeamName(), width*5/6, 600);
-    textAlign(LEFT);
-    text(selectedGameSummary.getHomeFieldGoalsPct(), width/5, 700);
-    text(selectedGameSummary.getHomeThreePointsPct(), width/5, 800);
-    text(selectedGameSummary.getHomeFreeThrowsPct(), width/5, 900);
-    text(selectedGameSummary.getAwayFieldGoalsPct(), width*3/4, 700);
-    text(selectedGameSummary.getAwayThreePointsPct(), width*3/4, 800);
-    text(selectedGameSummary.getAwayFreeThrowsPct(), width*3/4, 900);
-    textAlign(CENTER);
-    text("Field Goals %", width/2, 700);
-    text("Three Points %", width/2, 800);
-    text("Free Throws %", width/2, 900);
+    if (!selectedGame.getStatus().equals("scheduled")) {
+      textAlign(CENTER); 
+      text(selectedGameSummary.getAwayTeamName() + " @ " + selectedGameSummary.getHomeTeamName(), width/2, 200);
+      textAlign(LEFT);
+      // display teams score
+      text(selectedGameSummary.getHomeTeamName(), width/4, 300);
+      text(selectedGameSummary.getAwayTeamName(), width/4, 400);
+      text(selectedGameSummary.getHomePoints(), width*2/3, 300);
+      text(selectedGameSummary.getAwayPoints(), width*2/3, 400);
+      stroke(255);
+      line(0, 500, width, 500);
+      text(selectedGameSummary.getHomeTeamName(), 200, 600);
+      text(selectedGameSummary.getAwayTeamName(), width*5/6, 600);
+      textAlign(LEFT);
+      text(selectedGameSummary.getHomeFieldGoalsPct(), width/5, 700);
+      text(selectedGameSummary.getHomeThreePointsPct(), width/5, 800);
+      text(selectedGameSummary.getHomeFreeThrowsPct(), width/5, 900);
+      text(selectedGameSummary.getAwayFieldGoalsPct(), width*3/4, 700);
+      text(selectedGameSummary.getAwayThreePointsPct(), width*3/4, 800);
+      text(selectedGameSummary.getAwayFreeThrowsPct(), width*3/4, 900);
+      textAlign(CENTER);
+      text("Field Goals %", width/2, 700);
+      text("Three Points %", width/2, 800);
+      text("Free Throws %", width/2, 900);
+    } else {
+      textAlign(CENTER); 
+      text(selectedGame.getAwayTeamName() + " @ " + selectedGame.getHomeTeamName(), width/2, 200);
+      text(selectedGame.getTitle(), width/2, 400);
+      text(selectedGame.getScheduled(), width/2, 500);
+    }
   }
 
   // this is the live game for current day
   else if (mode == 98) {
     preMode(); 
+    Calendar c = Calendar.getInstance(); 
+    String year = Integer.toString(c.get(Calendar.YEAR));
+    String month = Integer.toString(c.get(Calendar.MONTH) + 1);
+    String day = Integer.toString(c.get(Calendar.DAY_OF_MONTH));
+    int buttonWidth = width/2;
+    int buttonHeight = height/8;
+
+    textAlign(CENTER); 
+    text("Scheduled game for today", width/2, 100);
+    text(month + "/" + day + "/" + year, width/2, 200);
+
     if (!liveModeLoaded) {
-      Calendar c = Calendar.getInstance(); 
-      //gamesToday = getAllGamesOnDate(Integer.toString(c.get(Calendar.YEAR)), Integer.toString(c.get(Calendar.MONTH) + 1), Integer.toString(c.get(Calendar.DAY_OF_MONTH)));
-      gamesToday = getAllGamesOnDate("2015", "05", "15");
+      gamesToday = getAllGamesOnDate(year, month, day);
+      //gamesToday = getAllGamesOnDate("2015", "01", "15");
+
       for (int i = 0; i < gamesToday.size (); i++) {
-        APButton apb = new APButton(0, 100+(i*150), gamesToday.get(i).getAwayTeamName() + " @ " + gamesToday.get(i).getHomeTeamName());
+        APButton apb = new APButton(width/2 - buttonWidth/2, 300+(i*160), buttonWidth, buttonHeight, gamesToday.get(i).getAwayTeamName() + " @ " + gamesToday.get(i).getHomeTeamName());
         WC_LiveButtons.add(apb);
       }
       for (int i = 0; i < WC_LiveButtons.size (); i++) {
@@ -773,15 +794,37 @@ void draw() {
       }
       liveModeLoaded = true;
     }
+    
     WC_live.show();
   }
   // this is the main screen
   else if (mode == 99) {
     preMode();
-    textSize(100); 
+    textSize(200); 
     textAlign(CENTER); 
-    text("SportSpot", width/2, 150);
+    text("SportSpot", width/2, height/4);
 
+    int buttonWidth = width/3;
+    int buttonHeight = height/8;
+
+    if (!mainModeLoaded) {
+      WC_mainButtons.add(new APButton(width/4 - buttonWidth/2, height/2+300, buttonWidth, buttonHeight, "Live Data"));
+      WC_mainButtons.add(new APButton(width*3/4 - buttonWidth/2, height/2, buttonWidth, buttonHeight, "Player Comparison"));
+      WC_mainButtons.add(new APButton(width/4 - buttonWidth/2, height/2, buttonWidth, buttonHeight, "Team Comparison"));
+      WC_mainButtons.add(new APButton(width*3/4 - buttonWidth/2, height/2+300, buttonWidth, buttonHeight, "PLACEHOLDER"));
+
+      for (int i = 0; i < WC_mainButtons.size (); i++) {
+        WC_main.addWidget(WC_mainButtons.get(i));
+      }
+
+      mainModeLoaded = true;
+    }
+
+    WC_main.show();
+
+
+    //APWidgetContainer WC_main;
+    //ArrayList<APButton> WC_mainButtons = new ArrayList<APButton>();
     //    Map<String, String> roster = getTeamRoster("583ec825-fb46-11e1-82cb-f4ce4684ea4c");
     //    Iterator it = roster.entrySet().iterator();
     //    while (it.hasNext ()) {
@@ -946,10 +989,47 @@ void onClickWidget(APWidget widget) {
     WC_LiveButtons_counter++;
   }
   if (LiveButtonWidgetFound) {
-    NBAGame selectedGame = gamesToday.get(WC_LiveButtons_counter);
-    selectedGameSummary = getNBAGameSummary(selectedGame.getId());
+    selectedGame = gamesToday.get(WC_LiveButtons_counter);
+    if (!selectedGame.getStatus().equals("scheduled")) {
+      selectedGameSummary = getNBAGameSummary(selectedGame.getId());
+    }
     WC_live.hide();
   }
+
+  // main screen mode
+  int WC_mainButtons_counter = 0;
+  boolean mainButtonWidgetFound = false;
+  for (int i = 0; i < WC_mainButtons.size (); i++) {
+    if (widget == WC_mainButtons.get(i)) {
+      mainButtonWidgetFound = true;
+      break;
+    }
+    WC_mainButtons_counter++;
+  }
+  if (mainButtonWidgetFound) {
+    // live data
+    if (WC_mainButtons_counter == 0) {
+      backButtonStack.push(mode);
+      mode = 98;
+    }
+    // player comparison
+    else if (WC_mainButtons_counter == 1) {
+      //      backButtonStack.push(mode);
+      //      mode = 99;
+    } 
+    // team comparison
+    else if (WC_mainButtons_counter == 2) {
+      //      backButtonStack.push(mode);
+      //      mode = 99;
+    }
+    // PLACEHOLDER
+    else if (WC_mainButtons_counter == 3) {
+      //      backButtonStack.push(mode);
+      //      mode = 99;
+    }
+    WC_main.hide();
+  }
+
   redraw();
 }
 
@@ -1342,6 +1422,7 @@ void pauseFor(int timeInMiliSec) {
 
 void preMode() {
   WC_live.hide();
+  WC_main.hide();
   widgetContainer_SubmitPlayers.hide();
   widgetContainer_SubmitTeams.hide();
   widgetContainer_Graphs.hide();
