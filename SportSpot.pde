@@ -25,8 +25,8 @@ int mode = 99;
 XML xml;
 
 // keys
-String NBAkey = "k4mqkpzfmq24f7yatqyvztxk";
-// String NBA key = "8yu67bww8nrbdk9qx9dbnjvn"; // ALTERNATE
+//String NBAkey = "k4mqkpzfmq24f7yatqyvztxk";
+String NBAkey = "8yu67bww8nrbdk9qx9dbnjvn"; // ALTERNATE
 String MLBkey = "4nfwbpjthrsfsaeeh73szu8j";
 
 //selectionlists for team1 & team2 in mode0
@@ -1030,9 +1030,12 @@ void draw() {
   else if (mode == 98) {
     preMode(); 
     Calendar c = Calendar.getInstance(); 
-    String year = Integer.toString(c.get(Calendar.YEAR));
-    String month = Integer.toString(c.get(Calendar.MONTH) + 1);
-    String day = Integer.toString(c.get(Calendar.DAY_OF_MONTH));
+//    String year = Integer.toString(c.get(Calendar.YEAR));
+//    String month = Integer.toString(c.get(Calendar.MONTH) + 1);
+//    String day = Integer.toString(c.get(Calendar.DAY_OF_MONTH));
+    String year = "2015";
+    String month = "01";
+    String day = "10";
     int buttonWidth = width/2;
     int buttonHeight = height/8;
 
